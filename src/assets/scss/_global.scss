@@ -1,0 +1,13 @@
+@use './variable' as *;
+
+body {
+    font-family: $primary_font_family;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
