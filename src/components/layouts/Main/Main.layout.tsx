@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import Header from "../../ui/Header/Header"
-import { Footer } from "antd/es/layout/layout"
+import Footer from "../../ui/Footer/Footer"
 
 
 export const MainLayout = () => {
