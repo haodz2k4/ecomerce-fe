@@ -24,3 +24,12 @@ a {
 ul {
     list-style: none;
 }
+
+.d-none {
+    display: none;
+}
+
+//Change color collapsed
+.ant-layout-sider-trigger {
+    background-color: $secondary_color !important;
+}
