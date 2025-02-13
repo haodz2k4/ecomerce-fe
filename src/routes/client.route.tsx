@@ -7,4 +7,4 @@ export const clientRoutes: RouteObject[] = [
         path: "/",
         element: <Home />
     }
-]
+]   

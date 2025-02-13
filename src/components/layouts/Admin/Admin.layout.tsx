@@ -1,4 +1,4 @@
-import { Flex, Layout, Menu, Typography } from "antd"
+import { Flex, Layout, Menu, Typography, Input, Row, Col, Space, Button, Badge, Avatar, Dropdown } from "antd"
 import { Content, Footer, Header } from "antd/es/layout/layout"
 import Sider from "antd/es/layout/Sider"
 import { Outlet } from "react-router-dom"
@@ -8,12 +8,14 @@ import { getItem } from "../../../utils/item";
 import { 
     AlertOutlined, 
     AppstoreOutlined, 
+    BellOutlined, 
     ContactsOutlined, 
     DashboardOutlined, 
     FundProjectionScreenOutlined, 
     InboxOutlined, 
     LockOutlined, 
     LogoutOutlined, 
+    MenuOutlined, 
     MessageOutlined, 
     PartitionOutlined, 
     PieChartOutlined, 
@@ -28,7 +30,7 @@ import {
 import { useState } from "react";
 
 const {Title} = Typography
-
+const {Search} = Input
 
 const itemsMenu = [
     getItem('Dashboard', '1', <DashboardOutlined />, [
@@ -59,6 +61,19 @@ const itemsOther = [
     getItem('Đăng xuất', '3',<LogoutOutlined />)
 ]
 
+
+const accountItems = [
+    {
+        key: '1',
+        label: 'Tài khoản',
+        icon: <UserOutlined />
+    },
+    {
+        key: '2',
+        label: 'Đăng xuất',
+        icon: <LogoutOutlined />
+    }
+]
 const AdminLayout = () => {
 
     const [collapsed, setCollapsed] =  useState(false);
@@ -80,10 +95,26 @@ const AdminLayout = () => {
                 </div>
             </Sider>
             <Layout>
-                <Header>
-                    Header
-                </Header>
-                <Content>
+                <header className={styles.header}>
+                    <Row justify="space-between">
+                        <Col span={6}>
+                            <Search placeholder="Nhập tìm kiếm ở đây..."/>
+                        </Col>
+                        <Col span={15}/>
+                        <Col span={3}>
+                            <Space>
+                                <Badge count={4}>
+                                    <Button size="large" color="default" variant="text" icon={<BellOutlined />} />
+                                </Badge>
+                                <Dropdown menu={{items: accountItems}} placement="bottomLeft">
+                                    <Avatar />
+                                </Dropdown>
+                                <Button variant="text" color="default" icon={<MenuOutlined />} />
+                            </Space>
+                        </Col>
+                    </Row>
+                </header>
+                <Content className={styles.content}>
                     <Outlet />
                 </Content>
                 <Footer>Footer</Footer>
