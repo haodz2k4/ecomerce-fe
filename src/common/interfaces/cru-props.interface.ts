@@ -4,7 +4,7 @@
 
 
 export interface CruProps {
-    openCreate: boolean;
-    setOpenCreate: (value: boolean) => void;
+    open: boolean;
+    setOpen: (value: boolean) => void;
     id: string;
 }

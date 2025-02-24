@@ -126,8 +126,8 @@ const Products = () => {
             <Table columns={products_columns} dataSource={[{}]}/>
             {/* MODAL  */}
             <Create 
-                openCreate={openCreate} 
-                setOpenCreate={setOpenCreate}
+                open={openCreate} 
+                setOpen={setOpenCreate}
                 id="" 
             />
         </>
