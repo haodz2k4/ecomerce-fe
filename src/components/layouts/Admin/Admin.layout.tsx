@@ -1,81 +1,164 @@
 import { Flex, Layout, Menu, Typography, Input, Row, Col, Space, Button, Badge, Avatar, Dropdown } from "antd"
-import { Content, Footer, Header } from "antd/es/layout/layout"
+import { Content, Footer } from "antd/es/layout/layout"
 import Sider from "antd/es/layout/Sider"
-import { Outlet } from "react-router-dom"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import styles from "./AdminLayout.module.scss";
 import logo from "../../../assets/images/ecomerce_logo.png"
-import { getItem } from "../../../utils/item";
 import { 
-    AlertOutlined, 
     AppstoreOutlined, 
     BellOutlined, 
-    ContactsOutlined, 
-    DashboardOutlined, 
-    FundProjectionScreenOutlined, 
+    CodeOutlined, 
+    DashboardOutlined,  
     InboxOutlined, 
     LockOutlined, 
     LogoutOutlined, 
     MenuOutlined, 
-    MessageOutlined, 
-    PartitionOutlined, 
-    PieChartOutlined, 
+    PlusSquareOutlined, 
     ProductOutlined, 
-    ProjectOutlined, 
-    SettingOutlined, 
-    TeamOutlined, 
-    ToolOutlined, 
+    SettingOutlined,
+    TeamOutlined,
+    ToolOutlined,
     UserOutlined, 
     UserSwitchOutlined,
+    WarningOutlined,
+    WechatWorkOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
+import { ItemType, MenuItemType } from "antd/es/menu/interface";
+import { ADMIN } from "../../../constants/app.constant";
 
 const {Title} = Typography
 const {Search} = Input
 
-const itemsMenu = [
-    getItem('Dashboard', '1', <DashboardOutlined />, [
-        getItem('Chung','1.1', <PieChartOutlined />),
-        getItem('Thương mại','1.2', <ProjectOutlined />),
-        getItem('Thống kê','1.3', <FundProjectionScreenOutlined />)
-    ]),
-    getItem('Người dùng', '2',<TeamOutlined />),
-    getItem('Sản phẩm','3',<ProductOutlined />),
-    getItem('Kho hàng','4',<AppstoreOutlined />),
-    getItem('Đơn hàng','5',<InboxOutlined />),
-    getItem('Quyền','6',<LockOutlined />, [
-        getItem('Nhóm quyền', '6.1', <UserSwitchOutlined />),
-        getItem('Phân quyền','6.2', <LockOutlined />)
-    ]),
-    getItem('Hỗ trợ', '7', <ContactsOutlined />, [
-        getItem('Nhắn tin','7.1', <MessageOutlined />),
-        getItem('Khiếu nại', '7.2',<AlertOutlined />)
-    ])
-]
-
-const itemsOther = [
-    getItem('Cài đặt','1', <SettingOutlined />, [
-        getItem('Cài đặt chung','1.1', <PartitionOutlined />),
-        getItem('Cài đặt hệ thống','1.2', <ToolOutlined />)
-    ]),
-    getItem('Tài khoản của bạn','2', <UserOutlined />),
-    getItem('Đăng xuất', '3',<LogoutOutlined />)
-]
-
-
-const accountItems = [
-    {
-        key: '1',
-        label: 'Tài khoản',
-        icon: <UserOutlined />
-    },
-    {
-        key: '2',
-        label: 'Đăng xuất',
-        icon: <LogoutOutlined />
-    }
-]
 const AdminLayout = () => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+
+
+    const getActiveKeys = () => {
+        const path = location.pathname;
+        if (path.startsWith(`/${ADMIN}/products`)) return 'products';
+        if (path.startsWith(`/${ADMIN}/inventories`)) return 'inventories';
+        if (path.startsWith(`/${ADMIN}/orders`)) return 'orders';
+        if (path.startsWith(`/${ADMIN}/permissions`)) return 'permissions';
+        if (path.startsWith(`/${ADMIN}/assign-roles`)) return 'assign_roles';
+        if (path.startsWith(`/${ADMIN}/chat`)) return 'chat';
+        if (path.startsWith(`/${ADMIN}/report`)) return 'report';
+        return 'dashboard'
+    }
+    const itemsMenu: ItemType<MenuItemType>[] = [
+        {
+            key: 'dashboard',
+            icon: <DashboardOutlined />,
+            label: 'Quảng trị',
+            onClick: () => navigate(`/${ADMIN}/dashboard`)
+        },
+        {
+            key: 'users',
+            icon: <TeamOutlined />,
+            label: 'Người dùng',
+            onClick: () => navigate(`/${ADMIN}/users`)
+        },
+        {
+            key: 'products',
+            icon: <ProductOutlined />,
+            label: 'Sản phẩm',
+            onClick: () => navigate(`/${ADMIN}/products`)
+        },
+        {
+            key: 'inventories',
+            icon: <AppstoreOutlined />,
+            label: 'Kho hàng',
+            onClick: () => navigate(`/${ADMIN}/inventories`)
+        },
+        {
+            key: 'orders',
+            icon: <InboxOutlined />,
+            label: 'Đơn hàng',
+            onClick: () => navigate(`/${ADMIN}/orders`)
+        },
+        {
+            key: 'roles_permissions',
+            icon: <LockOutlined />,
+            label: 'Quyền',
+            children: [
+                {
+                    key: 'roles',
+                    label: 'Nhóm quyền',
+                    icon: <UserSwitchOutlined />,
+                    onClick: () => navigate(`/${ADMIN}/roles`)
+                },
+                {
+                    key: 'permissions',
+                    label: 'Phân quyền',
+                    icon: <LockOutlined />,
+                    onClick: () => navigate(`/${ADMIN}/permissions`)
+                }
+            ]
+        },
+        {
+            key: 'support',
+            label: 'Hỗ trợ',
+            icon: <PlusSquareOutlined />,
+            children: [
+                {
+                    key: 'chat',
+                    label: 'Nhắn tin',
+                    icon: <WechatWorkOutlined />
+                },
+                {
+                    key: 'report',
+                    label: 'Khiếu nại',
+                    icon: <WarningOutlined />
+                }
+            ]
+        }
+    ]
+    
+    const itemsOther: ItemType<MenuItemType>[] = [
+        {
+            key: 'settings',
+            label: 'Cài đặt',
+            icon: <SettingOutlined />,
+            children: [
+                {
+                    key: 'settings-general',
+                    label: 'Cài đặt chung',
+                    icon: <CodeOutlined />
+                },
+                {
+                    key: 'settings-other',
+                    label: 'Cài đặt hệ thống',
+                    icon: <ToolOutlined />
+                }
+            ]
+        },
+        {
+            key: 'accounts',
+            label: 'Tài khoản của bạn',
+            icon: <UserOutlined />
+        },
+        {
+            key: 'logout',
+            label: 'Đăng xuất',
+            icon: <LockOutlined />
+        }
+    ]
+    
+    
+    const accountItems: ItemType<MenuItemType>[] = [
+        {
+            key: '1',
+            label: 'Tài khoản',
+            icon: <UserOutlined />
+        },
+        {
+            key: '2',
+            label: 'Đăng xuất',
+            icon: <LogoutOutlined />
+        }
+    ]
     const [collapsed, setCollapsed] =  useState(false);
 
     return (
@@ -87,7 +170,12 @@ const AdminLayout = () => {
                         <Title className={collapsed ? 'd-none' : ''} level={2}>Dashboard</Title>
                     </Flex>
                     <div className={styles.sider__content}>
-                        <Menu mode="inline" items={itemsMenu} className={styles.sider__menu}/>
+                        <Menu 
+                            mode="inline" 
+                            items={itemsMenu} 
+                            className={styles.sider__menu}
+                            selectedKeys={[getActiveKeys()]}
+                        />
                         <div className={styles.sider__space}></div>
                         <Menu mode="inline" items={itemsOther}/>
 
