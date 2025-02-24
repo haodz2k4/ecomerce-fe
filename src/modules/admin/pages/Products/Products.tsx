@@ -3,6 +3,8 @@ import { Button, Col, Row, Space, Table, TableColumnType, Tag, Input, Select, Da
 import { StatusActiveEnum } from "../../../../constants/app.constant"
 import {getColorByStatus, transfromStatus} from "../../../../utils/transform";
 import { formatDate, formatPriceToVnd } from "../../../../utils/format";
+import Create from "./Create";
+import { useState } from "react";
  
 const {RangePicker} = DatePicker
 const {Search} = Input
@@ -10,6 +12,8 @@ const {Search} = Input
 
 const Products = () => {
 
+    const [openCreate, setOpenCreate] = useState<boolean>(false);
+    
 
     const products_columns: TableColumnType[] = [
         {
@@ -95,7 +99,7 @@ const Products = () => {
                 </Col>
                 <Col sm={12} lg={8}>
                     <Space>
-                        <Button icon={<PlusOutlined />}>Thêm</Button>
+                        <Button icon={<PlusOutlined />} onClick={() => setOpenCreate(true)}>Thêm</Button>
                         <Button icon={<PlusCircleOutlined />}>Thêm SLL</Button>
                         <Button icon={<FileExcelOutlined />}>Xuất</Button>
                     </Space>
@@ -120,6 +124,12 @@ const Products = () => {
                 </Col>
             </Row>
             <Table columns={products_columns} dataSource={[{}]}/>
+            {/* MODAL  */}
+            <Create 
+                openCreate={openCreate} 
+                setOpenCreate={setOpenCreate}
+                id="" 
+            />
         </>
     )
 }
