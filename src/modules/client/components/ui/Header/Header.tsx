@@ -1,7 +1,7 @@
 
 import styles from "./Header.module.scss";
 import { Flex, Image, Input, Button, Badge, Avatar, Space, Dropdown } from "antd";
-import ecomerce_logo from "../../../assets/images/ecomerce_logo.png";
+import ecomerce_logo from "../../../../../assets/images/ecomerce_logo.png";
 import { NavLink } from "react-router-dom";
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 ;

@@ -1,9 +1,9 @@
 import { Flex, Layout, Menu, Typography, Input, Row, Col, Space, Button, Badge, Avatar, Dropdown } from "antd"
-import { Content, Footer } from "antd/es/layout/layout"
+import { Content } from "antd/es/layout/layout"
 import Sider from "antd/es/layout/Sider"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import styles from "./AdminLayout.module.scss";
-import logo from "../../../assets/images/ecomerce_logo.png"
+import logo from "../../../../../assets/images/ecomerce_logo.png"
 import { 
     AppstoreOutlined, 
     BellOutlined, 
@@ -25,7 +25,7 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
-import { ADMIN } from "../../../constants/app.constant";
+import { ADMIN } from "../../../../../constants/app.constant";
 
 const {Title} = Typography
 const {Search} = Input
@@ -205,7 +205,6 @@ const AdminLayout = () => {
                 <Content className={styles.content}>
                     <Outlet />
                 </Content>
-                <Footer>Footer</Footer>
             </Layout>
         </Layout>
     )

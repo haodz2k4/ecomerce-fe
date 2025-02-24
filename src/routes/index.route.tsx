@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import { clientRoutes } from "./client.route";
-import { MainLayout } from "../components/layouts/Main/Main.layout";
-import Register from "../pages/Register/Register";
-import Login from "../pages/Login/Login";
-import AdminLayout from "../components/layouts/Admin/Admin.layout";
+import { MainLayout } from "../modules/client/components/layouts/Main/Main.layout";
+import Register from "../modules/client/pages/Register/Register";
+import Login from "../modules/client/pages/Login/Login";
+import AdminLayout from "../modules/admin/components/layouts/Main/Admin.layout";
 import { adminRoutes } from "./admin.route";
 
 
