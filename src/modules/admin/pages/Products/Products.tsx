@@ -1,10 +1,9 @@
-import { ArrowDownOutlined, CloseOutlined, EditOutlined, EyeOutlined, FileExcelOutlined, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Col, Row, Space, Table, TableColumnType, Tag, Input, Select, DatePicker, Slider } from "antd"
-import { StatusActiveEnum } from "../../../../constants/app.constant"
-import {getColorByStatus, transfromStatus} from "../../../../utils/transform";
-import { formatDate, formatPriceToVnd } from "../../../../utils/format";
+import { ArrowDownOutlined, FileExcelOutlined, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons"
+import { Button, Col, Row, Space, Table, Input, Select, DatePicker, Slider } from "antd"
 import Create from "./Create";
 import { useState } from "react";
+import { productsColumns } from "../../../../features/products/products_columns";
+import Detail from "./Detail";
  
 const {RangePicker} = DatePicker
 const {Search} = Input
@@ -13,83 +12,9 @@ const {Search} = Input
 const Products = () => {
 
     const [openCreate, setOpenCreate] = useState<boolean>(false);
-    
+    const [openDetail, setOpenDetail] = useState<boolean>(false);
 
-    const products_columns: TableColumnType[] = [
-        {
-            key: '#',
-            title: '#'
-        },
-        {
-            key: 'title',
-            title: 'Tiêu đề',
-            dataIndex: 'title'
-        },
-        {
-            key: 'thumbnail',
-            title: 'Hình ảnh',
-            dataIndex: 'thumbnail'
-        },
-        {
-            key: 'category',
-            title: 'Danh mục',
-            dataIndex: ['category','title']
-        },
-        {
-            key: 'price',
-            title: 'Giá tiền',
-            dataIndex: 'price'
-        },
-        {
-            key: 'discountPercentage',
-            title: '% giảm giá',
-            dataIndex: 'discountPercentage'
-        },
-        {
-            key: 'status',
-            title: 'Trạng thái',
-            dataIndex: 'status',
-            render: (status: StatusActiveEnum) => (
-                <Tag 
-                    color={getColorByStatus(status)}
-                >
-                    {transfromStatus(status)}
-                </Tag>
-            )
-        },
-        {
-            key: 'createdAt',
-            title: 'Ngày tạo',
-            dataIndex: 'createdAt',
-            render: (date: Date) => formatDate(date)
-        },
-        {
-            key: 'actions',
-            title: 'Thao tác',
-            render: () => (
-                <Space>
-                    <Button
-                        icon={<EyeOutlined/>}
-                        variant="filled"
-                        color="blue"
-                        size="large"
-                    />
-                    <Button
-                        icon={<EditOutlined/>} 
-                        variant="filled"
-                        color="yellow"
-                        size="large"
-                    />
-                    <Button
-                        icon={<CloseOutlined color="red" />} 
-                        variant="filled"
-                        color="red"
-                        size="large"
-                    />
-                </Space>
-            )
-        }
-    ]
+    
 
     return (
         <>
@@ -123,12 +48,22 @@ const Products = () => {
                     
                 </Col>
             </Row>
-            <Table columns={products_columns} dataSource={[{}]}/>
+            <Table 
+                columns={productsColumns({
+                    setOpenDetail
+                })} 
+                dataSource={[{}]}
+            />
             {/* MODAL  */}
             <Create 
                 open={openCreate} 
                 setOpen={setOpenCreate}
                 id="" 
+            />
+            <Detail
+                open={openDetail}
+                setOpen={setOpenDetail} 
+                id=""
             />
         </>
     )
