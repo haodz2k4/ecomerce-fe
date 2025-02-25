@@ -12,6 +12,7 @@ import { AppDispatch } from "../../../../common/types/store.type"
 import { createProduct } from "../../../../features/products/products.thunk"
 import { CreateProduct } from "../../../../features/products/types/create-product.type"
 import { formatVndToNumber } from "../../../../utils/format"
+import { showAlert } from "../../../../features/alert/alert.slice"
 const {TextArea} = Input
 const {Title} = Typography
 
@@ -40,12 +41,18 @@ const Create = (props: CruProps) => {
         setImages(fileList.slice(-4)); 
     };
 
-    const onFinish = (values: any) => {
+    const onFinish = async (values: any) => {
         
         values.price = formatVndToNumber(values.price);
         values.categoryId = '08855b2b-ef30-11ef-9cc3-c84bd64b6215';
-        console.log(values)
-        dispatch(createProduct(values))
+        
+        try {
+            await dispatch(createProduct(values))
+            dispatch(showAlert({type: 'success', message: 'Thêm sản phẩm thành công'}))
+            setOpen(false)
+        } catch{
+            dispatch(showAlert({type: 'error',message: 'Thêm sản phẩm thất bại' }))
+        }
     }
     return (
         <Modal

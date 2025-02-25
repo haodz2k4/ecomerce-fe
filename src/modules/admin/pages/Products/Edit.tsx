@@ -10,6 +10,7 @@ import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../../../common/types/store.type"
 import { fetchProductById, updateProduct } from "../../../../features/products/products.thunk"
+import { showAlert } from "../../../../features/alert/alert.slice"
 const {TextArea} = Input
 const {Title} = Typography
 
@@ -25,7 +26,13 @@ const Edit = (props: CruProps) => {
     const {item, error} = useSelector((state: RootState) => state.products);
     const dispatch = useDispatch<AppDispatch>();
     const onFinish = async (values: Record<string, unknown>) => {
-        await dispatch(updateProduct({id, data: values})).unwrap()
+        try {
+            await dispatch(updateProduct({id, data: values})).unwrap();
+            dispatch(showAlert({type: 'success', message: 'Cập nhật sản phẩm thành công'}))
+            setOpen(false);
+        } catch  {
+            dispatch(showAlert({type: 'error',message: 'Lỗi không thể cập nhật sản phẩm'}))
+        }
     }
     useEffect(() => {
         dispatch(fetchProductById(id))
@@ -150,7 +157,6 @@ const Edit = (props: CruProps) => {
                     </Form.Item>
                     <Form.Item
                         label="Danh mục"
-                        name="categoryId"
                     >
                         <Button icon={<SearchOutlined />} onClick={() => setOpenCategory(true)}>
                             Danh mục

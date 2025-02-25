@@ -57,6 +57,9 @@ const productSlice = createSlice({
                 const index = state.items.findIndex((item) => item.id === action.payload.id);
                 if (index !== -1) state.items[index] = action.payload;
             })
+            .addCase(updateProduct.rejected, (state, action) => {
+                console.log(action)
+            })
             //Remove product
             .addCase(removeProduct.fulfilled, (state, action) => {
                 state.items = state.items.filter((item) => item.id !== action.payload);
