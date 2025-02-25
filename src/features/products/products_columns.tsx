@@ -12,11 +12,18 @@ interface ProductsColumns {
     setOpenEdit: (value: boolean) => void;
     currentPage?: number;
     setFilterStatus: (status: StatusActiveEnum) => void;
+    setId: (id: string) => void;
 }
 
 export const productsColumns = (productColumns: ProductsColumns): TableColumnType[] => {
 
-    const {setOpenDetail, setOpenEdit, currentPage = 0, setFilterStatus} = productColumns
+    const {
+        setOpenDetail, 
+        setOpenEdit, 
+        currentPage = 0, 
+        setFilterStatus,
+        setId
+    } = productColumns
 
     return [
         {
@@ -102,21 +109,27 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
         {
             key: 'actions',
             title: 'Thao tác',
-            render: () => (
+            render: (_, record) => (
                 <Space>
                     <Button
                         icon={<EyeOutlined/>}
                         variant="filled"
                         color="blue"
                         size="large"
-                        onClick={() => setOpenDetail(true)}
+                        onClick={() => {
+                            setOpenDetail(true) 
+                            setId(record.id)
+                        }}
                     />
                     <Button
                         icon={<EditOutlined/>} 
                         variant="filled"
                         color="yellow"
                         size="large"
-                        onClick={() => setOpenEdit(true)}
+                        onClick={() => {
+                            setOpenEdit(true)
+                            setId(record.id)
+                        }}
                     />
                     <Popconfirm 
                         title={TITLE_CONFIRM_REMOVE}

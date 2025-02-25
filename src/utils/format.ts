@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const formatPriceToVnd = (price: number): string => {
+export const formatPriceToVnd = (price: number = 0): string => {
     return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 }
 

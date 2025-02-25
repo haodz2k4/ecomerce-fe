@@ -30,6 +30,8 @@ const Products = () => {
     const [filterStatus, setFilterStatus] = useState<StatusActiveEnum>();
     const {items, loading, pagination} = useSelector((state: RootState) => state.products);
 
+    const [id, setId] = useState<string>();
+
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         dispatch(fetchProducts({
@@ -90,7 +92,8 @@ const Products = () => {
                     setOpenDetail,
                     setOpenEdit,
                     currentPage: pagination?.skip,
-                    setFilterStatus
+                    setFilterStatus,
+                    setId
                 })} 
                 dataSource={items}
                 pagination={
@@ -111,7 +114,7 @@ const Products = () => {
             <Detail
                 open={openDetail}
                 setOpen={setOpenDetail} 
-                id=""
+                id={id}
             />
             <Edit
                 open={openEdit}

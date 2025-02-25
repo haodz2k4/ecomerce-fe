@@ -1,20 +1,32 @@
-import { Descriptions, DescriptionsProps, Modal } from "antd";
+import { Descriptions, DescriptionsProps, Empty, Image, Modal, Tag } from "antd";
 import { CruProps } from "../../../../common/interfaces/cru-props.interface"
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../common/types/store.type";
+import { useEffect } from "react";
+import { fetchProductById } from "../../../../features/products/products.thunk";
+import { formatDate, formatPriceToVnd } from "../../../../utils/format";
+import { getColorByStatus, transfromStatus } from "../../../../utils/transform";
 
 
 const Detail = (props: CruProps) => {
-    const {open, setOpen, id} = props;
-
+    const {open, setOpen, id = ''} = props;
+    const {item} = useSelector((state: RootState) => state.products);
+    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        dispatch(fetchProductById(id))
+    },[dispatch,id]);
+    if(!item) return <Empty />
     const items: DescriptionsProps['items'] = [
         {
             key: 'id',
             label: 'Id',
-            children: ''
+            children: id
         },
         {
             key: 'title',
             label: 'Tiêu đề',
-            children: ''
+            children: item.title,
+            span: 2
         },
         {
             key: 'category',
@@ -24,57 +36,65 @@ const Detail = (props: CruProps) => {
         {
             key: 'categoryId',
             label: 'Id danh mục',
-            children: ''
+            children: '',
+            span: 2
         },
         {
             key: 'price',
             label: 'Giá tiền',
-            children: ''
+            children: formatPriceToVnd(item.price)
         },
         {
             key: 'discountPercentage',
             label: '% giảm giá',
-            children: ''
+            children: item.discountPercentage,
+            span: 2
         },
         {
             key: 'status',
             label: 'Trạng thái',
-            children: ''
-        },
-        {
-            key: 'thumbnail',
-            label: 'Hình thu nhỏ',
-            children: ''
-        },
-        {
-            key: 'images',
-            label: 'Hình ảnh',
-            children: ''
-        },
-        {
-            key: 'createdAt',
-            label: 'Ngày tạo',
-            children: ''
-        },
-        {
-            key: 'quantity',
-            label: 'Số lượng',
-            children: ''
-        },
-        {
-            key: 'totalOrders',
-            label: 'Tổng số đơn hàng',
-            children: ''
-        },
-        {
-            key: 'updatedAt',
-            label: 'Ngày cập nhật',
-            children: ''
+            children: <Tag color={getColorByStatus(item.status)}>
+                        {transfromStatus(item.status)}
+                    </Tag>
         },
         {
             key: 'slug',
             label: 'slug',
-            children: ''
+            children: item.slug,
+            span: 2
+        },
+        {
+            key: 'thumbnail',
+            label: 'Hình thu nhỏ',
+            children: <Image width={100} height={100} src={item.thumbnail}/>
+        },
+        {
+            key: 'images',
+            label: 'Hình ảnh',
+            children: '',
+            span: 2
+        },
+        {
+            key: 'quantity',
+            label: 'Số lượng',
+            children: 9,
+        },
+        {
+            key: 'totalOrders',
+            label: 'Tổng số đơn hàng',
+            children: '',
+            span: 2
+        },
+        {
+            key: 'updatedAt',
+            label: 'Ngày cập nhật',
+            children: formatDate(item.updatedAt),
+        },
+        
+        {
+            key: 'createdAt',
+            label: 'Ngày tạo',
+            children: formatDate(item.createdAt)
         }
     ]
     return (
