@@ -13,6 +13,7 @@ import { SortOrder, StatusActiveEnum } from "../../../../constants/app.constant"
 import { SorterResult } from "antd/es/table/interface";
 import styles from "./Products.module.scss"
 import { transformReverseStatus } from "../../../../utils/transform";
+import { showAlert } from "../../../../features/alert/alert.slice";
 
 const {RangePicker} = DatePicker
 const {Search} = Input
@@ -62,7 +63,12 @@ const Products = () => {
     }
 
     const handleChangeStatus = async (id: string, status: StatusActiveEnum) => {
-        await dispatch(updateProduct({id, data: {status: transformReverseStatus(status)}}));
+        try {
+            await dispatch(updateProduct({id, data: {status: transformReverseStatus(status)}})).unwrap();
+            dispatch(showAlert({message: 'Thay đổi trạng thái thành công', type: 'success'}))
+        } catch {
+            dispatch(showAlert({message: 'Thay đổi trạng thái thất bại', type: 'error'}))
+        }
     }
     return (        
         <>
