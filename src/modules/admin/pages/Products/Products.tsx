@@ -31,6 +31,8 @@ const Products = () => {
     const [filterStatus, setFilterStatus] = useState<StatusActiveEnum>();
     const [minPrice, setMinPrice] = useState<number>();
     const [maxPrice, setMaxPrice] = useState<number>();
+    const [minPercentage, setMinPercentage] = useState<number>();
+    const [maxPercentage, setMaxPercentage] = useState<number>();
     const {items, loading, pagination} = useSelector((state: RootState) => state.products);
     const [id, setId] = useState<string>();
 
@@ -44,7 +46,9 @@ const Products = () => {
             sortBy,
             sortOrder,
             minPrice,
-            maxPrice
+            maxPrice,
+            minPercentage,
+            maxPercentage
         }))
     },[
         dispatch, 
@@ -55,7 +59,9 @@ const Products = () => {
         sortBy, 
         sortOrder,
         minPrice,
-        maxPrice
+        maxPrice,
+        minPercentage,
+        maxPercentage
     ])
 
     const onChangePagination = (page: number) => {
@@ -121,7 +127,9 @@ const Products = () => {
                     handleChangeStatus,
                     handleRemove,
                     setMinPrice,
-                    setMaxPrice
+                    setMaxPrice,
+                    setMinPercentage,
+                    setMaxPercentage
                 })} 
                 dataSource={items}
                 pagination={

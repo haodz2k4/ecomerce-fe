@@ -1,4 +1,4 @@
-import { Button, Image, Input, InputNumber, Popconfirm, Select, Space, TableColumnType, Tag } from "antd";
+import { Button, Image, Input, InputNumber, Popconfirm, Select, Slider, Space, TableColumnType, Tag } from "antd";
 import { StatusActiveEnum } from "../../constants/app.constant";
 import { getColorByStatus, transfromStatus } from "../../utils/transform";
 import { formatDate, formatPriceToVnd, formatVndToNumber } from "../../utils/format";
@@ -19,6 +19,8 @@ interface ProductsColumns {
     handleRemove: (id: string) => void;
     setMinPrice: (price: number) => void;
     setMaxPrice: (price: number) => void;
+    setMinPercentage: (range: number) => void;
+    setMaxPercentage: (range: number) => void;
 }
 
 export const productsColumns = (productColumns: ProductsColumns): TableColumnType[] => {
@@ -32,7 +34,9 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
         handleChangeStatus,
         handleRemove,
         setMinPrice,
-        setMaxPrice
+        setMaxPrice,
+        setMinPercentage,
+        setMaxPercentage
     } = productColumns
 
 
@@ -79,7 +83,7 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
                     />
                     <InputFormatPrice 
                         placeholder="Tới..." 
-                        onChange={(e) => setMinPrice(formatVndToNumber(e.target.value))}
+                        onChange={(e) => setMaxPrice(formatVndToNumber(e.target.value))}
                         customInput={Input as any}
                     />
                 </Space>
@@ -90,7 +94,20 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
             title: '% giảm giá',
             dataIndex: 'discountPercentage',
             render: (value: number) => `${value}%`,
-            sorter: true
+            sorter: true,
+            filterDropdown: () => (
+                <Slider 
+                    range
+                    step={5}
+                    min={0}
+                    max={100}
+                    onChange={(value) => {
+                        const [minPrice, maxPrice] = value;
+                        setMinPercentage(minPrice)
+                        setMaxPercentage(maxPrice)
+                    }} 
+                    defaultValue={[0, 100]}/>
+            )
         },
         {
             key: 'status',
