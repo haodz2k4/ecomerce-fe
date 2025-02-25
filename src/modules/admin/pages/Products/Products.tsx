@@ -1,10 +1,13 @@
 import { ArrowDownOutlined, FileExcelOutlined, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Col, Row, Space, Table, Input, Select, DatePicker, Slider } from "antd"
 import Create from "./Create";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { productsColumns } from "../../../../features/products/products_columns";
 import Detail from "./Detail";
 import Edit from "./Edit";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../common/types/store.type";
+import { fetchProducts } from "../../../../features/products/products.thunk";
  
 const {RangePicker} = DatePicker
 const {Search} = Input
@@ -16,8 +19,12 @@ const Products = () => {
     const [openDetail, setOpenDetail] = useState<boolean>(false);
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     
-
-    return (
+    const {items, loading} = useSelector((state: RootState) => state.products)
+    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        dispatch(fetchProducts({}))
+    },[dispatch])
+    return (        
         <>
             <Row justify='space-between' gutter={[30,16]}>
                 <Col sm={12} lg={8}>
@@ -54,7 +61,7 @@ const Products = () => {
                     setOpenDetail,
                     setOpenEdit
                 })} 
-                dataSource={[{}]}
+                dataSource={items}
             />
             {/* MODAL  */}
             <Create 

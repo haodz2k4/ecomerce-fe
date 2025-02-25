@@ -1,7 +1,7 @@
-import { Button, Popconfirm, Space, TableColumnType, Tag } from "antd";
+import { Button, Image, Popconfirm, Space, TableColumnType, Tag } from "antd";
 import { StatusActiveEnum } from "../../constants/app.constant";
 import { getColorByStatus, transfromStatus } from "../../utils/transform";
-import { formatDate } from "../../utils/format";
+import { formatDate, formatPriceToVnd } from "../../utils/format";
 import { CloseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant";
 
@@ -10,16 +10,18 @@ import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title
 interface ProductsColumns {
     setOpenDetail: (value: boolean) => void;
     setOpenEdit: (value: boolean) => void;
+    currentPage?: number;
 }
 
 export const productsColumns = (productColumns: ProductsColumns): TableColumnType[] => {
 
-    const {setOpenDetail, setOpenEdit} = productColumns
+    const {setOpenDetail, setOpenEdit, currentPage = 0} = productColumns
 
     return [
         {
             key: '#',
-            title: '#'
+            title: '#',
+            render: (_,record, i) => (i + currentPage + 1)
         },
         {
             key: 'title',
@@ -29,7 +31,13 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
         {
             key: 'thumbnail',
             title: 'Hình ảnh',
-            dataIndex: 'thumbnail'
+            dataIndex: 'thumbnail',
+            render: (thumbnailUrl: string) => 
+            <Image 
+                width={50} 
+                height={50} 
+                src={thumbnailUrl}
+            />
         },
         {
             key: 'category',
@@ -39,12 +47,14 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
         {
             key: 'price',
             title: 'Giá tiền',
-            dataIndex: 'price'
+            dataIndex: 'price',
+            render: (price: number) => formatPriceToVnd(price)
         },
         {
             key: 'discountPercentage',
             title: '% giảm giá',
-            dataIndex: 'discountPercentage'
+            dataIndex: 'discountPercentage',
+            render: (value: number) => `${value}%`
         },
         {
             key: 'status',
