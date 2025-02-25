@@ -6,5 +6,5 @@
 export interface CruProps {
     open: boolean;
     setOpen: (value: boolean) => void;
-    id: string;
+    id?: string;
 }
