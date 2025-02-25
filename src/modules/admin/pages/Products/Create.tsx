@@ -7,6 +7,11 @@ import { useState } from "react"
 import CategoryModal from "../../components/ui/CategoryModal/CategoryModal"
 import { useForm } from "antd/es/form/Form"
 import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "../../../../common/types/store.type"
+import { createProduct } from "../../../../features/products/products.thunk"
+import { CreateProduct } from "../../../../features/products/types/create-product.type"
+import { formatVndToNumber } from "../../../../utils/format"
 const {TextArea} = Input
 const {Title} = Typography
 
@@ -18,7 +23,7 @@ const Create = (props: CruProps) => {
     const [openCategory, setOpenCategory] = useState<boolean>(false);
     const [thumbnail, setThumbnail] = useState([]);
     const [images, setImages] = useState([]);
-
+    const dispatch = useDispatch<AppDispatch>();
     form.setFieldValue('status',StatusActiveEnum.ACTIVE);
 
     const handlePreview = async (file: Record<string, any>) => {
@@ -33,7 +38,15 @@ const Create = (props: CruProps) => {
 
     const handleImagesChange = ({ fileList }: Record<string, any>) => {
         setImages(fileList.slice(-4)); 
-      };
+    };
+
+    const onFinish = (values: any) => {
+        
+        values.price = formatVndToNumber(values.price);
+        values.categoryId = '08855b2b-ef30-11ef-9cc3-c84bd64b6215';
+        console.log(values)
+        dispatch(createProduct(values))
+    }
     return (
         <Modal
             open={open}
@@ -45,6 +58,7 @@ const Create = (props: CruProps) => {
             <Form 
                 form={form} 
                 layout="vertical"
+                onFinish={onFinish}
             >
                 <Title className={styles.title} level={3}>Thêm sản phẩm</Title>
                 <Form.Item 
@@ -113,7 +127,6 @@ const Create = (props: CruProps) => {
                         <InputNumber
 
                             min={DiscountPercentage.MIN} 
-                            defaultValue={0}
                         />
                     </Form.Item>
                     <Form.Item label="Trạng thái" name="status" required>
