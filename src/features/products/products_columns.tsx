@@ -4,6 +4,7 @@ import { getColorByStatus, transfromStatus } from "../../utils/transform";
 import { formatDate, formatPriceToVnd } from "../../utils/format";
 import { CloseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant";
+import { useState } from "react";
 
 
 
@@ -13,6 +14,7 @@ interface ProductsColumns {
     currentPage?: number;
     setFilterStatus: (status: StatusActiveEnum) => void;
     setId: (id: string) => void;
+    handleChangeStatus:(id: string, status: StatusActiveEnum) => void;
 }
 
 export const productsColumns = (productColumns: ProductsColumns): TableColumnType[] => {
@@ -22,8 +24,10 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
         setOpenEdit, 
         currentPage = 0, 
         setFilterStatus,
-        setId
+        setId,
+        handleChangeStatus
     } = productColumns
+
 
     return [
         {
@@ -84,9 +88,10 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
                     </Select>    
                 </div>
             ),
-            render: (status: StatusActiveEnum) => (
+            render: (status: StatusActiveEnum, record) => (
                 <Tag 
                     color={getColorByStatus(status)}
+                    onClick={() => handleChangeStatus(record.id,status) }
                 >
                     {transfromStatus(status)}
                 </Tag>

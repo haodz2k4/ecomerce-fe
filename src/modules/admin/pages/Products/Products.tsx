@@ -7,11 +7,12 @@ import Detail from "./Detail";
 import Edit from "./Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../common/types/store.type";
-import { fetchProducts } from "../../../../features/products/products.thunk";
+import { fetchProducts, updateProduct } from "../../../../features/products/products.thunk";
 import SelectLimit from "../../components/ui/SelectLimit/SelectLimit";
 import { SortOrder, StatusActiveEnum } from "../../../../constants/app.constant";
 import { SorterResult } from "antd/es/table/interface";
 import styles from "./Products.module.scss"
+import { transformReverseStatus } from "../../../../utils/transform";
 
 const {RangePicker} = DatePicker
 const {Search} = Input
@@ -29,7 +30,6 @@ const Products = () => {
     const [sortOrder, setSortOrder] = useState<SortOrder>();
     const [filterStatus, setFilterStatus] = useState<StatusActiveEnum>();
     const {items, loading, pagination} = useSelector((state: RootState) => state.products);
-
     const [id, setId] = useState<string>();
 
     const dispatch = useDispatch<AppDispatch>();
@@ -59,6 +59,10 @@ const Products = () => {
     const handleTableChange = (pagination, filters, sorter: SorterResult) => {
         setSortBy(sorter.field as string);
         setSortOrder(sorter.order === "ascend" ? SortOrder.ASC : SortOrder.DESC)
+    }
+
+    const handleChangeStatus = async (id: string, status: StatusActiveEnum) => {
+        await dispatch(updateProduct({id, data: {status: transformReverseStatus(status)}}));
     }
     return (        
         <>
@@ -93,7 +97,8 @@ const Products = () => {
                     setOpenEdit,
                     currentPage: pagination?.skip,
                     setFilterStatus,
-                    setId
+                    setId,
+                    handleChangeStatus
                 })} 
                 dataSource={items}
                 pagination={

@@ -9,3 +9,7 @@ export const transfromStatus = (status: StatusActiveEnum) => {
 export const getColorByStatus = (status: StatusActiveEnum) => {
     return status === StatusActiveEnum.ACTIVE ? 'green' : 'red'
 }
+
+export const transformReverseStatus = (status: StatusActiveEnum) => {
+    return status === StatusActiveEnum.ACTIVE ? StatusActiveEnum.INACTIVE : StatusActiveEnum.ACTIVE
+}
