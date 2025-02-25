@@ -15,3 +15,8 @@ export enum StatusActiveEnum {
     ACTIVE = 'active',
     INACTIVE ='inactive'
 }
+
+export enum SortOrder {
+    ASC = 'asc',
+    DESC = 'desc'
+}
