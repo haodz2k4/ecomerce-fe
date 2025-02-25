@@ -21,14 +21,17 @@ const Products = () => {
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     const [page, setPage] = useState<number>(1);
     const [limit, setLimit] = useState<number>(10);
-    const {items, loading, pagination} = useSelector((state: RootState) => state.products)
+    const [keyword, setKeyword] = useState<string>();
+    const {items, loading, pagination} = useSelector((state: RootState) => state.products);
+
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         dispatch(fetchProducts({
             limit,
-            page
+            page,
+            keyword
         }))
-    },[dispatch, page, limit])
+    },[dispatch, page, limit, keyword])
 
     const onChangePagination = (page: number) => {
         setPage(page)
@@ -37,7 +40,10 @@ const Products = () => {
         <>
             <Row justify='space-between' gutter={[30,16]}>
                 <Col sm={12} lg={8}>
-                    <Search placeholder="Tìm kiếm..." />
+                    <Search 
+                        placeholder="Tìm kiếm..."
+                        onChange={(e) => setKeyword(e.target.value)} 
+                    />
                 </Col>
                 <Col sm={12} lg={8}>
                     <Space>
