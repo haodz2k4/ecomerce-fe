@@ -1,10 +1,11 @@
-import { Button, Image, Popconfirm, Select, Space, TableColumnType, Tag } from "antd";
+import { Button, Image, Input, InputNumber, Popconfirm, Select, Space, TableColumnType, Tag } from "antd";
 import { StatusActiveEnum } from "../../constants/app.constant";
 import { getColorByStatus, transfromStatus } from "../../utils/transform";
-import { formatDate, formatPriceToVnd } from "../../utils/format";
+import { formatDate, formatPriceToVnd, formatVndToNumber } from "../../utils/format";
 import { CloseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant";
 import { useState } from "react";
+import { InputFormatPrice } from "../../components/Input/InputFormatPrice";
 
 
 
@@ -16,6 +17,8 @@ interface ProductsColumns {
     setId: (id: string) => void;
     handleChangeStatus:(id: string, status: StatusActiveEnum) => void;
     handleRemove: (id: string) => void;
+    setMinPrice: (price: number) => void;
+    setMaxPrice: (price: number) => void;
 }
 
 export const productsColumns = (productColumns: ProductsColumns): TableColumnType[] => {
@@ -27,7 +30,9 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
         setFilterStatus,
         setId,
         handleChangeStatus,
-        handleRemove
+        handleRemove,
+        setMinPrice,
+        setMaxPrice
     } = productColumns
 
 
@@ -64,7 +69,21 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
             title: 'Giá tiền',
             dataIndex: 'price',
             render: (price: number) => formatPriceToVnd(price),
-            sorter: true
+            sorter: true,
+            filterDropdown: () => (
+                <Space style={{padding: '10px'}}>
+                    <InputFormatPrice 
+                        placeholder="Từ..." 
+                        onChange={(e) => setMinPrice(formatVndToNumber(e.target.value))}
+                        customInput={Input as any}
+                    />
+                    <InputFormatPrice 
+                        placeholder="Tới..." 
+                        onChange={(e) => setMinPrice(formatVndToNumber(e.target.value))}
+                        customInput={Input as any}
+                    />
+                </Space>
+            )
         },
         {
             key: 'discountPercentage',
