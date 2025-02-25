@@ -1,26 +1,37 @@
 import { EditOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons"
-import { Button, Flex, Form, Input, InputNumber, Modal, Select, Space, Upload, Typography, Radio, Popconfirm } from "antd"
+import { Button, Flex, Form, Input, InputNumber, Modal, Select, Space, Upload, Typography, Radio, Popconfirm, Image } from "antd"
 import { CruProps } from "../../../../common/interfaces/cru-props.interface"
 import { DiscountPercentage, StatusActiveEnum } from "../../../../constants/app.constant"
 import styles from "./Products.module.scss"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CategoryModal from "../../components/ui/CategoryModal/CategoryModal"
 import { useForm } from "antd/es/form/Form"
 import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice"
 import { DESC_CONFIRM_UPDATE, TITLE_CONFIRM_UPDATE } from "../../../../constants/title.constant"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "../../../../common/types/store.type"
+import { fetchProductById, updateProduct } from "../../../../features/products/products.thunk"
 const {TextArea} = Input
 const {Title} = Typography
 
 
 const Edit = (props: CruProps) => {
 
-    const {open, setOpen, id} = props
+    const {open, setOpen, id = ''} = props
     const [form] = useForm();
     const [openCategory, setOpenCategory] = useState<boolean>(false);
     const [thumbnail, setThumbnail] = useState([]);
     const [images, setImages] = useState([]);
 
-    form.setFieldValue('status',StatusActiveEnum.ACTIVE);
+    const {item, error} = useSelector((state: RootState) => state.products);
+    const dispatch = useDispatch<AppDispatch>();
+    const onFinish = async (values: Record<string, unknown>) => {
+        await dispatch(updateProduct({id, data: values})).unwrap()
+    }
+    useEffect(() => {
+        dispatch(fetchProductById(id))
+    },[dispatch, id])
+    
 
     const handlePreview = async (file: Record<string, any>) => {
         const src = file.url || (file.preview || URL.createObjectURL(file.originFileObj))
@@ -34,7 +45,17 @@ const Edit = (props: CruProps) => {
 
     const handleImagesChange = ({ fileList }: Record<string, any>) => {
         setImages(fileList.slice(-4)); 
-      };
+    };
+    
+
+    form.setFieldsValue({
+        title: item?.title,
+        description: item?.description,
+        discountPercentage: item?.discountPercentage,
+        status: item?.status,
+        categoryId: item?.category,
+        price: item?.price
+    })
     return (
         <Modal
             open={open}
@@ -46,8 +67,9 @@ const Edit = (props: CruProps) => {
             <Form 
                 form={form} 
                 layout="vertical"
+                onFinish={onFinish}
             >
-                <Title className={styles.title} level={3}>Sửa sản phẩm</Title>
+                <Title className={styles.title} level={2}>Sửa sản phẩm</Title>
                 <Form.Item 
                     label="Tiêu đề" 
                     name="title"
@@ -83,7 +105,10 @@ const Edit = (props: CruProps) => {
                                 <PlusOutlined />
                                 </button>
                             )}
+                            
                         </Upload>
+                        
+                        
                     </Form.Item>
                     {/* IMAGES */}
                     <Form.Item
@@ -103,8 +128,9 @@ const Edit = (props: CruProps) => {
                                 <PlusOutlined />
                                 </button>
                             )}
+                            
                         </Upload>
-
+                        
                     </Form.Item>
                 </Flex>
                     
@@ -138,10 +164,6 @@ const Edit = (props: CruProps) => {
                     
                     
                 </Flex>
-                <Popconfirm
-                    title={TITLE_CONFIRM_UPDATE}
-                    description={DESC_CONFIRM_UPDATE}
-                >
                     <Button 
                         icon={<EditOutlined />} 
                         iconPosition="end"
@@ -151,7 +173,6 @@ const Edit = (props: CruProps) => {
                     >
                         Sửa
                     </Button>
-                </Popconfirm>
             </Form>
             <CategoryModal open={openCategory} setOpen={setOpenCategory}/>
         </Modal>

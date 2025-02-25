@@ -124,7 +124,7 @@ const Products = () => {
             <Edit
                 open={openEdit}
                 setOpen={setOpenEdit}
-                id=""
+                id={id}
             />
         </>
     )
