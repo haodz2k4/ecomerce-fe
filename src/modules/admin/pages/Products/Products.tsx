@@ -1,5 +1,5 @@
 import { ArrowDownOutlined, FileExcelOutlined, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Col, Row, Space, Table, Input, Select, DatePicker, Slider } from "antd"
+import { Button, Col, Row, Space, Table, Input, Select, DatePicker, Slider, TableProps, Badge } from "antd"
 import Create from "./Create";
 import { useEffect, useState } from "react";
 import { productsColumns } from "../../../../features/products/products_columns";
@@ -9,7 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../common/types/store.type";
 import { fetchProducts } from "../../../../features/products/products.thunk";
 import SelectLimit from "../../components/ui/SelectLimit/SelectLimit";
- 
+import { SortOrder, StatusActiveEnum } from "../../../../constants/app.constant";
+import { SorterResult } from "antd/es/table/interface";
+import styles from "./Products.module.scss"
+
 const {RangePicker} = DatePicker
 const {Search} = Input
 
@@ -22,6 +25,9 @@ const Products = () => {
     const [page, setPage] = useState<number>(1);
     const [limit, setLimit] = useState<number>(10);
     const [keyword, setKeyword] = useState<string>();
+    const [sortBy, setSortBy] = useState<string>();
+    const [sortOrder, setSortOrder] = useState<SortOrder>();
+    const [filterStatus, setFilterStatus] = useState<StatusActiveEnum>();
     const {items, loading, pagination} = useSelector((state: RootState) => state.products);
 
     const dispatch = useDispatch<AppDispatch>();
@@ -29,51 +35,62 @@ const Products = () => {
         dispatch(fetchProducts({
             limit,
             page,
-            keyword
+            keyword,
+            status: filterStatus,
+            sortBy,
+            sortOrder
         }))
-    },[dispatch, page, limit, keyword])
+    },[
+        dispatch, 
+        page, 
+        limit, 
+        keyword, 
+        filterStatus, 
+        sortBy, 
+        sortOrder
+    ])
 
     const onChangePagination = (page: number) => {
         setPage(page)
     }
+
+    const handleTableChange = (pagination, filters, sorter: SorterResult) => {
+        setSortBy(sorter.field as string);
+        setSortOrder(sorter.order === "ascend" ? SortOrder.ASC : SortOrder.DESC)
+    }
     return (        
         <>
-            <Row justify='space-between' gutter={[30,16]}>
-                <Col sm={12} lg={8}>
+            <Row justify='space-between' className={styles.tool} gutter={[30,16]}>
+                <Col sm={12} lg={6}>
                     <Search 
                         placeholder="Tìm kiếm..."
                         onChange={(e) => setKeyword(e.target.value)} 
                     />
                 </Col>
-                <Col sm={12} lg={8}>
+                <Col sm={12} lg={10}>
                     <Space>
                         <Button icon={<PlusOutlined />} onClick={() => setOpenCreate(true)}>Thêm</Button>
                         <Button icon={<PlusCircleOutlined />}>Thêm SLL</Button>
                         <Button icon={<FileExcelOutlined />}>Xuất</Button>
+                        <SelectLimit limit={limit} setLimit={setLimit}/>
                     </Space>
                 </Col >
                 <Col sm={12} lg={8}>
-                    <Space>
-                        <SelectLimit limit={limit} setLimit={setLimit}/>
-                        <Select value='createdAt-desc'>
-                            <Select.Option value="createdAt-desc">Ngày tạo <ArrowDownOutlined /> </Select.Option>
-                        </Select>
-                        <RangePicker />
+                    <Space size="large">
+                        <Badge status="default" text={<>Tổng <strong>10</strong></>}/>
+                        <Badge status="success" text={<>Hoạt động <strong>10</strong></>}/>
+                        <Badge status="error" text={<>Không hoạt động <strong>10</strong></>}/>
+                        
                     </Space>
-                </Col>
-
-                <Col sm={12} lg={8}>
-                    <Slider range defaultValue={[0, 100]}/>
-                </Col>
-                <Col sm={12} lg={8}>
-                    
                 </Col>
             </Row>
             <Table 
+                onChange={handleTableChange}
                 columns={productsColumns({
                     setOpenDetail,
                     setOpenEdit,
-                    currentPage: pagination?.skip
+                    currentPage: pagination?.skip,
+                    setFilterStatus
                 })} 
                 dataSource={items}
                 pagination={

@@ -5,5 +5,5 @@ export const formatPriceToVnd = (price: number): string => {
 }
 
 export const formatDate = (date: Date): string => {
-    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    return moment(date).format('MMMM Do YYYY');
 }

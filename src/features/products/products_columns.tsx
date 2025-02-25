@@ -1,4 +1,4 @@
-import { Button, Image, Popconfirm, Space, TableColumnType, Tag } from "antd";
+import { Button, Image, Popconfirm, Select, Space, TableColumnType, Tag } from "antd";
 import { StatusActiveEnum } from "../../constants/app.constant";
 import { getColorByStatus, transfromStatus } from "../../utils/transform";
 import { formatDate, formatPriceToVnd } from "../../utils/format";
@@ -11,17 +11,19 @@ interface ProductsColumns {
     setOpenDetail: (value: boolean) => void;
     setOpenEdit: (value: boolean) => void;
     currentPage?: number;
+    setFilterStatus: (status: StatusActiveEnum) => void;
 }
 
 export const productsColumns = (productColumns: ProductsColumns): TableColumnType[] => {
 
-    const {setOpenDetail, setOpenEdit, currentPage = 0} = productColumns
+    const {setOpenDetail, setOpenEdit, currentPage = 0, setFilterStatus} = productColumns
 
     return [
         {
             key: '#',
             title: '#',
-            render: (_,record, i) => (i + currentPage + 1)
+            render: (_,record, i) => (i + currentPage + 1),
+            rowScope: 'row'
         },
         {
             key: 'title',
@@ -48,18 +50,33 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
             key: 'price',
             title: 'Giá tiền',
             dataIndex: 'price',
-            render: (price: number) => formatPriceToVnd(price)
+            render: (price: number) => formatPriceToVnd(price),
+            sorter: true
         },
         {
             key: 'discountPercentage',
             title: '% giảm giá',
             dataIndex: 'discountPercentage',
-            render: (value: number) => `${value}%`
+            render: (value: number) => `${value}%`,
+            sorter: true
         },
         {
             key: 'status',
             title: 'Trạng thái',
             dataIndex: 'status',
+            filterDropdown: () => (
+                <div className="">
+                    <Select
+                        style={{ width: 150 }}
+                        placeholder="Lọc theo trạng thái"
+                        allowClear
+                        onChange={(val) => setFilterStatus(val)}
+                    >
+                        <Select.Option value={StatusActiveEnum.ACTIVE}>Hoạt động</Select.Option>
+                        <Select.Option value={StatusActiveEnum.INACTIVE}>Không hoạt động</Select.Option>
+                    </Select>    
+                </div>
+            ),
             render: (status: StatusActiveEnum) => (
                 <Tag 
                     color={getColorByStatus(status)}
@@ -72,7 +89,15 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
             key: 'createdAt',
             title: 'Ngày tạo',
             dataIndex: 'createdAt',
-            render: (date: Date) => formatDate(date)
+            render: (date: Date) => formatDate(date),
+            sorter: true
+        },
+        {
+            key: 'updatedAt',
+            title: 'Ngày cập nhật',
+            dataIndex: 'updatedAt',
+            render: (date: Date) => formatDate(date),
+            sorter: true
         },
         {
             key: 'actions',
