@@ -8,6 +8,7 @@ import Edit from "./Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../common/types/store.type";
 import { fetchProducts } from "../../../../features/products/products.thunk";
+import SelectLimit from "../../components/ui/SelectLimit/SelectLimit";
  
 const {RangePicker} = DatePicker
 const {Search} = Input
@@ -18,12 +19,20 @@ const Products = () => {
     const [openCreate, setOpenCreate] = useState<boolean>(false);
     const [openDetail, setOpenDetail] = useState<boolean>(false);
     const [openEdit, setOpenEdit] = useState<boolean>(false)
-    
-    const {items, loading} = useSelector((state: RootState) => state.products)
+    const [page, setPage] = useState<number>(1);
+    const [limit, setLimit] = useState<number>(10);
+    const {items, loading, pagination} = useSelector((state: RootState) => state.products)
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        dispatch(fetchProducts({}))
-    },[dispatch])
+        dispatch(fetchProducts({
+            limit,
+            page
+        }))
+    },[dispatch, page, limit])
+
+    const onChangePagination = (page: number) => {
+        setPage(page)
+    }
     return (        
         <>
             <Row justify='space-between' gutter={[30,16]}>
@@ -39,9 +48,7 @@ const Products = () => {
                 </Col >
                 <Col sm={12} lg={8}>
                     <Space>
-                        <Select value={10}>
-                            <Select.Option value={10}>Giới hạn 10</Select.Option>
-                        </Select>
+                        <SelectLimit limit={limit} setLimit={setLimit}/>
                         <Select value='createdAt-desc'>
                             <Select.Option value="createdAt-desc">Ngày tạo <ArrowDownOutlined /> </Select.Option>
                         </Select>
@@ -59,9 +66,18 @@ const Products = () => {
             <Table 
                 columns={productsColumns({
                     setOpenDetail,
-                    setOpenEdit
+                    setOpenEdit,
+                    currentPage: pagination?.skip
                 })} 
                 dataSource={items}
+                pagination={
+                    {
+                        pageSize: pagination?.limit,
+                        current: pagination?.page,
+                        total: pagination?.total,
+                        onChange: onChangePagination
+                    }
+                }
             />
             {/* MODAL  */}
             <Create 
