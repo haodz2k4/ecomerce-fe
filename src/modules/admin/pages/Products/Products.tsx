@@ -4,6 +4,7 @@ import Create from "./Create";
 import { useState } from "react";
 import { productsColumns } from "../../../../features/products/products_columns";
 import Detail from "./Detail";
+import Edit from "./Edit";
  
 const {RangePicker} = DatePicker
 const {Search} = Input
@@ -13,7 +14,7 @@ const Products = () => {
 
     const [openCreate, setOpenCreate] = useState<boolean>(false);
     const [openDetail, setOpenDetail] = useState<boolean>(false);
-
+    const [openEdit, setOpenEdit] = useState<boolean>(false)
     
 
     return (
@@ -50,7 +51,8 @@ const Products = () => {
             </Row>
             <Table 
                 columns={productsColumns({
-                    setOpenDetail
+                    setOpenDetail,
+                    setOpenEdit
                 })} 
                 dataSource={[{}]}
             />
@@ -63,6 +65,11 @@ const Products = () => {
             <Detail
                 open={openDetail}
                 setOpen={setOpenDetail} 
+                id=""
+            />
+            <Edit
+                open={openEdit}
+                setOpen={setOpenEdit}
                 id=""
             />
         </>

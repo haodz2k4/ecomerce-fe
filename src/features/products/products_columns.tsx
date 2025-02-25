@@ -1,18 +1,20 @@
-import { Button, Space, TableColumnType, Tag } from "antd";
+import { Button, Popconfirm, Space, TableColumnType, Tag } from "antd";
 import { StatusActiveEnum } from "../../constants/app.constant";
 import { getColorByStatus, transfromStatus } from "../../utils/transform";
 import { formatDate } from "../../utils/format";
 import { CloseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant";
 
 
 
 interface ProductsColumns {
     setOpenDetail: (value: boolean) => void;
+    setOpenEdit: (value: boolean) => void;
 }
 
 export const productsColumns = (productColumns: ProductsColumns): TableColumnType[] => {
 
-    const {setOpenDetail} = productColumns
+    const {setOpenDetail, setOpenEdit} = productColumns
 
     return [
         {
@@ -79,13 +81,21 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
                         variant="filled"
                         color="yellow"
                         size="large"
+                        onClick={() => setOpenEdit(true)}
                     />
-                    <Button
-                        icon={<CloseOutlined color="red" />} 
-                        variant="filled"
-                        color="red"
-                        size="large"
-                    />
+                    <Popconfirm 
+                        title={TITLE_CONFIRM_REMOVE}
+                        description={DESC_CONFIRM_REMOVE}
+                        okText='Có'
+                        cancelText='Không'
+                    >
+                        <Button
+                            icon={<CloseOutlined color="red" />} 
+                            variant="filled"
+                            color="red"
+                            size="large"
+                        />
+                    </Popconfirm>
                 </Space>
             )
         }
