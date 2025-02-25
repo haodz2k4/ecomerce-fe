@@ -58,8 +58,8 @@ const productSlice = createSlice({
                 if (index !== -1) state.items[index] = action.payload;
             })
             //Remove product
-            .addCase(removeProduct.fulfilled, (state, action: PayloadAction<PayloadRemove<UUID>>) => {
-                state.items = state.items.filter((item) => item.id !== action.payload.id);
+            .addCase(removeProduct.fulfilled, (state, action) => {
+                state.items = state.items.filter((item) => item.id !== action.payload);
             });
     },
 });

@@ -1,5 +1,5 @@
-import { ArrowDownOutlined, FileExcelOutlined, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Col, Row, Space, Table, Input, Select, DatePicker, Slider, TableProps, Badge } from "antd"
+import { FileExcelOutlined, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons"
+import { Button, Col, Row, Space, Table, Input, Badge } from "antd"
 import Create from "./Create";
 import { useEffect, useState } from "react";
 import { productsColumns } from "../../../../features/products/products_columns";
@@ -7,7 +7,7 @@ import Detail from "./Detail";
 import Edit from "./Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../common/types/store.type";
-import { fetchProducts, updateProduct } from "../../../../features/products/products.thunk";
+import { fetchProducts, removeProduct, updateProduct } from "../../../../features/products/products.thunk";
 import SelectLimit from "../../components/ui/SelectLimit/SelectLimit";
 import { SortOrder, StatusActiveEnum } from "../../../../constants/app.constant";
 import { SorterResult } from "antd/es/table/interface";
@@ -15,7 +15,6 @@ import styles from "./Products.module.scss"
 import { transformReverseStatus } from "../../../../utils/transform";
 import { showAlert } from "../../../../features/alert/alert.slice";
 
-const {RangePicker} = DatePicker
 const {Search} = Input
 
 
@@ -70,6 +69,15 @@ const Products = () => {
             dispatch(showAlert({message: 'Thay đổi trạng thái thất bại', type: 'error'}))
         }
     }
+
+    const handleRemove = async (id: string) => {
+        try {
+            await dispatch(removeProduct(id)).unwrap()
+            dispatch(showAlert({message: 'Xóa sản phẩm thành công', type: 'success'}))
+        } catch {
+            dispatch(showAlert({message: 'Xóa sản phẩm thất bại', type: 'error'}))
+        }
+    }
     return (        
         <>
             <Row justify='space-between' className={styles.tool} gutter={[30,16]}>
@@ -104,7 +112,8 @@ const Products = () => {
                     currentPage: pagination?.skip,
                     setFilterStatus,
                     setId,
-                    handleChangeStatus
+                    handleChangeStatus,
+                    handleRemove
                 })} 
                 dataSource={items}
                 pagination={

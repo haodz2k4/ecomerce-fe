@@ -15,6 +15,7 @@ interface ProductsColumns {
     setFilterStatus: (status: StatusActiveEnum) => void;
     setId: (id: string) => void;
     handleChangeStatus:(id: string, status: StatusActiveEnum) => void;
+    handleRemove: (id: string) => void;
 }
 
 export const productsColumns = (productColumns: ProductsColumns): TableColumnType[] => {
@@ -25,7 +26,8 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
         currentPage = 0, 
         setFilterStatus,
         setId,
-        handleChangeStatus
+        handleChangeStatus,
+        handleRemove
     } = productColumns
 
 
@@ -141,6 +143,7 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
                         description={DESC_CONFIRM_REMOVE}
                         okText='Có'
                         cancelText='Không'
+                        onConfirm={() => handleRemove(record.id)}
                     >
                         <Button
                             icon={<CloseOutlined color="red" />} 
