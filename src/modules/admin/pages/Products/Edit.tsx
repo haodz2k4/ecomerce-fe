@@ -1,5 +1,5 @@
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons"
-import { Button, Flex, Form, Input, InputNumber, Modal, Select, Space, Upload, Typography, Radio } from "antd"
+import { EditOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons"
+import { Button, Flex, Form, Input, InputNumber, Modal, Select, Space, Upload, Typography, Radio, Popconfirm } from "antd"
 import { CruProps } from "../../../../common/interfaces/cru-props.interface"
 import { DiscountPercentage, StatusActiveEnum } from "../../../../constants/app.constant"
 import styles from "./Products.module.scss"
@@ -7,6 +7,7 @@ import { useState } from "react"
 import CategoryModal from "../../components/ui/CategoryModal/CategoryModal"
 import { useForm } from "antd/es/form/Form"
 import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice"
+import { DESC_CONFIRM_UPDATE, TITLE_CONFIRM_UPDATE } from "../../../../constants/title.constant"
 const {TextArea} = Input
 const {Title} = Typography
 
@@ -137,15 +138,20 @@ const Edit = (props: CruProps) => {
                     
                     
                 </Flex>
-                <Button 
-                    icon={<PlusOutlined />} 
-                    iconPosition="end"
-                    className={styles.btn__submit}
-                    htmlType="submit"
-                    size="large"
+                <Popconfirm
+                    title={TITLE_CONFIRM_UPDATE}
+                    description={DESC_CONFIRM_UPDATE}
                 >
-                    Sửa
-                </Button>
+                    <Button 
+                        icon={<EditOutlined />} 
+                        iconPosition="end"
+                        className={styles.btn__submit}
+                        htmlType="submit"
+                        size="large"
+                    >
+                        Sửa
+                    </Button>
+                </Popconfirm>
             </Form>
             <CategoryModal open={openCategory} setOpen={setOpenCategory}/>
         </Modal>
