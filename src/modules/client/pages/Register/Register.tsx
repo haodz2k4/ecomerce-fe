@@ -9,20 +9,24 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../common/types/store.type";
 import { registerUser } from "../../../../features/auth/auth.thunk";
 import { showNotification } from "../../../../features/notifications/notification.slice";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const {Title} = Typography
 const Register = () => {
 
     const [form] = useForm();
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
     const onFinish = async (values: IRegister) => {
         try {
             await dispatch(registerUser(values)).unwrap()
+            navigate("/login");
             dispatch(showNotification({
                 type: 'success',
                 message: 'Đăng ký thành công',
                 description: 'Vui lòng check email để xác thực tài khoản'
             }))
+            
         } catch {
             dispatch( showNotification({
                 type: 'error',
@@ -134,7 +138,7 @@ const Register = () => {
                                 </Button>
                             </Flex>
                             <div className={styles.register__other}>
-                                Bạn đã có tài khoản ? <span className={styles.register__login}>Đăng nhập</span>
+                                Bạn đã có tài khoản ? <Link to={'/login'} className={styles.register__login}>Đăng nhập</Link>
                             </div>
                         </Form>
                     </div>

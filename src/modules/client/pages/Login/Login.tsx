@@ -2,8 +2,13 @@ import { Layout, Typography, Form, Input, Checkbox, Space, Flex, Button } from "
 import styles from "./Login.module.scss";
 import { Content } from "antd/es/layout/layout";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
+import { Login } from "../../../../features/auth/interfaces/login.interface";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../common/types/store.type";
+import { loginUser } from "../../../../features/auth/auth.thunk";
+import { showAlert } from "../../../../features/alert/alert.slice";
 
 const {Title} = Typography
 
@@ -11,11 +16,28 @@ const Login = () => {
     
 
     const [form] = useForm();
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+    const onFinish = async (values: Login) => {
+        try {
+            await dispatch(loginUser(values)).unwrap();
+            dispatch(showAlert({type: 'success',message: 'Đăng nhập thành công'}));
+            navigate("/");
+
+        } catch {
+            dispatch(showAlert({type: 'error', message: 'Đăng nhập thất bại'}))
+        }
+
+    }
     return (
         <Layout className={styles.login}>
             <Content className={styles.login__content}>
                 <div className={styles.login__inner}>
-                    <Form layout="vertical" form={form}>
+                    <Form 
+                        layout="vertical" 
+                        form={form}
+                        onFinish={onFinish}
+                    >
                         <Title className={styles.login__title} level={2}>Đăng nhập</Title>
                         <Form.Item 
                             label="Email: " 
