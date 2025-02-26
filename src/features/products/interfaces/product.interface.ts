@@ -1,7 +1,12 @@
 import { Base } from "../../../common/interfaces/base.interface";
 import { StatusActiveEnum } from "../../../constants/app.constant";
+import { Category } from "../../categories/interfaces/category.interface";
 
 
+interface Inventories {
+    quantity: number;
+    total: number;
+}
 export interface Product extends Base<string>{
     title: string;
     description: string;
@@ -11,5 +16,6 @@ export interface Product extends Base<string>{
     status: StatusActiveEnum;
     images: string[];
     slug: string;
-    category: Record<string, unknown>;
+    inventories: Inventories;
+    category: Category;
 }

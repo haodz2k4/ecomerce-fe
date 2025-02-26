@@ -97,6 +97,7 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
             sorter: true,
             filterDropdown: () => (
                 <Slider 
+                    style={{margin: '10px'}}
                     range
                     step={5}
                     min={0}
@@ -108,6 +109,11 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
                     }} 
                     defaultValue={[0, 100]}/>
             )
+        },
+        {
+            key: 'quantity',
+            dataIndex: ['inventories','quantity'],
+            title: 'Số lượng'
         },
         {
             key: 'status',

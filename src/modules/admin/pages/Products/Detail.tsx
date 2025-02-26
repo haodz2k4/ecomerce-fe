@@ -15,7 +15,8 @@ const Detail = (props: CruProps) => {
     useEffect(() => {
         dispatch(fetchProductById(id))
     },[dispatch,id]);
-    if(!item) return <Empty />
+    if(!item) return <Empty />;
+    console.log(item)
     const items: DescriptionsProps['items'] = [
         {
             key: 'id',
@@ -31,12 +32,12 @@ const Detail = (props: CruProps) => {
         {
             key: 'category',
             label: 'danh mục',
-            children: ''
+            children: item.category?.title
         },
         {
             key: 'categoryId',
             label: 'Id danh mục',
-            children: '',
+            children: item.category?.id,
             span: 2
         },
         {
@@ -77,12 +78,12 @@ const Detail = (props: CruProps) => {
         {
             key: 'quantity',
             label: 'Số lượng',
-            children: 9,
+            children: item.inventories?.quantity,
         },
         {
             key: 'totalOrders',
             label: 'Tổng số đơn hàng',
-            children: '',
+            children: item.inventories?.total,
             span: 2
         },
         {
