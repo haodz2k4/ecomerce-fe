@@ -2,7 +2,7 @@
 import styles from "./Header.module.scss";
 import { Flex, Image, Input, Button, Badge, Avatar, Space, Dropdown } from "antd";
 import ecomerce_logo from "../../../../../assets/images/ecomerce_logo.png";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 ;
 import type { MenuProps } from 'antd';
@@ -15,11 +15,11 @@ function AppHeader() {
 
     const userItems: MenuProps['items'] = [
         {
-            label: 'Đăng ký',
+            label: <Link to={'register'}>Đăng ký</Link>,
             key: '1'
         },
         {
-            label: 'Đăng nhập',
+            label: <Link to={'login'}>Đăng nhập</Link>,
             key: '2'
         }
     ]

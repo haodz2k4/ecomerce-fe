@@ -37,6 +37,7 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(registerUser.rejected, (state, action) => {
+                console.log(action)
                 state.loading = LoadingConstant.FAILED;
                 state.error = action.payload as string;
             })

@@ -10,15 +10,16 @@ const NotificationMessage = () => {
 
     const {type, message, description} = useSelector((state: RootState) => state.notification);
     const [api, contextHolder] = notification.useNotification();
-
+    console.log(type, message, description)
     useEffect(() => {
-        if(type && message) {
-            api[type]({
+        if (type && message && api[type as 'success' | 'error']) {
+            api[type as 'success' | 'error']({
                 message,
-                description
-            })
+                description,
+            });
         }
-    },[type, message, description, api])
+    }, [type, message, description, api]);
+    
 
     return contextHolder
 }

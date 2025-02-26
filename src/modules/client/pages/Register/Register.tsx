@@ -8,6 +8,7 @@ import { Register as IRegister } from "../../../../features/auth/types/register.
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../common/types/store.type";
 import { registerUser } from "../../../../features/auth/auth.thunk";
+import { showNotification } from "../../../../features/notifications/notification.slice";
 
 const {Title} = Typography
 const Register = () => {
@@ -17,9 +18,17 @@ const Register = () => {
     const onFinish = async (values: IRegister) => {
         try {
             await dispatch(registerUser(values)).unwrap()
-            
-        } catch (error) {
-            
+            dispatch(showNotification({
+                type: 'success',
+                message: 'Đăng ký thành công',
+                description: 'Vui lòng check email để xác thực tài khoản'
+            }))
+        } catch {
+            dispatch( showNotification({
+                type: 'error',
+                message: 'Có lỗi xảy ra',
+                description: 'Có lỗi xảy ra'
+            }))
         }
     }
     return (
