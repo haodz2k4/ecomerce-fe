@@ -4,11 +4,24 @@ import { Content } from "antd/es/layout/layout";
 import { LockOutlined, MailOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import { Gender } from "../../../../constants/app.constant";
+import { Register as IRegister } from "../../../../features/auth/types/register.type";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../common/types/store.type";
+import { registerUser } from "../../../../features/auth/auth.thunk";
 
 const {Title} = Typography
 const Register = () => {
 
     const [form] = useForm();
+    const dispatch = useDispatch<AppDispatch>();
+    const onFinish = async (values: IRegister) => {
+        try {
+            await dispatch(registerUser(values)).unwrap()
+            
+        } catch (error) {
+            
+        }
+    }
     return (
         <>
             <Layout className={styles.register}>
@@ -16,7 +29,12 @@ const Register = () => {
                 <Content className={styles.register__content}>
                     <div className={styles.register__inner}>
                         <Title className={styles.register__title} level={1}>Đăng ký</Title>
-                        <Form layout="vertical" action={"/face"} form={form}>
+                        <Form 
+                            layout="vertical" 
+                            action={"/face"} 
+                            form={form}
+                            onFinish={onFinish}
+                        >
                             <Form.Item 
                                 label="Họ và tên: " 
                                 rules={[{
