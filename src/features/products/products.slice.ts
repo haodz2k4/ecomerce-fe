@@ -2,16 +2,19 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LoadingConstant } from "../../constants/loading.constant";
 import { Product } from "./interfaces/product.interface";
 import { GeneralInitialState } from "../../common/interfaces/general-initial-state";
-import { fetchProducts, fetchProductById, createProduct, updateProduct, removeProduct } from "./products.thunk";
+import { fetchProducts, fetchProductById, createProduct, updateProduct, removeProduct, statsProducts } from "./products.thunk";
 import { PayloadList, PayloadRemove } from "../../common/types/payload.type";
 import { UUID } from "../../common/types/uuid.type";
+import { ProductStats } from "./interfaces/product-stats.interface";
 
-const initialState: GeneralInitialState<Product> = {
+const initialState: GeneralInitialState<Product, ProductStats> = {
     pagination: null,
     items: [],
     item: null,
     loading: LoadingConstant.IDLE,
-    error: null
+    error: null,
+    stats: null
+
 };
 
 const productSlice = createSlice({
@@ -63,7 +66,16 @@ const productSlice = createSlice({
             //Remove product
             .addCase(removeProduct.fulfilled, (state, action) => {
                 state.items = state.items.filter((item) => item.id !== action.payload);
-            });
+            })
+            //Stats product
+            .addCase(statsProducts.pending, (state) => {
+                state.loading = LoadingConstant.PENDING
+            })
+            .addCase(statsProducts.fulfilled, (state, action) => {
+                state.loading = LoadingConstant.SUCCEEDED
+                state.stats = action.payload;
+                
+            })
     },
 });
 

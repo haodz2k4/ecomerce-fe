@@ -16,6 +16,12 @@ export const getProductByIdAPI = async (id: UUID) => {
     return res.data.data;
 };
 
+//STATS 
+export const statsProductsAPI = async () => {
+    const res = await axiosInstance.get(`products/stats`);
+    return res.data.data;
+}
+
 // CREATE
 export const createProductAPI = async (data: CreateProduct) => {
     const res = await axiosInstance.post('products', data);

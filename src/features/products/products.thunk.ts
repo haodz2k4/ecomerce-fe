@@ -19,6 +19,19 @@ export const fetchProducts = createAsyncThunk(
     }
 );
 
+//STATS
+export const statsProducts = createAsyncThunk(
+    "products/statsProducts",
+    async (_, {rejectWithValue}) => {
+        try {
+            return await productAPI.statsProductsAPI();
+
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
+
 // GET ONE
 export const fetchProductById = createAsyncThunk(
     "products/fetchProductById",

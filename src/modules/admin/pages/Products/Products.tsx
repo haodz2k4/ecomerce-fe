@@ -7,7 +7,7 @@ import Detail from "./Detail";
 import Edit from "./Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../common/types/store.type";
-import { fetchProducts, removeProduct, updateProduct } from "../../../../features/products/products.thunk";
+import { fetchProducts, removeProduct, statsProducts, updateProduct } from "../../../../features/products/products.thunk";
 import SelectLimit from "../../components/ui/SelectLimit/SelectLimit";
 import { SortOrder, StatusActiveEnum } from "../../../../constants/app.constant";
 import { SorterResult } from "antd/es/table/interface";
@@ -33,10 +33,13 @@ const Products = () => {
     const [maxPrice, setMaxPrice] = useState<number>();
     const [minPercentage, setMinPercentage] = useState<number>();
     const [maxPercentage, setMaxPercentage] = useState<number>();
-    const {items, loading, pagination} = useSelector((state: RootState) => state.products);
+    const {items, loading, pagination, stats} = useSelector((state: RootState) => state.products);
     const [id, setId] = useState<string>();
 
     const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        dispatch(statsProducts())
+    },[])
     useEffect(() => {
         dispatch(fetchProducts({
             limit,
@@ -109,9 +112,9 @@ const Products = () => {
                 </Col >
                 <Col sm={12} lg={8}>
                     <Space size="large">
-                        <Badge status="default" text={<>Tổng <strong>10</strong></>}/>
-                        <Badge status="success" text={<>Hoạt động <strong>10</strong></>}/>
-                        <Badge status="error" text={<>Không hoạt động <strong>10</strong></>}/>
+                        <Badge status="default" text={<>Tổng <strong>{stats?.total}</strong></>}/>
+                        <Badge status="success" text={<>Hoạt động <strong>{stats?.active}</strong></>}/>
+                        <Badge status="error" text={<>Không hoạt động <strong>{stats?.inactive}</strong></>}/>
                         
                     </Space>
                 </Col>

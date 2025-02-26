@@ -1,11 +1,12 @@
 import { LoadingConstant } from "../../constants/loading.constant";
 import { Pagination } from "./pagination.interface";
 
-export interface GeneralInitialState<T> {
+export interface GeneralInitialState<T, S = unknown> {
     pagination: Pagination | null;
     items: T[];
     item: T | null;
     loading: LoadingConstant;
     error: string | null;
+    stats?: S | null
 
 }
