@@ -45,11 +45,20 @@
 }
 
 .profiles__desc {
-    width: 150px;
+    width: 200px;
 }
 
 .favorite__icon {
     margin-right: 10px;
     font-size: 20px;
     color: $primary_color;
+}
+
+.btn__submit__update {
+    width: 100%;
+    color: $primary_color;
+}
+
+.update__title {
+    text-align: center;
 }

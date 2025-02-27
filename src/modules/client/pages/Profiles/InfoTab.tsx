@@ -6,8 +6,10 @@ import { RootState } from "../../../../common/types/store.type";
 import { formatDate } from "../../../../utils/format";
 import { Gender, StatusActiveEnum } from "../../../../constants/app.constant";
 import { getColorByStatus, transfromGender, transfromStatus } from "../../../../utils/transform";
+import { useState } from "react";
+import EditModal from "./EditModal";
 const InfoTab = () => {
-
+    const [openEdit, setOpenEdit] = useState<boolean>(false);
     const {currentUser} = useSelector((state: RootState) => state.users)
     const items: DescriptionsProps['items'] = [
         { key: "1", label: "Id", children: currentUser?.id, span: 'filled'},
@@ -24,9 +26,11 @@ const InfoTab = () => {
             className={styles.btn__edit}
             icon={<EditOutlined />} 
             iconPosition="end"
+            onClick={() => setOpenEdit(true)}
         > 
         Chỉnh sửa
         </Button>
+        <EditModal open={openEdit} setOpen={setOpenEdit} />
     </>
 };
 

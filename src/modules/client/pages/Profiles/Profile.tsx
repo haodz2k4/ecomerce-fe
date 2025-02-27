@@ -8,6 +8,7 @@ import AuthTab from "./AuthTab";
 import FavoriteTab from "./FavoriteTab";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../common/types/store.type";
+import { formatDate } from "../../../../utils/format";
 
 const {Title} = Typography;
 
@@ -16,7 +17,6 @@ const {Title} = Typography;
 const Profile = () => {
 
     const {currentUser} = useSelector((state: RootState) => state.users )
-    
     const items: TabsProps['items'] = [
         {
             key: 'info',
@@ -48,14 +48,15 @@ const Profile = () => {
                     <Descriptions className={styles.profiles__desc}>
                         <Descriptions.Item span={3} label="Đơn hàng đã mua">10</Descriptions.Item>
                         <Descriptions.Item span={3} label="Tổng số tiền" >10000</Descriptions.Item>
-                        <Descriptions.Item span={3} label="Ngày tạo tài khoản"></Descriptions.Item>
-                        <Descriptions.Item span={3} label="Ngày cập nhật"></Descriptions.Item>
+                        <Descriptions.Item span={3} label="Ngày tạo">{formatDate(currentUser?.createdAt as Date)}</Descriptions.Item>
+                        <Descriptions.Item span={3} label="Ngày cập nhật">{formatDate(currentUser?.updatedAt as Date)}</Descriptions.Item>
                     </Descriptions>
                 </div>
             </Sider>
             <Content className={styles.content}>
                 <Tabs items={items} />
             </Content>
+            
         </Layout>
     )
 }
