@@ -13,7 +13,7 @@ const {Title} = Typography;
 
 const Profile = () => {
 
-
+    
     const items: TabsProps['items'] = [
         {
             key: 'info',
