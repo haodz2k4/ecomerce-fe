@@ -1,8 +1,9 @@
 import { RouteObject } from "react-router-dom";
 import Home from "../modules/client/pages/Home/Home";
 import Profile from "../modules/client/pages/Profiles/Profile";
-import PrivateRouter from "./private.route";
+import PrivateRouter from "./Private.route";
 import ProductDetail from "../modules/client/components/ui/ProductDetail/ProductDetail";
+import Products from "../modules/client/pages/Products/Products";
 
 
 export const clientRoutes: RouteObject[] = [
@@ -17,7 +18,12 @@ export const clientRoutes: RouteObject[] = [
         </PrivateRouter>,
     },
     {
+        path: '/products',
+        element: <Products />
+    },
+    {
         path: '/products/:slug',
         element: <ProductDetail />
-    }
+    },
+    
 ]   

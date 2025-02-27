@@ -10,7 +10,7 @@ const { Title } = Typography;
 
 interface ProductsListProps {
     products: Product[];
-    title: string;
+    title?: string;
 }
 
 const ProductsList = (props: ProductsListProps) => {
