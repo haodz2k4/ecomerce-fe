@@ -1,6 +1,6 @@
 
 import styles from "./Header.module.scss";
-import { Flex, Image, Input, Button, Badge, Avatar, Space, Dropdown, Popconfirm } from "antd";
+import { Flex, Image, Input, Button, Badge, Avatar, Space, Dropdown, Popconfirm, List } from "antd";
 import ecomerce_logo from "../../../../../assets/images/ecomerce_logo.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
@@ -10,12 +10,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../common/types/store.type";
 import { logoutUser } from "../../../../../features/auth/auth.thunk";
 import { showAlert } from "../../../../../features/alert/alert.slice";
+import { useState } from "react";
+import { fetchProducts } from "../../../../../features/products/products.thunk";
+import { Product } from "../../../../../features/products/interfaces/product.interface";
+import { getProductsAPI } from "../../../../../features/products/products.api";
 
 
 const {Search} = Input;
 
 function AppHeader() {
 
+    const [keyword, setKeyword] = useState<string>();
     const {isAuth} = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
@@ -55,6 +60,19 @@ function AppHeader() {
             </Popconfirm>
         }
     ]
+    const [products, setProducts] = useState<Product[]>([]);
+    const handleSuggestions = async (keyword: string) => {
+        if(keyword) {
+            const {items} = await getProductsAPI({
+                keyword,
+                limit: 5
+            });
+            setProducts(items)
+        }else {
+            setProducts([])
+        }
+    }
+
     return (
         <header className={styles.header}>
             <div className={styles.header__top}>
@@ -88,7 +106,43 @@ function AppHeader() {
                             <span className={styles["header__logo-title"]}>KYO.VN</span>
                         </div>
                         <div className={styles.header__search}>
-                            <Search style={{width: '340px'}} placeholder="Vui lòng nhập từ khóa tìm kiếm" size="large"/>
+                            <Search 
+                                style={{width: '340px'}} 
+                                placeholder="Vui lòng nhập từ khóa tìm kiếm" size="large"
+                                onChange={(e) => handleSuggestions(e.target.value)}
+                                onSearch={(val) => {
+                                    navigate(`/products?keyword=${val}`)
+                                    setProducts([])
+                                }}
+                            />
+                            <div className="suggestions">
+                                {
+                                    products.length !== 0 ? 
+                                    <List 
+                                        className={styles.suggestions__list}
+                                        dataSource={products}
+                                        itemLayout="horizontal"
+                                        renderItem={(item, index) => (
+                                            <List.Item 
+                                                style={{width: '340px'}}
+                                                onClick={() => {
+                                                    navigate(`products/${item.slug}`)
+                                                    setProducts([])
+                                                }}
+                                            >
+                                                <List.Item.Meta
+                                                    avatar={<Image width={50} height={50} src={item.thumbnail} />}
+                                                    title={item.title}
+                                                    description={
+                                                        <><strong>Giá tiền</strong>{item.price}</>
+                                                    } 
+                                                />
+                                            </List.Item>
+                                        )}
+                                    /> : 
+                                    <></>
+                                }
+                            </div>
                         </div>
                         <div className={styles.header__menu}>
                             <ul>

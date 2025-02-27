@@ -6,14 +6,19 @@ import ProductsList from "../../components/ui/ProductsList/ProductsList";
 import { Button, Col, Input, Pagination, Row, Select, Space } from "antd";
 import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice";
 import styles from "./Products.module.scss";
+import { useSearchParams } from "react-router-dom";
 
 const Products = () => {
 
     const {items} = useSelector((state: RootState) => state.products);
+    const [searchParam, setSearchParam] = useSearchParams();
+    const keyword = searchParam.get('keyword') as string
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        dispatch(fetchProducts({}))
-    },[dispatch])
+        dispatch(fetchProducts({
+            keyword
+        }))
+    },[dispatch, keyword])
     //
     return (
         
