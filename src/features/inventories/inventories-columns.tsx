@@ -10,7 +10,7 @@ export const inventoriesColums = (): TableColumnProps[] => {
         {
             key: 'index',
             title: '#',
-            render: () => 1
+            render: (_, record, index) => index + 1 
         },
         {
             key: 'supplier',
