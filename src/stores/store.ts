@@ -3,6 +3,7 @@ import productReducer from "../features/products/products.slice";
 import alertReducer from "../features/alert/alert.slice";
 import authReducer from "../features/auth/auth.slice";
 import notificationReducer from "../features/notifications/notification.slice";
+import inventoryReducer  from "../features/inventories/inventories.slice";
 import userReducer from "../features/users/users.slice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     products: productReducer,
     auth: authReducer,
     users: userReducer,
-    upload: uploadReducer
+    upload: uploadReducer,
+    inventories: inventoryReducer
 });
 
 const persistConfig = {
