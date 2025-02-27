@@ -22,7 +22,7 @@ const ProductsList = (props: ProductsListProps) => {
                 
                 {products.map((item) => (
                     <Col span={6} key={item.id}>
-                        <Link to={`products/${item.slug}`} className={styles.products__card}>
+                        <Link to={`/products/${item.slug}`} className={styles.products__card}>
                             <img 
                                 src={item.thumbnail} 
                                 className={styles.products__thumbnail} 

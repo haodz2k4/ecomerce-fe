@@ -2,7 +2,7 @@
 import styles from "./Header.module.scss";
 import { Flex, Image, Input, Button, Badge, Avatar, Space, Dropdown, Popconfirm, List } from "antd";
 import ecomerce_logo from "../../../../../assets/images/ecomerce_logo.png";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 ;
 import type { MenuProps } from 'antd';
@@ -20,7 +20,8 @@ const {Search} = Input;
 
 function AppHeader() {
 
-    const [keyword, setKeyword] = useState<string>();
+    const [searchParam, setSearchParam] = useSearchParams();
+    const keyword = searchParam.get('keyword')
     const {isAuth} = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
@@ -111,9 +112,14 @@ function AppHeader() {
                                 placeholder="Vui lòng nhập từ khóa tìm kiếm" size="large"
                                 onChange={(e) => handleSuggestions(e.target.value)}
                                 onSearch={(val) => {
-                                    navigate(`/products?keyword=${val}`)
+                                    navigate(`/products`)
+                                    setSearchParam({
+                                        keyword: val
+                                    })
                                     setProducts([])
                                 }}
+                                defaultValue={keyword as string}
+                                
                             />
                             <div className="suggestions">
                                 {
