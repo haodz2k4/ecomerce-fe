@@ -1,4 +1,4 @@
-import { Avatar, Descriptions, Flex, Layout, Tabs, TabsProps, Typography } from "antd"
+import { Avatar, Descriptions, Flex, Layout, Tabs, TabsProps, Typography, Upload } from "antd"
 import { Content } from "antd/es/layout/layout"
 import Sider from "antd/es/layout/Sider"
 import styles from "./Profile.module.scss";
@@ -9,6 +9,7 @@ import FavoriteTab from "./FavoriteTab";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../common/types/store.type";
 import { formatDate } from "../../../../utils/format";
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 const {Title} = Typography;
 
@@ -44,6 +45,9 @@ const Profile = () => {
             <Sider width="35%" className={styles.sider}>
                 <div  className={styles.sider__inner}>
                     <Avatar className={styles.sider__avatar} />
+                    <Upload className={styles.upload__avatar}>
+                        <PlusCircleOutlined />
+                    </Upload>
                     <Title level={3}>{currentUser?.fullName}</Title>
                     <Descriptions className={styles.profiles__desc}>
                         <Descriptions.Item span={3} label="Đơn hàng đã mua">10</Descriptions.Item>

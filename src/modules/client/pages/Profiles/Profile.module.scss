@@ -12,6 +12,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        position: relative;
         
     }
 
@@ -61,4 +62,10 @@
 
 .update__title {
     text-align: center;
+}
+
+.upload__avatar {
+    position: absolute;
+    top: 145px;
+    font-size: 30px;
 }

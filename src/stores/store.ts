@@ -7,13 +7,15 @@ import userReducer from "../features/users/users.slice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from "redux";
+import uploadReducer from "../features/upload/upload.slice"
 
 const rootReducer = combineReducers({
     alert: alertReducer,
     notification: notificationReducer,
     products: productReducer,
     auth: authReducer,
-    users: userReducer
+    users: userReducer,
+    upload: uploadReducer
 });
 
 const persistConfig = {
