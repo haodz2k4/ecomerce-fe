@@ -44,6 +44,18 @@ export const fetchProductById = createAsyncThunk(
     }
 );
 
+//FETCH PRODUCT BY SLUG
+export const fetchProductBySlug = createAsyncThunk(
+    "products/getOneBySlug",
+    async (slug: string, {rejectWithValue}) => {
+        try {
+            return await productAPI.getProductBySlugAPI(slug)
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    }
+)
+
 // CREATE
 export const createProduct = createAsyncThunk(
     "products/createProduct",

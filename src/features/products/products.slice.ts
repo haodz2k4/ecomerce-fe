@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LoadingConstant } from "../../constants/loading.constant";
 import { Product } from "./interfaces/product.interface";
 import { GeneralInitialState } from "../../common/interfaces/general-initial-state";
-import { fetchProducts, fetchProductById, createProduct, updateProduct, removeProduct, statsProducts } from "./products.thunk";
+import { fetchProducts, fetchProductById, createProduct, updateProduct, removeProduct, statsProducts, fetchProductBySlug } from "./products.thunk";
 import { PayloadList, PayloadRemove } from "../../common/types/payload.type";
 import { UUID } from "../../common/types/uuid.type";
 import { ProductStats } from "./interfaces/product-stats.interface";
@@ -50,7 +50,18 @@ const productSlice = createSlice({
                 state.loading = LoadingConstant.FAILED;
                 state.error = action.payload || "Failed to fetch product";
             })
-
+            //Fetch product by slug
+            .addCase(fetchProductBySlug.pending, (state) => {
+                state.loading = LoadingConstant.PENDING
+            })
+            .addCase(fetchProductBySlug.fulfilled, (state, action) => {
+                state.loading = LoadingConstant.SUCCEEDED
+                state.item = action.payload
+            })
+            .addCase(fetchProductBySlug.rejected, (state, action) => {
+                state.loading = LoadingConstant.PENDING;
+                console.log(action)
+            })
             //Create product
             .addCase(createProduct.fulfilled, (state, action: PayloadAction<Product>) => {
                 state.items.unshift(action.payload);
