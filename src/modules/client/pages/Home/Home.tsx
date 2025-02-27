@@ -1,9 +1,10 @@
+import Banners from "../../components/ui/Banners/Banners"
 
 
 const Home = () => {
 
     return (
-        <>Trang chủ</>
+        <Banners />
     )
 }
 

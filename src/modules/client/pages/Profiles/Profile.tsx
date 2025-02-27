@@ -41,27 +41,29 @@ const Profile = () => {
         }
     ]
     return (
-        <Layout className={styles.profiles}>
-            <Sider width="35%" className={styles.sider}>
-                <div  className={styles.sider__inner}>
-                    <Avatar className={styles.sider__avatar} />
-                    <Upload className={styles.upload__avatar}>
-                        <PlusCircleOutlined />
-                    </Upload>
-                    <Title level={3}>{currentUser?.fullName}</Title>
-                    <Descriptions className={styles.profiles__desc}>
-                        <Descriptions.Item span={3} label="Đơn hàng đã mua">10</Descriptions.Item>
-                        <Descriptions.Item span={3} label="Tổng số tiền" >10000</Descriptions.Item>
-                        <Descriptions.Item span={3} label="Ngày tạo">{formatDate(currentUser?.createdAt as Date)}</Descriptions.Item>
-                        <Descriptions.Item span={3} label="Ngày cập nhật">{formatDate(currentUser?.updatedAt as Date)}</Descriptions.Item>
-                    </Descriptions>
-                </div>
-            </Sider>
-            <Content className={styles.content}>
-                <Tabs items={items} />
-            </Content>
-            
-        </Layout>
+        <div className="container">
+            <Layout className={styles.profiles}>
+                <Sider width="35%" className={styles.sider}>
+                    <div  className={styles.sider__inner}>
+                        <Avatar className={styles.sider__avatar} />
+                        <Upload className={styles.upload__avatar}>
+                            <PlusCircleOutlined />
+                        </Upload>
+                        <Title level={3}>{currentUser?.fullName}</Title>
+                        <Descriptions className={styles.profiles__desc}>
+                            <Descriptions.Item span={3} label="Đơn hàng đã mua">10</Descriptions.Item>
+                            <Descriptions.Item span={3} label="Tổng số tiền" >10000</Descriptions.Item>
+                            <Descriptions.Item span={3} label="Ngày tạo">{formatDate(currentUser?.createdAt as Date)}</Descriptions.Item>
+                            <Descriptions.Item span={3} label="Ngày cập nhật">{formatDate(currentUser?.updatedAt as Date)}</Descriptions.Item>
+                        </Descriptions>
+                    </div>
+                </Sider>
+                <Content className={styles.content}>
+                    <Tabs items={items} />
+                </Content>
+                
+            </Layout>
+        </div>
     )
 }
 
