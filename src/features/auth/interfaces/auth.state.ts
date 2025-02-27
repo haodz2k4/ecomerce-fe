@@ -7,4 +7,5 @@ export interface AuthState {
     isAuth: boolean;
     loading: LoadingConstant;
     error: null | string;
+    expiresIn: number; //SECOND
 }

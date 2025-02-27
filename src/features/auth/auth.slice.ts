@@ -2,13 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import { AuthState } from "./interfaces/auth.state";
 import { LoadingConstant } from "../../constants/loading.constant";
 import { registerUser, loginUser, logoutUser } from "./auth.thunk";
+import { isTokenExpires } from "../../utils/jwt";
 
 const initialState: AuthState = {
     accessToken: null,
     refreshToken: null,
     isAuth: false,
     loading: LoadingConstant.IDLE,
-    error: null
+    error: null,
+    expiresIn: 0
 }
 
 const authSlice = createSlice({
@@ -21,6 +23,15 @@ const authSlice = createSlice({
             state.isAuth = false;
             state.loading = LoadingConstant.IDLE;
             state.error = null;
+        },
+        checkAuth: (state) => {
+            if(isTokenExpires(state.expiresIn)) {
+                state.accessToken = null;
+                state.refreshToken = null;
+                state.isAuth = false;
+                state.loading = LoadingConstant.IDLE;
+                state.error = null;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -47,6 +58,7 @@ const authSlice = createSlice({
                 state.accessToken = action.payload.accessToken;
                 state.refreshToken = action.payload.refreshToken;
                 state.error = null;
+                state.expiresIn = action.payload.expiresIn
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = LoadingConstant.FAILED;
@@ -63,5 +75,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { resetAuthState } = authSlice.actions;
+export const { resetAuthState, checkAuth } = authSlice.actions;
 export default authSlice.reducer;
