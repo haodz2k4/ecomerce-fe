@@ -16,7 +16,6 @@ const Detail = (props: CruProps) => {
         dispatch(fetchProductById(id))
     },[dispatch,id]);
     if(!item) return <Empty />;
-    console.log(item)
     const items: DescriptionsProps['items'] = [
         {
             key: 'id',

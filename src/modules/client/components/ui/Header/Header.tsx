@@ -1,19 +1,36 @@
 
 import styles from "./Header.module.scss";
-import { Flex, Image, Input, Button, Badge, Avatar, Space, Dropdown } from "antd";
+import { Flex, Image, Input, Button, Badge, Avatar, Space, Dropdown, Popconfirm } from "antd";
 import ecomerce_logo from "../../../../../assets/images/ecomerce_logo.png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 ;
 import type { MenuProps } from 'antd';
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../../common/types/store.type";
+import { logoutUser } from "../../../../../features/auth/auth.thunk";
+import { showAlert } from "../../../../../features/alert/alert.slice";
 
 
 const {Search} = Input;
 
 function AppHeader() {
 
+    const {isAuth} = useSelector((state: RootState) => state.auth);
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+    const handleLogout = async () => {
+        try {
+            await dispatch(logoutUser()).unwrap();
+            dispatch(showAlert({type: 'success', message: 'Đăng xuất thành công'}));
+            navigate('/logout')
+        } catch {
+            dispatch(showAlert({type: 'error', message: 'Đăng xuất thất bại'}))
 
-    const userItems: MenuProps['items'] = [
+        }
+
+    }
+    const authItems: MenuProps['items'] = [
         {
             label: <Link to={'register'}>Đăng ký</Link>,
             key: '1'
@@ -21,6 +38,21 @@ function AppHeader() {
         {
             label: <Link to={'login'}>Đăng nhập</Link>,
             key: '2'
+        }
+    ]
+    const userItems: MenuProps['items'] = [
+        {
+            key: '1',
+            label: <Link to='/profiles'>Trang cá nhân</Link>
+        },
+        {
+            key: '2',
+            label: <Popconfirm
+                title='Bạn có chắc muốn đăng xuất'
+                onConfirm={handleLogout}
+                >
+                Đăng xuất
+            </Popconfirm>
         }
     ]
     return (
@@ -81,7 +113,7 @@ function AppHeader() {
                             <Badge count={10}>
                                 <Button shape="circle" size="large" color="pink" icon={<ShoppingCartOutlined  /> }/>
                             </Badge>
-                            <Dropdown menu={{items: userItems}} placement="bottom">
+                            <Dropdown menu={{items: isAuth ? userItems : authItems}} placement="bottom">
                                <Avatar icon={<UserOutlined />}/>
                             </Dropdown>
                         </Space>
