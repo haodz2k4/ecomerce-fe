@@ -3,6 +3,8 @@ import { Product } from "../../../../../features/products/interfaces/product.int
 import styles from "./ProductList.module.scss";
 import { formatPriceToVnd } from "../../../../../utils/format";
 import { ShoppingCartOutlined, ShoppingOutlined, StarOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { camulatorDiscountPrice } from "../../../../../utils/camulator";
 
 const { Title } = Typography;
 
@@ -20,7 +22,7 @@ const ProductsList = (props: ProductsListProps) => {
                 
                 {products.map((item) => (
                     <Col span={6} key={item.id}>
-                        <div className={styles.products__card}>
+                        <Link to={`products/${item.slug}`} className={styles.products__card}>
                             <img 
                                 src={item.thumbnail} 
                                 className={styles.products__thumbnail} 
@@ -32,7 +34,7 @@ const ProductsList = (props: ProductsListProps) => {
                             <div className={styles.products__content}>
                                 <p className={styles.products__reviews}>({4.3}) <StarOutlined /></p>
                                 <Space className={styles.products__price}>
-                                    <span className={styles.products__discountedPrice}>{formatPriceToVnd(item.price)}</span>
+                                    <span className={styles.products__discountedPrice}>{formatPriceToVnd(camulatorDiscountPrice(item.price, item.discountPercentage))}</span>
                                     <span className={styles.products__originalPrice}>{formatPriceToVnd(item.price)}</span>
                                 </Space>
                                 <p>Đã bán: {10}</p>
@@ -55,7 +57,7 @@ const ProductsList = (props: ProductsListProps) => {
                                     Thêm
                                 </Button>
                             </div>
-                        </div>
+                        </Link>
                     </Col>
                 ))}
             </Row>
