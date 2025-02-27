@@ -7,9 +7,10 @@ import { AppDispatch, RootState } from "../../../../common/types/store.type";
 import { useForm } from "antd/es/form/Form";
 import { useEffect } from "react";
 import { formatForInput } from "../../../../utils/format";
-import { updateCurrentUser } from "../../../../features/users/users.thunk";
+import { updateUser } from "../../../../features/users/users.thunk";
 import { UpdateUser } from "../../../../features/users/types/update-user.type";
 import { showAlert } from "../../../../features/alert/alert.slice";
+import { UUID } from "../../../../common/types/uuid.type";
 
 const {Title} = Typography;
 
@@ -35,7 +36,7 @@ const EditModal = (props: EditTabProps) => {
 
     const onFinish =async (values: UpdateUser) => {
         try {
-            await dispatch(updateCurrentUser(values)).unwrap();
+            await dispatch(updateUser({id: currentUser?.id as UUID, data: values})).unwrap();
             dispatch(showAlert({type: 'success', message: 'Cập nhật thành công'}))
             setOpen(false)
         } catch {

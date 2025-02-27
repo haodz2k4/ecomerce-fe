@@ -17,10 +17,6 @@ export const getCurrentUserAPI = async () => {
     return res.data.data;
 }
 
-export const updateCurrentUserAPI = async (updateUser: UpdateUser) => {
-    const res = await axiosInstance.patch(`users/me`,updateUser);
-    return res.data.data;
-}
 
 export const createUserAPI = async (createUser: CreateUser) => {
     const res = await axiosInstance.post('users',createUser);

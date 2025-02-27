@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getUsersAPI,
   getCurrentUserAPI,
-  updateCurrentUserAPI,
   createUserAPI,
   updateUserApi,
   getUserByIdAPI,
@@ -29,16 +28,6 @@ export const fetchCurrentUser = createAsyncThunk(
     async (_, { rejectWithValue }) => {
     try {
         return await getCurrentUserAPI();
-    } catch (error) {
-        return rejectWithValue(error);
-    }
-});
-
-export const updateCurrentUser = createAsyncThunk(
-    "users/updateCurrentUser", 
-    async (updateUser: UpdateUser, { rejectWithValue }) => {
-    try {
-        return await updateCurrentUserAPI(updateUser);
     } catch (error) {
         return rejectWithValue(error);
     }

@@ -3,7 +3,6 @@ import { LoadingConstant } from "../../constants/loading.constant";
 import {
     fetchUsers,
     fetchCurrentUser,
-    updateCurrentUser,
     createUser,
     updateUser,
     fetchUserById,
@@ -42,11 +41,6 @@ const userSlice = createSlice({
             .addCase(fetchCurrentUser.fulfilled, (state, action) => {
                 state.currentUser = action.payload;
             })
-
-            //Update current user
-            .addCase(updateCurrentUser.fulfilled, (state, action) => {
-                state.currentUser = action.payload;
-            })
             //Create user
             .addCase(createUser.fulfilled, (state, action) => {
                 state.items.push(action.payload);
@@ -55,6 +49,9 @@ const userSlice = createSlice({
             //Update user
             .addCase(updateUser.fulfilled, (state, action) => {
                 state.items = state.items.map(user => user.id === action.payload.id ? action.payload : user);
+                if(state?.currentUser?.id === action.payload.id) {
+                    state.currentUser = action.payload
+                }
             })
 
             //Fetch user by ID
@@ -64,6 +61,9 @@ const userSlice = createSlice({
             //Remove user
             .addCase(removeUser.fulfilled, (state, action) => {
                 state.items = state.items.filter(user => user.id !== action.payload);
+                if(state.currentUser?.id === action.payload) {
+                    state.currentUser = null
+                }
             }
         );
     }
