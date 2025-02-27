@@ -25,7 +25,7 @@ export const inventoriesColums = (): TableColumnProps[] => {
         {
             key: 'products',
             title: 'Sản phẩm',
-            dataIndex: ['product','id']
+            dataIndex: ['product','title']
         },
         {
             key: 'quantity',

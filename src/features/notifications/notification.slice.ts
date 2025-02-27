@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface NotificationState {
     type: 'success' | 'error' | null;
     message: string | null;
-    description: string | null;
+    description?: string | null;
 }
 
 const initialState: NotificationState = {

@@ -55,7 +55,7 @@ const inventorySlice = createSlice({
       })
       .addCase(createInventory.fulfilled, (state, action) => {
         state.loading = LoadingConstant.SUCCEEDED;
-        state.items.push(action.payload);
+        state.items.unshift(action.payload);
       })
       .addCase(createInventory.rejected, (state, action) => {
         state.loading = LoadingConstant.FAILED;
