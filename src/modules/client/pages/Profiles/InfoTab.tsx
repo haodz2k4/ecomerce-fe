@@ -1,14 +1,21 @@
-import { Button, Descriptions, DescriptionsProps } from "antd";
+import { Button, Descriptions, DescriptionsProps, Tag } from "antd";
 import styles from "./Profile.module.scss"
 import { EditOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../common/types/store.type";
+import { formatDate } from "../../../../utils/format";
+import { Gender, StatusActiveEnum } from "../../../../constants/app.constant";
+import { getColorByStatus, transfromGender, transfromStatus } from "../../../../utils/transform";
 const InfoTab = () => {
+
+    const {currentUser} = useSelector((state: RootState) => state.users)
     const items: DescriptionsProps['items'] = [
-        { key: "1", label: "Id", children: "Id", span: 'filled'},
-        { key: "2", label: "Họ và tên", children: "Hồ Sơn Hào", span: 'filled' },
-        { key: "3", label: "Email", children: "Email", span: 'filled' },
-        { key: "4", label: "Trạng thái", children: "NULL", span: 'filled' },
-        { key: "5", label: "Giới tính", children: "", span: 'filled' },
-        { key: "6", label: "Sinh nhật", children: "", span: 'filled' },
+        { key: "1", label: "Id", children: currentUser?.id, span: 'filled'},
+        { key: "2", label: "Họ và tên", children: currentUser?.fullName, span: 'filled' },
+        { key: "3", label: "Email", children: currentUser?.email, span: 'filled' },
+        { key: "4", label: "Trạng thái", children: <Tag color={getColorByStatus(currentUser?.status as StatusActiveEnum)}>{transfromStatus(currentUser?.status as StatusActiveEnum)}</Tag>, span: 'filled' },
+        { key: "5", label: "Giới tính", children: transfromGender(currentUser?.gender as Gender), span: 'filled' },
+        { key: "6", label: "Sinh nhật", children: formatDate(currentUser?.birthDate as Date), span: 'filled' },
     ];
 
     return  <>

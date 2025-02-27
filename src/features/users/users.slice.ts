@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GeneralInitialState } from "../../common/interfaces/general-initial-state";
-import { User } from "./interfaces/user.interface";
 import { LoadingConstant } from "../../constants/loading.constant";
 import {
     fetchUsers,
@@ -11,8 +9,9 @@ import {
     fetchUserById,
     removeUser
 } from "./users.thunk";
+import { UserState } from "./interfaces/user-state.interface";
 
-const initialState: GeneralInitialState<User> = {
+const initialState: UserState = {
     pagination: null,
     items: [],
     item: null,

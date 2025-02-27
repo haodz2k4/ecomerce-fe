@@ -8,6 +8,7 @@ export interface User {
     email: string;
     gender: string;
     status: StatusActiveEnum;
+    birthDate: Date;
     createdAt: Date;
     updatedAt: Date;
 }

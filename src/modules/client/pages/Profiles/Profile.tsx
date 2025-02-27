@@ -6,6 +6,8 @@ import InfoTab from "./InfoTab";
 import OrderedTab from "./OrderedTab";
 import AuthTab from "./AuthTab";
 import FavoriteTab from "./FavoriteTab";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../common/types/store.type";
 
 const {Title} = Typography;
 
@@ -13,6 +15,7 @@ const {Title} = Typography;
 
 const Profile = () => {
 
+    const {currentUser} = useSelector((state: RootState) => state.users )
     
     const items: TabsProps['items'] = [
         {
@@ -41,7 +44,7 @@ const Profile = () => {
             <Sider width="35%" className={styles.sider}>
                 <div  className={styles.sider__inner}>
                     <Avatar className={styles.sider__avatar} />
-                    <Title level={3}>Hồ Sơn Hào</Title>
+                    <Title level={3}>{currentUser?.fullName}</Title>
                     <Descriptions className={styles.profiles__desc}>
                         <Descriptions.Item span={3} label="Đơn hàng đã mua">10</Descriptions.Item>
                         <Descriptions.Item span={3} label="Tổng số tiền" >10000</Descriptions.Item>
