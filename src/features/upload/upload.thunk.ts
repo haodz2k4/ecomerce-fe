@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { uploadMultiAPI, uploadSingleAPI } from "./upload.api";
-import { RcFile } from "antd/es/upload";
 
 
 export const uploadSingle = createAsyncThunk(

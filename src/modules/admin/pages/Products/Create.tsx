@@ -1,7 +1,7 @@
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons"
-import { Button, Flex, Form, Input, InputNumber, Modal, Select, Space, Upload, Typography, Radio } from "antd"
+import { Button, Flex, Form, Input, InputNumber, Modal, Upload, Typography, Radio } from "antd"
 import { CruProps } from "../../../../common/interfaces/cru-props.interface"
-import { DiscountPercentage, StatusActiveEnum } from "../../../../constants/app.constant"
+import { DiscountPercentage } from "../../../../constants/app.constant"
 import styles from "./Products.module.scss"
 import { useState } from "react"
 import CategoryModal from "../../components/ui/CategorySelectModal/CategorySelectModal"
@@ -13,6 +13,7 @@ import { createProduct } from "../../../../features/products/products.thunk"
 import { CreateProduct } from "../../../../features/products/interfaces/create-product.interface"
 import { formatVndToNumber } from "../../../../utils/format"
 import { showAlert } from "../../../../features/alert/alert.slice"
+import { uploadMulti, uploadSingle } from "../../../../features/upload/upload.thunk"
 const {TextArea} = Input
 const {Title} = Typography
 
@@ -22,36 +23,39 @@ const Create = (props: CruProps) => {
     const {open, setOpen} = props
     const [form] = useForm();
     const [openCategory, setOpenCategory] = useState<boolean>(false);
-    const [thumbnail, setThumbnail] = useState([]);
-    const [images, setImages] = useState([]);
     const [categoryId, setCategoryId] = useState<string>();
     const [categoryTitle, setCategoryTitle] = useState<string>();
     const dispatch = useDispatch<AppDispatch>();
-    form.setFieldValue('status',StatusActiveEnum.ACTIVE);
 
-    const handlePreview = async (file: Record<string, any>) => {
-        const src = file.url || (file.preview || URL.createObjectURL(file.originFileObj))
-        const imgWindow = window.open(src);
-        imgWindow?.document.write(`<img src="${src}" width="100%" />`);
-    }
-
-    const handleThumbnailChange = ({fileList}: Record<string,any>) => {
-        setThumbnail(fileList.slice(-1))
-    }
-
-    const handleImagesChange = ({ fileList }: Record<string, any>) => {
-        setImages(fileList.slice(-4)); 
-    };
-
+    const [images, setImages] = useState<any[]>([]);
+    const [thumbnails, setThumbnails] = useState<any[]>([]);
     const onFinish = async (values: CreateProduct) => {
         
         values.price = formatVndToNumber(values.price as string);
         values.categoryId = categoryId as string;
         
         try {
-            await dispatch(createProduct(values))
+            if(images.length > 0) {
+                const formThumbnail = new FormData();
+                formThumbnail.append("file",thumbnails[0].originFileObj)
+                const {url} = await dispatch(uploadSingle(formThumbnail)).unwrap();
+                values.thumbnail = url 
+            }
+
+            if(thumbnails.length > 0) {
+                const formImages = new FormData();
+                images.forEach((item) => {
+                    formImages.append("files",item.originFileObj)
+                })
+                const data = await dispatch(uploadMulti(formImages)).unwrap();
+                console.log(data)
+                values.images = data.urls
+            }   
+            console.log(values.images)
+            await dispatch(createProduct(values)).unwrap()
             dispatch(showAlert({type: 'success', message: 'Thêm sản phẩm thành công'}))
             setOpen(false)
+            form.resetFields()
         } catch{
             dispatch(showAlert({type: 'error',message: 'Thêm sản phẩm thất bại' }))
         }
@@ -91,20 +95,14 @@ const Create = (props: CruProps) => {
                     <Form.Item
                         label="Ảnh thu nhỏ"
                         name="thumbnail"
+                        
                     >
                         <Upload
                             listType="picture-card"
-                            fileList={thumbnail}
-                            beforeUpload={()=> false}
-                            onPreview={handlePreview}
-                            onChange={handleThumbnailChange}
                             maxCount={1}
+                            onChange={(info) => setThumbnails(info.fileList)}
                         >
-                            {thumbnail.length >= 1 ? null : (
-                                <button className={styles.btn__upload}>
-                                <PlusOutlined />
-                                </button>
-                            )}
+                            Upload
                         </Upload>
                     </Form.Item>
                     {/* IMAGES */}
@@ -114,17 +112,10 @@ const Create = (props: CruProps) => {
                     >
                         <Upload
                             listType="picture-card"
-                            fileList={images}
-                            beforeUpload={() => false}
-                            onPreview={handlePreview}
-                            onChange={handleImagesChange}
                             maxCount={4}
+                            onChange={(info) => setImages(info.fileList)}
                         >
-                            {images.length >= 4 ? null : (
-                                <button className={styles.btn__upload}>
-                                <PlusOutlined />
-                                </button>
-                            )}
+                            Upload
                         </Upload>
 
                     </Form.Item>
@@ -132,9 +123,9 @@ const Create = (props: CruProps) => {
                     
                 <Flex justify="space-between" gap={50}>
                     
-                    <Form.Item label="% giảm giá" name="discountPercentage" required>
+                    <Form.Item label="% giảm giá"  name="discountPercentage" required>
                         <InputNumber
-
+                            max={DiscountPercentage.MAX}
                             min={DiscountPercentage.MIN} 
                         />
                     </Form.Item>
@@ -155,7 +146,6 @@ const Create = (props: CruProps) => {
                         >
                           {categoryTitle ?  categoryTitle : ' Thêm Danh mục' }
                         </Button>
-                        <Input type="hidden" />
                     </Form.Item>
                     <Form.Item label="Giá tiền" name="price" required>
                             <InputFormatPrice customInput={Input as any}/>
