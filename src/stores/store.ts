@@ -6,6 +6,7 @@ import notificationReducer from "../features/notifications/notification.slice";
 import inventoryReducer  from "../features/inventories/inventories.slice";
 import categoriesReducer from "../features/categories/categories.slice";
 import userReducer from "../features/users/users.slice";
+import roleReducer from "../features/roles/roles.slice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from "redux";
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     auth: authReducer,
     users: userReducer,
     upload: uploadReducer,
-    inventories: inventoryReducer
+    inventories: inventoryReducer,
+    roles: roleReducer
 });
 
 const persistConfig = {

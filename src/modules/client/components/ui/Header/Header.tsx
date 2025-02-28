@@ -37,7 +37,7 @@ function AppHeader() {
         try {
             await dispatch(logoutUser()).unwrap();
             dispatch(showAlert({type: 'success', message: 'Đăng xuất thành công'}));
-            navigate('/logout')
+            navigate('/login')
         } catch {
             dispatch(showAlert({type: 'error', message: 'Đăng xuất thất bại'}))
 
