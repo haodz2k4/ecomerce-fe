@@ -10,10 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../common/types/store.type";
 import { logoutUser } from "../../../../../features/auth/auth.thunk";
 import { showAlert } from "../../../../../features/alert/alert.slice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchProducts } from "../../../../../features/products/products.thunk";
 import { Product } from "../../../../../features/products/interfaces/product.interface";
 import { getProductsAPI } from "../../../../../features/products/products.api";
+import { fetchCategories } from "../../../../../features/categories/categories.thunk";
 
 
 const {Search} = Input;
@@ -25,6 +26,13 @@ function AppHeader() {
     const {isAuth} = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const {items} = useSelector((state: RootState) => state.categories);
+
+    useEffect(() => {
+        dispatch(fetchCategories({
+            limit: 12
+        }))
+    },[dispatch])
     const handleLogout = async () => {
         try {
             await dispatch(logoutUser()).unwrap();
@@ -180,9 +188,18 @@ function AppHeader() {
                     </Flex>
                 </div>
                 <div className={styles.header__categories}>
-                    <Flex  className="container">
-                        <Button color="default"  variant="text">Thời trang nam</Button>
-                        <Button color="default"  variant="text">Thời trang nữ</Button>
+                    <Flex justify="space-between"  className="container">
+                        {
+                            items.map((item) => (
+                                <Button 
+                                    color="default" 
+                                    type="text" 
+                                    onClick={() => navigate(`/categories/${item.slug}`)}
+                                >
+                                    {item.title}
+                                </Button>
+                            ))
+                        }
                     </Flex>
                 </div>
         </header>

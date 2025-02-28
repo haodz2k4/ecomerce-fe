@@ -7,5 +7,6 @@ export interface QueryProduct extends BaseQuery {
     maxPrice?: number;
     minPercentage?: number;
     maxPercentage?: number;
-    status?: StatusActiveEnum
+    status?: StatusActiveEnum;
+    categorySlug?: string;
 }
