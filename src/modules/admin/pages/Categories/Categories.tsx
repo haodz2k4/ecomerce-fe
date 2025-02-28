@@ -1,11 +1,13 @@
-import { Table } from "antd"
+import { Col, Row, Table, Input, Space, Button } from "antd"
 import { categoriesColumns } from "../../../../features/categories/categories_columns"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../../../common/types/store.type"
 import { useEffect } from "react"
 import { fetchCategories } from "../../../../features/categories/categories.thunk"
-
-
+import { FileExcelOutlined, PlusCircleOutlined, PlusOutlined } from "@ant-design/icons"
+import SelectLimit from "../../components/ui/SelectLimit/SelectLimit"
+import styles from "./Categories.module.scss";
+const {Search} = Input
 
 const Categories = () => {
     
@@ -15,10 +17,28 @@ const Categories = () => {
         dispatch(fetchCategories({}))
     },[dispatch])
     return (
-        <Table 
-            columns={categoriesColumns()} 
-            dataSource={items}
-        />
+        <>  
+            <Row 
+                gutter={16}
+                className={styles.actions}
+            >
+                <Col span={6}>
+                    <Search placeholder="Tìm kiếm..."/>
+                </Col>
+                <Col span={6}>
+                    <Space>
+                        <Button icon={<PlusOutlined />}>Thêm</Button>
+                        <Button icon={<PlusCircleOutlined />}>Thêm SLL</Button>
+                        <Button icon={<FileExcelOutlined />}>Xuất</Button>
+                        <SelectLimit limit={10} />
+                    </Space>
+                </Col>
+            </Row>
+            <Table 
+                columns={categoriesColumns()} 
+                dataSource={items}
+            />
+        </>
     )
 }
 
