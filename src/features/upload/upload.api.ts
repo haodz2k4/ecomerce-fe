@@ -12,10 +12,7 @@ export const uploadSingleAPI = async (formData: FormData) => {
     return res.data.data;
 }
 
-export const uploadMultiAPI = async (files: File[] | RcFile[]) => {
-
-    const formData = new FormData();
-    files.forEach((file) => formData.append("files", file));
+export const uploadMultiAPI = async (formData: FormData) => {
     const res = await axiosInstance.post("upload/multi", formData, {
         headers: {
             "Content-Type": "multipart/form-data",

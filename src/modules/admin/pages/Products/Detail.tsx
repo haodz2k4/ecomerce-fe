@@ -1,4 +1,4 @@
-import { Descriptions, DescriptionsProps, Empty, Image, Modal, Tag } from "antd";
+import { Descriptions, DescriptionsProps, Empty, Image, Modal, Space, Tag } from "antd";
 import { CruProps } from "../../../../common/interfaces/cru-props.interface"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../common/types/store.type";
@@ -6,15 +6,17 @@ import { useEffect } from "react";
 import { fetchProductById } from "../../../../features/products/products.thunk";
 import { formatDate, formatPriceToVnd } from "../../../../utils/format";
 import { getColorByStatus, transfromStatus } from "../../../../utils/transform";
-
+import styles from "./Products.module.scss"
 
 const Detail = (props: CruProps) => {
-    const {open, setOpen, id = ''} = props;
+    const {open, setOpen, id} = props;
     const {item} = useSelector((state: RootState) => state.products);
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        dispatch(fetchProductById(id))
-    },[dispatch,id]);
+        if(id && open) {
+            dispatch(fetchProductById(id))
+        }
+    },[dispatch,id, open]);
     if(!item) return <Empty />;
     const items: DescriptionsProps['items'] = [
         {
@@ -71,7 +73,21 @@ const Detail = (props: CruProps) => {
         {
             key: 'images',
             label: 'Hình ảnh',
-            children: '',
+            children: (
+                <Space>
+                    {
+                        item.images && item.images.map((item) => (
+                            <Image 
+                                className={styles.img__images}
+                                src={item} 
+                                alt="" 
+                                width={80}
+                                height={80}
+                            />
+                        ))
+                    }
+                </Space>
+            ),
             span: 2
         },
         {

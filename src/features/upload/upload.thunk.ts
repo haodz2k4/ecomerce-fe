@@ -16,7 +16,7 @@ export const uploadSingle = createAsyncThunk(
 
 export const uploadMulti = createAsyncThunk(
     'upload/uploadMulti',
-    async (files: File[] | RcFile[], {rejectWithValue}) => {
+    async (files: FormData, {rejectWithValue}) => {
         try {
             return uploadMultiAPI(files)
         } catch (error) {

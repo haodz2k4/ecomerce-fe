@@ -1,4 +1,4 @@
-import { EditOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons"
+import { EditOutlined, SearchOutlined } from "@ant-design/icons"
 import { Button, Flex, Form, Input, InputNumber, Modal, Upload, Typography, Radio} from "antd"
 import { CruProps } from "../../../../common/interfaces/cru-props.interface"
 import { DiscountPercentage } from "../../../../constants/app.constant"
@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../../../common/types/store.type"
 import { fetchProductById, updateProduct } from "../../../../features/products/products.thunk"
 import { showAlert } from "../../../../features/alert/alert.slice"
+import { uploadMulti, uploadSingle } from "../../../../features/upload/upload.thunk"
+import { UpdateProduct } from "../../../../features/products/types/update-product.type"
 const {TextArea} = Input
 const {Title} = Typography
 
@@ -20,16 +22,36 @@ const Edit = (props: CruProps) => {
     const {open, setOpen, id = ''} = props
     const [form] = useForm();
     const [openCategory, setOpenCategory] = useState<boolean>(false);
-    const [thumbnail, setThumbnail] = useState([]);
-    const [images, setImages] = useState([]);
 
     const {item, error} = useSelector((state: RootState) => state.products);
+    const [thumbnails, setThumbnails] = useState<any[]>([]);
+    const [images, setImages] = useState<any[]>([]);
     const dispatch = useDispatch<AppDispatch>();
-    const onFinish = async (values: Record<string, unknown>) => {
+
+    const onFinish = async (values: UpdateProduct) => {
         try {
+            //THUMBNAIL
+            if(thumbnails.length > 0) {
+                const formThumbnails = new FormData();
+                formThumbnails.append('file',thumbnails[0].originFileObj);
+                const {url} = await dispatch(uploadSingle(formThumbnails)).unwrap();
+                values.thumbnail = url
+            } 
+            //IMAGES 
+            if(images.length > 0) {
+                const formImages = new FormData();
+                images.forEach((item) => {
+                    formImages.append('files', item.originFileObj)
+                })
+                const {urls} = await dispatch(uploadMulti(formImages)).unwrap();
+                values.images = urls
+            }
             await dispatch(updateProduct({id, data: values})).unwrap();
             dispatch(showAlert({type: 'success', message: 'Cập nhật sản phẩm thành công'}))
+            setThumbnails([]);
+            setImages([]);
             setOpen(false);
+            
         } catch  {
             dispatch(showAlert({type: 'error',message: 'Lỗi không thể cập nhật sản phẩm'}))
         }
@@ -38,30 +60,20 @@ const Edit = (props: CruProps) => {
         dispatch(fetchProductById(id))
     },[dispatch, id])
     
-
-    const handlePreview = async (file: Record<string, any>) => {
-        const src = file.url || (file.preview || URL.createObjectURL(file.originFileObj))
-        const imgWindow = window.open(src);
-        imgWindow?.document.write(`<img src="${src}" width="100%" />`);
-    }
-
-    const handleThumbnailChange = ({fileList}: Record<string,any>) => {
-        setThumbnail(fileList.slice(-1))
-    }
-
-    const handleImagesChange = ({ fileList }: Record<string, any>) => {
-        setImages(fileList.slice(-4)); 
-    };
     
 
-    form.setFieldsValue({
-        title: item?.title,
-        description: item?.description,
-        discountPercentage: item?.discountPercentage,
-        status: item?.status,
-        categoryId: item?.category,
-        price: item?.price
-    })
+    useEffect(() => {
+        if(item) {
+            form.setFieldsValue({
+                title: item?.title,
+                description: item?.description,
+                discountPercentage: item?.discountPercentage,
+                status: item?.status,
+                categoryId: item?.category,
+                price: item?.price
+            })
+        }
+    },[form, item])
     return (
         <Modal
             open={open}
@@ -100,17 +112,10 @@ const Edit = (props: CruProps) => {
                     >
                         <Upload
                             listType="picture-card"
-                            fileList={thumbnail}
-                            beforeUpload={()=> false}
-                            onPreview={handlePreview}
-                            onChange={handleThumbnailChange}
                             maxCount={1}
+                            onChange={(info) => setThumbnails(info.fileList)}
                         >
-                            {thumbnail.length >= 1 ? null : (
-                                <button className={styles.btn__upload}>
-                                <PlusOutlined />
-                                </button>
-                            )}
+                            Upload
                             
                         </Upload>
                         
@@ -123,18 +128,11 @@ const Edit = (props: CruProps) => {
                     >
                         <Upload
                             listType="picture-card"
-                            fileList={images}
-                            beforeUpload={() => false}
-                            onPreview={handlePreview}
-                            onChange={handleImagesChange}
                             maxCount={4}
-                        >
-                            {images.length >= 4 ? null : (
-                                <button className={styles.btn__upload}>
-                                <PlusOutlined />
-                                </button>
-                            )}
+                            onChange={(info) => setImages(info.fileList)}
                             
+                        >
+                            Upload 
                         </Upload>
                         
                     </Form.Item>
