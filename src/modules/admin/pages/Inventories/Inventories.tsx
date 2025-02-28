@@ -8,6 +8,7 @@ import { FileExcelOutlined, PlusCircleOutlined, PlusOutlined } from "@ant-design
 import Create from "./Create"
 import styles from "./Inventories.module.scss"
 import SelectLimit from "../../components/ui/SelectLimit/SelectLimit"
+import Detail from "./Detail"
 
 const {Search} = Input
 
@@ -16,6 +17,8 @@ const Inventories = () => {
     const [openCreate, setOpenCreate] = useState<boolean>(false);
     const {items} = useSelector((state: RootState) => state.inventories);
     const [keyword, setKeyword] = useState<string>('');
+    const [openDetail, setOpenDetail] = useState<boolean>(false);
+    const [id, setId] = useState<string>();
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         dispatch(fetchInventories({
@@ -53,8 +56,13 @@ const Inventories = () => {
                     </Space>
                 </Col>
             </Row>
-            <Table columns={inventoriesColums()} dataSource={items}/>
+            <Table columns={inventoriesColums({setOpenDetail, setId})} dataSource={items}/>
             <Create open={openCreate} setOpen={setOpenCreate}/>
+            <Detail 
+                open={openDetail} 
+                setOpen={setOpenDetail}
+                id={id} 
+            />
         </>
     )
 }

@@ -1,13 +1,17 @@
-import { Image, Modal, Radio, Space, Table, TableColumnProps, Tag } from "antd";
+import { Image, Input, Modal, Radio, Space, Table, TableColumnProps, Tag } from "antd";
 import { camulatorDiscountPrice } from "../../../../../utils/camulator";
 import { getColorByStatus, transfromStatus } from "../../../../../utils/transform";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../common/types/store.type";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchProducts } from "../../../../../features/products/products.thunk";
-import { formatPriceToVnd } from "../../../../../utils/format";
+import { formatPriceToVnd, formatVndToNumber } from "../../../../../utils/format";
 import { showNotification } from "../../../../../features/notifications/notification.slice";
-
+import Search from "antd/es/input/Search";
+import { InputFormatPrice } from "../../../../../components/Input/InputFormatPrice";
+import styles from "./ProductSelectModal.module.scss"
+import { SortOrder} from "../../../../../constants/app.constant";
+import Title from "antd/es/typography/Title";
 
 interface ProductSelectModalProps {
     open: boolean;
@@ -20,10 +24,28 @@ interface ProductSelectModalProps {
 const ProductSelectModal = (props: ProductSelectModalProps) => {
     const {open, setOpen, setProductId, productId, productTitle, setProductTitle} = props
     const {items} = useSelector((state: RootState) => state.products);
+    const [keyword, setKeyword] = useState<string>();
+    const [minPrice, setMinPrice] =useState<number>();
+    const [maxPrice, setMaxPrice] = useState<number>();
+    const [sortBy, setSortBy] = useState<string>();
+    const [sortOrder, setsortOrder] = useState<SortOrder>();
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        dispatch(fetchProducts({}))
-    },[dispatch]);
+        dispatch(fetchProducts({
+            keyword,
+            minPrice,   
+            maxPrice,
+            sortBy,
+            sortOrder
+        }))
+    },[
+        dispatch, 
+        keyword, 
+        minPrice, 
+        maxPrice,
+        sortBy,
+        sortOrder
+    ]);
 
     const onOk = () => {
         if(!productId) {
@@ -57,7 +79,8 @@ const ProductSelectModal = (props: ProductSelectModalProps) => {
         {
             key: 'title',
             dataIndex: 'title',
-            title: 'Tiêu đề'
+            title: 'Tiêu đề',
+            filterDropdown: () => <Search onChange={(e) => setKeyword(e.target.value)} placeholder="Tìm kiếm..."/>
         },
         {
             key: 'category',
@@ -80,7 +103,26 @@ const ProductSelectModal = (props: ProductSelectModalProps) => {
             key: 'price',
             title: 'Giá tiền',
             dataIndex: 'price',
-            render: (val, record) => formatPriceToVnd(camulatorDiscountPrice(val, record.discountPercentage))
+            render: (val, record) => formatPriceToVnd(camulatorDiscountPrice(val, record.discountPercentage)),
+            filterDropdown: () => (
+                <Space className={styles.products__range__price}>
+                    <InputFormatPrice 
+                        onChange={(e) => 
+                            setMinPrice(formatVndToNumber(e.target.value))
+                        } 
+                        customInput={Input}
+                        placeholder="Từ..."
+                    />
+                    <InputFormatPrice 
+                        customInput={Input}
+                        onChange={(e) => 
+                            setMaxPrice(formatVndToNumber(e.target.value))
+                        }
+                        placeholder="Tới..."
+                    />
+                </Space>
+            ),
+            sorter: true
         },
         {
             key: 'status',
@@ -89,6 +131,11 @@ const ProductSelectModal = (props: ProductSelectModalProps) => {
             render: (val) => <Tag color={getColorByStatus(val)}>{transfromStatus(val)}</Tag>
         }
     ]
+
+    const handleTableChange = (_, filters, sorter) => {
+        setSortBy(sorter.field)
+        setsortOrder(sorter.order === "ascend" ? SortOrder.ASC : SortOrder.DESC)
+    }
     return (
         <Modal
             open={open}
@@ -97,7 +144,9 @@ const ProductSelectModal = (props: ProductSelectModalProps) => {
             onCancel={() => setOpen(false)}
             width={1000}
         >
+            <Title className={styles.title} level={2}>Chọn một sản phẩm</Title>
             <Table 
+                onChange={handleTableChange}
                 columns={columns}
                 dataSource={items}
             />

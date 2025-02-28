@@ -3,9 +3,14 @@ import { TableColumnProps, Space, Button, Popconfirm } from "antd";
 import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant";
 
 
-export const inventoriesColums = (): TableColumnProps[] => {
+interface InventoriesColumnsProps {
+    setOpenDetail: (val: boolean) => void;
+    setId: (id: string) => void;
+}
 
+export const inventoriesColums = (props: InventoriesColumnsProps): TableColumnProps[] => {
 
+    const {setOpenDetail, setId} = props
     return [
         {
             key: 'index',
@@ -35,23 +40,29 @@ export const inventoriesColums = (): TableColumnProps[] => {
         {
             key: 'createdAt',
             title: 'Ngày tạo',
-            dataIndex: 'createdAt' 
+            dataIndex: 'createdAt' ,
+            sorter: true
         },
         {
             key: 'updatedAt',
             title: 'Ngày cập nhật',
-            dataIndex: 'updatedAt'
+            dataIndex: 'updatedAt',
+            sorter: true
         },
         {
             key: 'actions',
             title: 'Thao tác',
-            render: () => (
+            render: (_, record) => (
                 <Space>
                     <Button
                         icon={<EyeOutlined/>}
                         variant="filled"
                         color="blue"
                         size="large"
+                        onClick={() => {
+                            setOpenDetail(true)
+                            setId(record.id)
+                        }}
                     />
                     <Button
                         icon={<EditOutlined/>} 
