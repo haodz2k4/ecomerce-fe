@@ -24,6 +24,7 @@ export const categoriesColumns = (): TableColumnProps[] => [
                             width={70} 
                             height={70}
                             src={val}
+                            style={{borderRadius: '10px'}}
                           />
     },
     {

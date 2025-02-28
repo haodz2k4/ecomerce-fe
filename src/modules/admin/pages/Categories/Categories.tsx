@@ -11,13 +11,16 @@ import Create from "./Create"
 const {Search} = Input
 
 const Categories = () => {
-    
+
+    const [keyword, setKeyword] = useState<string>();
     const {items} = useSelector((state: RootState) => state.categories);
     const dispatch = useDispatch<AppDispatch>();
     const [openCreate, setOpenCreate] = useState<boolean>(false);
     useEffect(() => {
-        dispatch(fetchCategories({}))
-    },[dispatch])
+        dispatch(fetchCategories({
+            keyword
+        }))
+    },[dispatch, keyword])
     return (
         <>  
             <Row 
@@ -25,7 +28,10 @@ const Categories = () => {
                 className={styles.actions}
             >
                 <Col span={6}>
-                    <Search placeholder="Tìm kiếm..."/>
+                    <Search 
+                        placeholder="Tìm kiếm..." 
+                        onChange={(e) => setKeyword(e.target.value)}
+                    />
                 </Col>
                 <Col span={6}>
                     <Space>

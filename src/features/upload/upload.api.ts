@@ -3,12 +3,23 @@ import axiosInstance from "../../api/axios"
 
 
 
-export const uploadSingleAPI = async (file: File | RcFile) => {
-    const res = await axiosInstance.post('upload/single',file);
+export const uploadSingleAPI = async (formData: FormData) => {
+    const res = await axiosInstance.post('upload/single',formData,{
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    });
     return res.data.data;
 }
 
 export const uploadMultiAPI = async (files: File[] | RcFile[]) => {
-    const res = await axiosInstance.post('upload/multi',files);
+
+    const formData = new FormData();
+    files.forEach((file) => formData.append("files", file));
+    const res = await axiosInstance.post("upload/multi", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
     return res.data.data;
 }

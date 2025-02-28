@@ -3,4 +3,4 @@ import { Category } from "../interfaces/category.interface";
 
 
 
-export type CreateCategory = Omit<Category, CreateOmitFields >;
+export type CreateCategory = Omit<Category, CreateOmitFields | 'slug' >;

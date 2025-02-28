@@ -5,9 +5,9 @@ import { RcFile } from "antd/es/upload";
 
 export const uploadSingle = createAsyncThunk(
     'upload/uploadSingle',
-    async (file: File | RcFile, {rejectWithValue}) => {
+    async (formData: FormData, {rejectWithValue}) => {
         try {
-            return uploadSingleAPI(file)
+            return uploadSingleAPI(formData)
         } catch (error) {
             return rejectWithValue(error)
         }

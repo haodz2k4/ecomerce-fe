@@ -55,7 +55,7 @@ const categorySlice = createSlice({
             })
             .addCase(createCategory.fulfilled, (state, action) => {
                 state.loading = LoadingConstant.SUCCEEDED;
-                state.items.push(action.payload);
+                state.items.unshift(action.payload);
             })
             .addCase(createCategory.rejected, (state, action) => {
                 state.loading = LoadingConstant.FAILED;
