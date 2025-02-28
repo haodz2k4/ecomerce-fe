@@ -15,15 +15,21 @@ const Inventories = () => {
     
     const [openCreate, setOpenCreate] = useState<boolean>(false);
     const {items} = useSelector((state: RootState) => state.inventories);
+    const [keyword, setKeyword] = useState<string>('');
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        dispatch(fetchInventories({}))
-    },[dispatch])
+        dispatch(fetchInventories({
+            keyword
+        }))
+    },[dispatch, keyword])
     return (
         <>  
             <Row gutter={16} className={styles.actions}>
                 <Col span={5}>
-                    <Search />
+                    <Search 
+                        placeholder="Nhập tìm kiếm..."
+                        onChange={(e) => setKeyword(e.target.value)}
+                    />
                 </Col>
                 <Col span={9}>
                     <Space>
