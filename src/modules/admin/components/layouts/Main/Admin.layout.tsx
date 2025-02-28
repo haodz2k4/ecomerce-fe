@@ -9,6 +9,7 @@ import {
     BellOutlined, 
     CodeOutlined, 
     DashboardOutlined,  
+    DropboxOutlined,  
     InboxOutlined, 
     LockOutlined, 
     LogoutOutlined, 
@@ -39,7 +40,8 @@ const AdminLayout = () => {
     const getActiveKeys = () => {
         const path = location.pathname;
         if (path.startsWith(`/${ADMIN}/products`)) return 'products';
-        if (path.startsWith(`/${ADMIN}/inventories`)) return 'inventories';
+        if(path.startsWith(`/${ADMIN}/categories`)) return 'categories'
+         if (path.startsWith(`/${ADMIN}/inventories`)) return 'inventories';
         if (path.startsWith(`/${ADMIN}/orders`)) return 'orders';
         if (path.startsWith(`/${ADMIN}/permissions`)) return 'permissions';
         if (path.startsWith(`/${ADMIN}/assign-roles`)) return 'assign_roles';
@@ -61,6 +63,12 @@ const AdminLayout = () => {
             onClick: () => navigate(`/${ADMIN}/users`)
         },
         {
+            key: 'categories',
+            icon: <AppstoreOutlined />,
+            label: 'Danh mục',
+            onClick: () => navigate(`/${ADMIN}/categories`)
+        },
+        {
             key: 'products',
             icon: <ProductOutlined />,
             label: 'Sản phẩm',
@@ -68,7 +76,7 @@ const AdminLayout = () => {
         },
         {
             key: 'inventories',
-            icon: <AppstoreOutlined />,
+            icon: <DropboxOutlined />,
             label: 'Kho hàng',
             onClick: () => navigate(`/${ADMIN}/inventories`)
         },

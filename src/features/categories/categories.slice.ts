@@ -30,7 +30,8 @@ const categorySlice = createSlice({
             })
             .addCase(fetchCategories.fulfilled, (state, action) => {
                 state.loading = LoadingConstant.SUCCEEDED;
-                state.items = action.payload;
+                state.items = action.payload.items;
+                state.pagination = action.payload.pagination;
             })
             .addCase(fetchCategories.rejected, (state, action) => {
                 state.loading = LoadingConstant.FAILED;
