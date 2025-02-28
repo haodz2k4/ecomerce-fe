@@ -1,7 +1,7 @@
 import axiosInstance from "../../api/axios";
 import { UUID } from "../../common/types/uuid.type";
 import { QueryProduct } from "./interfaces/query-product.interface";
-import { CreateProduct } from "./types/create-product.type";
+import { CreateProduct } from "./interfaces/create-product.interface";
 import { UpdateProduct } from "./types/update-product.type";
 
 // GET MANY

@@ -39,7 +39,7 @@ const Products = () => {
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         dispatch(statsProducts())
-    },[])
+    },[dispatch])
     useEffect(() => {
         dispatch(fetchProducts({
             limit,

@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as productAPI from "./products.api";
 import { UpdateThunk } from "../../common/types/update-thunk.type";
 import { UpdateProduct } from "./types/update-product.type";
-import { CreateProduct } from "./types/create-product.type";
+import { CreateProduct } from "./interfaces/create-product.interface";
 import { QueryProduct } from "./interfaces/query-product.interface";
 import { UUID } from "../../common/types/uuid.type";
 

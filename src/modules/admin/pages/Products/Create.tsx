@@ -4,13 +4,13 @@ import { CruProps } from "../../../../common/interfaces/cru-props.interface"
 import { DiscountPercentage, StatusActiveEnum } from "../../../../constants/app.constant"
 import styles from "./Products.module.scss"
 import { useState } from "react"
-import CategoryModal from "../../components/ui/CategoryModal/CategoryModal"
+import CategoryModal from "../../components/ui/CategorySelectModal/CategorySelectModal"
 import { useForm } from "antd/es/form/Form"
 import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../../../common/types/store.type"
 import { createProduct } from "../../../../features/products/products.thunk"
-import { CreateProduct } from "../../../../features/products/types/create-product.type"
+import { CreateProduct } from "../../../../features/products/interfaces/create-product.interface"
 import { formatVndToNumber } from "../../../../utils/format"
 import { showAlert } from "../../../../features/alert/alert.slice"
 const {TextArea} = Input
@@ -24,6 +24,8 @@ const Create = (props: CruProps) => {
     const [openCategory, setOpenCategory] = useState<boolean>(false);
     const [thumbnail, setThumbnail] = useState([]);
     const [images, setImages] = useState([]);
+    const [categoryId, setCategoryId] = useState<string>();
+    const [categoryTitle, setCategoryTitle] = useState<string>();
     const dispatch = useDispatch<AppDispatch>();
     form.setFieldValue('status',StatusActiveEnum.ACTIVE);
 
@@ -41,10 +43,10 @@ const Create = (props: CruProps) => {
         setImages(fileList.slice(-4)); 
     };
 
-    const onFinish = async (values: any) => {
+    const onFinish = async (values: CreateProduct) => {
         
-        values.price = formatVndToNumber(values.price);
-        values.categoryId = '08855b2b-ef30-11ef-9cc3-c84bd64b6215';
+        values.price = formatVndToNumber(values.price as string);
+        values.categoryId = categoryId as string;
         
         try {
             await dispatch(createProduct(values))
@@ -146,8 +148,12 @@ const Create = (props: CruProps) => {
                         label="Danh mục"
                         name="categoryId"
                     >
-                        <Button icon={<SearchOutlined />} onClick={() => setOpenCategory(true)}>
-                            Danh mục
+                        <Button 
+                            icon={<SearchOutlined />} 
+                            onClick={() => setOpenCategory(true)}
+                            iconPosition="end"
+                        >
+                          {categoryTitle ?  categoryTitle : ' Thêm Danh mục' }
                         </Button>
                         <Input type="hidden" />
                     </Form.Item>
@@ -167,7 +173,13 @@ const Create = (props: CruProps) => {
                     Thêm
                 </Button>
             </Form>
-            <CategoryModal open={openCategory} setOpen={setOpenCategory}/>
+            <CategoryModal 
+                open={openCategory} 
+                setOpen={setOpenCategory}
+                categoryId={categoryId as string}
+                setCategoryId={setCategoryId}
+                setCategoryTitle={setCategoryTitle}
+            />
         </Modal>
     )
 }
