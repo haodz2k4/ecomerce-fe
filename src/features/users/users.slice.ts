@@ -31,7 +31,8 @@ const userSlice = createSlice({
             })
             .addCase(fetchUsers.fulfilled, (state, action) => {
                 state.loading = LoadingConstant.SUCCEEDED;
-                state.items = action.payload;
+                state.items = action.payload.items;
+                state.pagination = action.payload.pagination;
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.loading = LoadingConstant.FAILED;

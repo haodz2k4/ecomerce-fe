@@ -39,9 +39,10 @@ const AdminLayout = () => {
 
     const getActiveKeys = () => {
         const path = location.pathname;
+        if(path.startsWith(`/${ADMIN}/users`)) return 'users';
         if (path.startsWith(`/${ADMIN}/products`)) return 'products';
         if(path.startsWith(`/${ADMIN}/categories`)) return 'categories'
-         if (path.startsWith(`/${ADMIN}/inventories`)) return 'inventories';
+        if (path.startsWith(`/${ADMIN}/inventories`)) return 'inventories';
         if (path.startsWith(`/${ADMIN}/orders`)) return 'orders';
         if (path.startsWith(`/${ADMIN}/permissions`)) return 'permissions';
         if (path.startsWith(`/${ADMIN}/assign-roles`)) return 'assign_roles';
