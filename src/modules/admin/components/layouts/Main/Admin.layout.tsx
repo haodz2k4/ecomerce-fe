@@ -45,7 +45,7 @@ const AdminLayout = () => {
         if (path.startsWith(`/${ADMIN}/inventories`)) return 'inventories';
         if (path.startsWith(`/${ADMIN}/orders`)) return 'orders';
         if (path.startsWith(`/${ADMIN}/permissions`)) return 'permissions';
-        if (path.startsWith(`/${ADMIN}/assign-roles`)) return 'assign_roles';
+        if (path.startsWith(`/${ADMIN}/roles`)) return 'roles';
         if (path.startsWith(`/${ADMIN}/chat`)) return 'chat';
         if (path.startsWith(`/${ADMIN}/report`)) return 'report';
         return 'dashboard'

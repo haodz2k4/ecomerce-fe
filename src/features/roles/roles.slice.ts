@@ -30,7 +30,8 @@ const rolesSlice = createSlice({
       })
       .addCase(fetchRoles.fulfilled, (state, action) => {
         state.loading = LoadingConstant.IDLE;
-        state.items = action.payload;
+        state.items = action.payload.items;
+        state.pagination = action.payload.pagination
       })
       .addCase(fetchRoles.rejected, (state, action) => {
         state.loading = LoadingConstant.IDLE;

@@ -4,6 +4,7 @@ import Products from "../modules/admin/pages/Products/Products";
 import Inventories from "../modules/admin/pages/Inventories/Inventories";
 import Categories from "../modules/admin/pages/Categories/Categories";
 import Users from "../modules/admin/pages/Users/Users";
+import Roles from "../modules/admin/pages/Roles/Roles";
 
 
 export const adminRoutes: RouteObject[] = [
@@ -26,5 +27,9 @@ export const adminRoutes: RouteObject[] = [
     {
         path: "categories",
         element: <Categories />
+    },
+    {
+        path: "roles",
+        element: <Roles />
     }
 ]
