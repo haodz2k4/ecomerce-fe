@@ -55,7 +55,7 @@ const rolesSlice = createSlice({
       })
       .addCase(createRole.fulfilled, (state, action) => {
         state.loading = LoadingConstant.IDLE;
-        state.items.push(action.payload);
+        state.items.unshift(action.payload);
       })
       .addCase(createRole.rejected, (state, action) => {
         state.loading = LoadingConstant.IDLE;

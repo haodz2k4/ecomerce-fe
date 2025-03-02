@@ -36,7 +36,6 @@ const cartSlice = createSlice({
         .addCase(updateCart.fulfilled, (state, action) => {
             state.loading = LoadingConstant.SUCCEEDED;
             const index = state.cart?.cartsItems.findIndex((item) => item.id === action.payload);
-            state.cart?.cartsItems[index] = action.payload;
         })
         .addCase(removeCart.fulfilled, (state, action) => {
             

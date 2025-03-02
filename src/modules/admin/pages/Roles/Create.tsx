@@ -10,6 +10,8 @@ import { fetchPermissions } from "../../../../features/permissions/permissions.t
 import { Permission } from "../../../../features/permissions/interfaces/Permission.interface";
 import { CreateRole } from "../../../../features/roles/interfaces/create-role.interface";
 import { createRole } from "../../../../features/roles/roles.thunk";
+import { StatusActiveEnum } from "../../../../constants/app.constant";
+import { showAlert } from "../../../../features/alert/alert.slice";
 
 
 const Create = (cruProps: CruProps) => {
@@ -23,7 +25,20 @@ const Create = (cruProps: CruProps) => {
     },[dispatch])
 
     const onFinish = async (data: CreateRole) => {
-        await dispatch(createRole(data)).unwrap();
+        const {title, description} = data;
+        try {
+            await dispatch(createRole({
+                title,
+                description,
+                ids,
+                status: StatusActiveEnum.ACTIVE
+            })).unwrap();
+            dispatch(showAlert({type: 'success', message: 'Thêm thành công'}));
+            setOpen(false)
+
+        } catch {
+            dispatch(showAlert({type: 'error', message: 'Thêm thất bại'}))
+        }
     }
     return (
         <Modal
@@ -53,14 +68,16 @@ const Create = (cruProps: CruProps) => {
                                     <Checkbox 
                                             className={styles.permissions__checkbox}
                                             onClick={(e) => {
-                                                setIds([...ids, ])
+                                                setIds((prevIds) => e.target.checked 
+                                                    ? [...prevIds, item.id] 
+                                                    : prevIds.filter(id => id !== item.id)
+                                                );
                                                 if(e.target.checked) {
                                                     setCount(count + 1)
                                                 }else {
                                                     setCount(count - 1)
                                                 }
                                             }} 
-                                            value={item.id}
                                     />
                                     <List.Item.Meta
                                     title={<a href="https://ant.design">{item?.name}</a>}
@@ -71,7 +88,12 @@ const Create = (cruProps: CruProps) => {
                         />
                     </div>
                 </Form.Item>
-                <Button className={styles.btn__create__submit}>Thêm</Button>
+                <Button 
+                    className={styles.btn__create__submit}
+                    htmlType="submit"
+                >
+                    Thêm
+                </Button>
             </Form>
         </Modal>
     )
