@@ -8,13 +8,17 @@ import { FileExcelOutlined, PlusCircleOutlined, PlusOutlined } from "@ant-design
 import SelectLimit from "../../components/ui/SelectLimit/SelectLimit"
 import styles from "./Roles.module.scss";
 import Create from "./Create"
+import Edit from "./Edit"
+import { UUID } from "../../../../common/types/uuid.type"
 
 const {Search} = Input
 
 const Roles = () => {
 
+    const [openEdit, setOpenEdit] = useState<boolean>(false);
     const [openCreate, setOpenCreate] = useState<boolean>(false);
     const [keyword, setKeyword] = useState<string>();
+    const [id, setId] = useState<UUID>();
     const {items} = useSelector((state: RootState) => state.roles);
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
@@ -46,12 +50,22 @@ const Roles = () => {
                 </Col>
             </Row>
             <Table 
-                columns={rolesColumns()}
+                columns={rolesColumns({
+                    setId,
+                    setOpenEdit
+                })}
                 dataSource={items}
             />
+            {/* CREATE */}
             <Create
                 open={openCreate}
                 setOpen={setOpenCreate} 
+            />
+            {/* UPDATE */}
+            <Edit 
+                open={openEdit}
+                setOpen={setOpenEdit}
+                id={id}
             />
         </>
     )

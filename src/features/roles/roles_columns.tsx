@@ -6,9 +6,13 @@ import { StatusActiveEnum } from "../../constants/app.constant";
 import { getColorByStatus, transfromStatus } from "../../utils/transform";
 
 
+interface RolesCoumnsProps {
+    setId: (id: string) => void;
+    setOpenEdit: (val: boolean) => void;
+}
 
-const rolesColumns = (): TableColumnProps[] => {
-
+const rolesColumns = (props: RolesCoumnsProps): TableColumnProps[] => {
+    const {setId, setOpenEdit} = props
 
     return [
         {
@@ -66,6 +70,10 @@ const rolesColumns = (): TableColumnProps[] => {
                         variant="filled"
                         color="yellow"
                         size="large"
+                        onClick={() =>{
+                            setId(record.id)
+                            setOpenEdit(true)
+                        }}
                     />
                     <Popconfirm 
                         title={TITLE_CONFIRM_REMOVE}
