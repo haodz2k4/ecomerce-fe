@@ -11,7 +11,6 @@ import { AppDispatch, RootState } from "../../../../../common/types/store.type";
 import { logoutUser } from "../../../../../features/auth/auth.thunk";
 import { showAlert } from "../../../../../features/alert/alert.slice";
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../../../../../features/products/products.thunk";
 import { Product } from "../../../../../features/products/interfaces/product.interface";
 import { getProductsAPI } from "../../../../../features/products/products.api";
 import { fetchCategories } from "../../../../../features/categories/categories.thunk";
@@ -81,6 +80,25 @@ function AppHeader() {
             setProducts([])
         }
     }
+
+    const cartItems: MenuProps['items'] =[
+        {
+            key: '1',
+            label: (
+                <Link>
+                    <Space >
+                        <Image 
+                            width={40} 
+                            height={40} 
+                            style={{borderRadius: '10px', border: 'solid 1px'}}
+                        />
+                        <p>Sản phẩm A</p>
+                        <p style={{marginLeft: '10px', color: 'pink'}}>300.000 VND</p>
+                    </Space>
+                </Link>
+            )
+        }
+    ]
 
     return (
         <header className={styles.header}>
@@ -179,13 +197,19 @@ function AppHeader() {
                         </div>
                         <Space className={styles.header__other}>
                             <Badge count={10}>
-                                <Button 
-                                    shape="circle" 
-                                    size="large" 
-                                    color="pink" 
-                                    icon={<ShoppingCartOutlined  /> }
-                                    onClick={() => navigate("/cart")}
-                                />
+                                <Dropdown 
+                                    menu={{items: cartItems}}
+                                    placement="bottomLeft"
+                                >
+                                    <Button 
+                                        shape="circle" 
+                                        size="large" 
+                                        color="pink" 
+                                        icon={<ShoppingCartOutlined  /> }
+                                        onClick={() => navigate("/cart")}
+                                        
+                                    />
+                                </Dropdown>
                             </Badge>
                             <Dropdown menu={{items: isAuth ? userItems : authItems}} placement="bottom">
                                <Avatar icon={<UserOutlined />}/>

@@ -1,10 +1,10 @@
 import { Button, Flex, Image, InputNumber, Popconfirm, Space, Table, TableColumnProps,Input, Col } from "antd";
 import styles from "./Carts.module.scss";
-import { camulatorDiscountPrice } from "../../../../../utils/camulator";
-import { Product } from "../../../../../features/products/interfaces/product.interface";
+import { camulatorDiscountPrice } from "../../../../utils/camulator";
+import { Product } from "../../../../features/products/interfaces/product.interface";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { formatPriceToVnd } from "../../../../../utils/format";
-import { InputFormatPrice } from "../../../../../components/Input/InputFormatPrice";
+import { formatPriceToVnd } from "../../../../utils/format";
+import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice";
 
 const {Search} = Input;
 const Carts = () => {
