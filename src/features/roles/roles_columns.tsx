@@ -9,10 +9,11 @@ import { getColorByStatus, transfromStatus } from "../../utils/transform";
 interface RolesCoumnsProps {
     setId: (id: string) => void;
     setOpenEdit: (val: boolean) => void;
+    setOpenDetail: (val: boolean) => void;
 }
 
 const rolesColumns = (props: RolesCoumnsProps): TableColumnProps[] => {
-    const {setId, setOpenEdit} = props
+    const {setId, setOpenEdit, setOpenDetail} = props
 
     return [
         {
@@ -64,6 +65,10 @@ const rolesColumns = (props: RolesCoumnsProps): TableColumnProps[] => {
                         variant="filled"
                         color="blue"
                         size="large"
+                        onClick={() => {
+                            setId(record.id)
+                            setOpenDetail(true)
+                        }}
                     />
                     <Button
                         icon={<EditOutlined/>} 

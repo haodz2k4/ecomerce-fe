@@ -10,11 +10,13 @@ import styles from "./Roles.module.scss";
 import Create from "./Create"
 import Edit from "./Edit"
 import { UUID } from "../../../../common/types/uuid.type"
+import Detail from "./Detail"
 
 const {Search} = Input
 
 const Roles = () => {
 
+    const [openDetail, setOpenDetail] = useState<boolean>(false);
     const [openEdit, setOpenEdit] = useState<boolean>(false);
     const [openCreate, setOpenCreate] = useState<boolean>(false);
     const [keyword, setKeyword] = useState<string>();
@@ -52,7 +54,8 @@ const Roles = () => {
             <Table 
                 columns={rolesColumns({
                     setId,
-                    setOpenEdit
+                    setOpenEdit,
+                    setOpenDetail
                 })}
                 dataSource={items}
             />
@@ -66,6 +69,12 @@ const Roles = () => {
                 open={openEdit}
                 setOpen={setOpenEdit}
                 id={id}
+            />
+            {/* DETAIL  */}
+            <Detail
+                open={openDetail}
+                setOpen={setOpenDetail}
+                id={id} 
             />
         </>
     )

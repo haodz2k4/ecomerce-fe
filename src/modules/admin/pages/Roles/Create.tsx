@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input, List, Modal } from "antd"
+import { Button, Checkbox, Form, Input, List, Modal, Radio } from "antd"
 import { CruProps } from "../../../../common/interfaces/cru-props.interface"
 import TextArea from "antd/es/input/TextArea";
 import Title from "antd/es/typography/Title";
@@ -25,13 +25,13 @@ const Create = (cruProps: CruProps) => {
     },[dispatch])
 
     const onFinish = async (data: CreateRole) => {
-        const {title, description} = data;
+        const {title, description, status} = data;
         try {
             await dispatch(createRole({
                 title,
                 description,
                 ids,
-                status: StatusActiveEnum.ACTIVE
+                status
             })).unwrap();
             dispatch(showAlert({type: 'success', message: 'Thêm thành công'}));
             setOpen(false)
@@ -57,6 +57,12 @@ const Create = (cruProps: CruProps) => {
                 </Form.Item>
                 <Form.Item label="Mô tả">
                     <TextArea rows={4} />
+                </Form.Item>
+                <Form.Item label="Trạng thái" name="status">
+                    <Radio.Group>
+                        <Radio value={StatusActiveEnum.ACTIVE}>Hoạt động</Radio>
+                        <Radio value={StatusActiveEnum.INACTIVE}>Không hoạt động</Radio>
+                    </Radio.Group>
                 </Form.Item>
                 <Form.Item label={`Các quyền (${count})`}>
                     <div className={styles.list__role}>

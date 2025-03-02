@@ -1,10 +1,10 @@
 import { UUID } from "../../../common/types/uuid.type";
-import { PermissionName } from "../../../constants/permission.enum";
+import { PermissionName, PermissionResource } from "../../../constants/permission.enum";
 
 export interface Permission {
     id: UUID;
     name: PermissionName;
-    resource: string;
+    resource: PermissionResource;
     createdAt: Date;
     updatedAt: Date;
 

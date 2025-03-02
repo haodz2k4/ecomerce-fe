@@ -1,4 +1,5 @@
 import { StatusActiveEnum } from "../../../constants/app.constant";
+import { Permission } from "../../permissions/interfaces/Permission.interface";
 
 
 export interface Roles {
@@ -6,6 +7,7 @@ export interface Roles {
     title: string;
     description: string;
     status: StatusActiveEnum;
+    permissions: Permission[]
     createdAt: Date;
     updatedAt: Date;
 }
