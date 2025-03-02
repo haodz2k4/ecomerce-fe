@@ -5,6 +5,7 @@ import PrivateRouter from "./Private.route";
 import ProductDetail from "../modules/client/components/ui/ProductDetail/ProductDetail";
 import Products from "../modules/client/pages/Products/Products";
 import CategoryProducts from "../modules/client/pages/Categories/CategoryProducts";
+import Carts from "../modules/client/components/ui/Carts/Carts";
 
 
 export const clientRoutes: RouteObject[] = [
@@ -29,6 +30,10 @@ export const clientRoutes: RouteObject[] = [
     {
         path: '/categories/:slug',
         element: <CategoryProducts />
+    },
+    {
+        path: '/cart',
+        element: <Carts />
     }
     
 ]   

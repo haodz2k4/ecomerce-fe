@@ -179,7 +179,13 @@ function AppHeader() {
                         </div>
                         <Space className={styles.header__other}>
                             <Badge count={10}>
-                                <Button shape="circle" size="large" color="pink" icon={<ShoppingCartOutlined  /> }/>
+                                <Button 
+                                    shape="circle" 
+                                    size="large" 
+                                    color="pink" 
+                                    icon={<ShoppingCartOutlined  /> }
+                                    onClick={() => navigate("/cart")}
+                                />
                             </Badge>
                             <Dropdown menu={{items: isAuth ? userItems : authItems}} placement="bottom">
                                <Avatar icon={<UserOutlined />}/>

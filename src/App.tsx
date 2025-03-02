@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { fetchCurrentUser } from "./features/users/users.thunk";
 import { AppDispatch } from "./common/types/store.type";
 import { resetAuthState } from "./features/auth/auth.slice";
+import { ConfigProvider } from "antd";
 function App() {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -20,9 +21,19 @@ function App() {
   
   return (
     <>
-      <AlertMessage />
-      <NotificationMessage />
-      <RouterProvider router={routes}/>
+      <ConfigProvider
+        theme={{
+          components: {
+            Table: {
+              headerBg: '#FFE4E1'
+            }
+          }
+        }}
+      >
+        <AlertMessage />
+        <NotificationMessage />
+        <RouterProvider router={routes}/>
+      </ConfigProvider>
     </>
   )
 }
