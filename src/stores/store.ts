@@ -7,6 +7,7 @@ import inventoryReducer  from "../features/inventories/inventories.slice";
 import categoriesReducer from "../features/categories/categories.slice";
 import userReducer from "../features/users/users.slice";
 import roleReducer from "../features/roles/roles.slice";
+import cartReducer from "../features/carts/carts.slice";
 import permissionReducer from "../features/permissions/permissions.slice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
     upload: uploadReducer,
     inventories: inventoryReducer,
     roles: roleReducer,
-    permissions: permissionReducer
+    permissions: permissionReducer,
+    carts: cartReducer
 });
 
 const persistConfig = {
