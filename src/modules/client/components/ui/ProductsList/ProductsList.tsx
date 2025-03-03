@@ -3,8 +3,12 @@ import { Product } from "../../../../../features/products/interfaces/product.int
 import styles from "./ProductList.module.scss";
 import { formatPriceToVnd } from "../../../../../utils/format";
 import { ShoppingCartOutlined, ShoppingOutlined, StarOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { camulatorDiscountPrice } from "../../../../../utils/camulator";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../../common/types/store.type";
+import { createCart } from "../../../../../features/carts/carts.thunk";
+import { showAlert } from "../../../../../features/alert/alert.slice";
 
 const { Title } = Typography;
 
@@ -15,6 +19,25 @@ interface ProductsListProps {
 
 const ProductsList = (props: ProductsListProps) => {
     const { products = [], title } = props;
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+    const handleAddCart = async (productId: string) => {
+        try {
+            await  dispatch(createCart({
+                productId,
+                quantity: 1
+            })).unwrap()
+            dispatch(showAlert({
+                type: 'success',
+                message: 'Thêm vào giỏ hàng thành công'
+            }))
+        } catch  {
+            dispatch(showAlert({
+                type: 'error',
+                message: 'Thêm vào sản phẩm thất bại'
+            }))
+        }
+    }
     return (
         <div className={"container " + styles.products  }>
             <Title className={styles.title}>{title}</Title>
@@ -22,13 +45,14 @@ const ProductsList = (props: ProductsListProps) => {
                 
                 {products.map((item) => (
                     <Col span={6} key={item.id}>
-                        <Link to={`/products/${item.slug}`} className={styles.products__card}>
+                        <div className={styles.products__card}>
                             <img 
                                 src={item.thumbnail} 
                                 className={styles.products__thumbnail} 
                                 width={255}
                                 height={250}
                                 alt={item.title}
+                                onClick={() => navigate(`/products/${item.slug}`)}
                             />
                             <div className={styles.products__title}>{item.title}</div>
                             <div className={styles.products__content}>
@@ -53,11 +77,23 @@ const ProductsList = (props: ProductsListProps) => {
                                     iconPosition="end"
                                     variant="solid"
                                     className={styles.addToCart}
+                                    onClick={() => {
+                                        if(item.inventories.quantity === 0) {
+                                            dispatch(showAlert({
+                                                type: 'error',
+                                                message: 'Sản phẩm đã hết hàng'
+                                            }))
+                                            
+                                        }else {
+                                            
+                                            handleAddCart(item.id)
+                                        }
+                                    }}
                                 >
                                     Thêm
                                 </Button>
                             </div>
-                        </Link>
+                        </div>
                     </Col>
                 ))}
             </Row>

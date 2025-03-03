@@ -3,6 +3,7 @@ import { Button, Image, Popconfirm, Space, TableColumnProps, Tag } from "antd"
 import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant"
 import { getColorByStatus, transfromGender, transfromStatus } from "../../utils/transform"
 import { formatDate } from "../../utils/format"
+import { RoleAdmin } from "../../constants/role.constant"
 
 
 export const usersColums = (): TableColumnProps[] => {
@@ -49,6 +50,10 @@ export const usersColums = (): TableColumnProps[] => {
         {
             key: 'roles',
             title: 'Vai trò',
+            dataIndex: 'roleId',
+            render: (val) => {
+                return val === RoleAdmin ? 'Quản trị viên' : 'Người dùng' 
+            }
         },
         {
             key: 'createdAt',

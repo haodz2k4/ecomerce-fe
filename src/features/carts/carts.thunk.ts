@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getCartAPI, createCartAPI, updateCartAPI, removeCartAPI } from "./carts.api";
-import { CreateCart } from "./types/create-cart.type";
+import { CreateCart } from "./interfaces/create-cart.type";
 import { UpdateCart } from "./types/update-cart.type";
 
 //FETCH CART

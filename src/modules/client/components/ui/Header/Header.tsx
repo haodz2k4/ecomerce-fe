@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { Product } from "../../../../../features/products/interfaces/product.interface";
 import { getProductsAPI } from "../../../../../features/products/products.api";
 import { fetchCategories } from "../../../../../features/categories/categories.thunk";
+import { fetchCart } from "../../../../../features/carts/carts.thunk";
 
 
 const {Search} = Input;
@@ -27,6 +28,12 @@ function AppHeader() {
     const navigate = useNavigate();
     const {items} = useSelector((state: RootState) => state.categories);
 
+
+    const {cart} = useSelector((state: RootState) => state.carts);
+    
+    useEffect(() => {
+        dispatch(fetchCart())
+    },[dispatch])
     useEffect(() => {
         dispatch(fetchCategories({
             limit: 12
@@ -196,7 +203,7 @@ function AppHeader() {
                             </ul>
                         </div>
                         <Space className={styles.header__other}>
-                            <Badge count={10}>
+                            <Badge count={cart?.cartsItems.length}>
                                 <Dropdown 
                                     menu={{items: cartItems}}
                                     placement="bottomLeft"

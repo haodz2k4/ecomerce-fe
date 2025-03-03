@@ -1,5 +1,5 @@
 import axiosInstance from "../../api/axios"
-import { CreateCart } from "./types/create-cart.type";
+import { CreateCart } from "./interfaces/create-cart.type";
 import { UpdateCart } from "./types/update-cart.type";
 
 

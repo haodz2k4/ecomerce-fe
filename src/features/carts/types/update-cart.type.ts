@@ -1,4 +1,4 @@
-import { CreateCart } from "./create-cart.type";
+import { CreateCart } from "../interfaces/create-cart.type";
 
 
 export type UpdateCart = CreateCart
