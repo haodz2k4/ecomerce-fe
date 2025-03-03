@@ -1,5 +1,5 @@
 import { LoadingConstant } from '../../constants/loading.constant';
-import { createCart, fetchCart, removeCart, updateCart } from './carts.thunk';
+import { clearCart, createCart, fetchCart, removeCart, updateCart } from './carts.thunk';
 import { CartState } from './interfaces/cart-state.interface';
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -28,17 +28,31 @@ const cartSlice = createSlice({
             state.loading = LoadingConstant.FAILED;
             state.error = action.payload as string;
         })
-        //CREATE CART
+        //CREATE CART 
         .addCase(createCart.fulfilled, (state, action) => {
             state.loading = LoadingConstant.SUCCEEDED;
-            state.cart?.cartsItems.unshift(action.payload)
+            const index = state.cart?.cart_items.items.findIndex((item) => item.id === action.payload.id);
+            if(index !== -1) {
+                state.cart?.cart_items.items[index] = action.payload;
+            } else {
+                state.cart?.cart_items.items.unshift(action.payload);
+            }
         })
+        //UPDATE CART 
         .addCase(updateCart.fulfilled, (state, action) => {
             state.loading = LoadingConstant.SUCCEEDED;
-            const index = state.cart?.cartsItems.findIndex((item) => item.id === action.payload);
+            const index = state.cart?.cart_items.items.findIndex((item) => item.id === action.payload.id);
+            state.cart?.cart_items.items[index] = action.payload;
         })
+        //DELETE CART 
         .addCase(removeCart.fulfilled, (state, action) => {
-            
+            state.loading = LoadingConstant.SUCCEEDED;
+            state.cart?.cart_items.items = state.cart?.cart_items.items.filter((item) => item.id !== action.payload);
+        })
+        //CLEAR CART 
+        .addCase(clearCart.fulfilled, (state, action) => {
+            state.loading = LoadingConstant.SUCCEEDED;
+            state.cart?.cart_items.items = []
         })
     }
 })

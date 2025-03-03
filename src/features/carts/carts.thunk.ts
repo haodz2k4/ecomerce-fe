@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getCartAPI, createCartAPI, updateCartAPI, removeCartAPI } from "./carts.api";
+import { getCartAPI, createCartAPI, updateCartAPI, removeCartAPI, clearCartAPI } from "./carts.api";
 import { CreateCart } from "./interfaces/create-cart.type";
 import { UpdateCart } from "./types/update-cart.type";
 
@@ -42,3 +42,16 @@ export const removeCart = createAsyncThunk("cart/removeCart", async (productId: 
         return rejectWithValue(error);
     }
 });
+
+//CLEAR CART 
+export const clearCart = createAsyncThunk(
+    "cart/clearCart", 
+    async (_, {rejectWithValue}) => {
+        try {
+            await clearCartAPI();
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+
+)

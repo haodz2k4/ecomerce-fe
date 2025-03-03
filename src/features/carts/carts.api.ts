@@ -20,5 +20,11 @@ export const updateCartAPI = async (updateCart: UpdateCart) => {
 }
 
 export const removeCartAPI = async (productId: string) => {
-    await axiosInstance.delete(`carts/${productId}`);
+    await axiosInstance.delete(`carts`, {
+        data: {productId}
+    });
+}
+
+export const clearCartAPI = async () => {
+    await axiosInstance.delete(`carts/clear`);
 }

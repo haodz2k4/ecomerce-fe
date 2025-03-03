@@ -31,7 +31,6 @@ function AppHeader() {
     const {items} = useSelector((state: RootState) => state.categories);
 
 
-    const {cart} = useSelector((state: RootState) => state.carts);
     
     useEffect(() => {
         dispatch(fetchCart())
@@ -166,7 +165,7 @@ function AppHeader() {
                                         className={styles.suggestions__list}
                                         dataSource={products}
                                         itemLayout="horizontal"
-                                        renderItem={(item, index) => (
+                                        renderItem={(item) => (
                                             <List.Item 
                                                 style={{width: '340px'}}
                                                 onClick={() => {
