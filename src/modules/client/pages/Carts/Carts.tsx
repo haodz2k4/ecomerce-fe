@@ -5,11 +5,19 @@ import { Product } from "../../../../features/products/interfaces/product.interf
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { formatPriceToVnd } from "../../../../utils/format";
 import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../common/types/store.type";
+import { useEffect } from "react";
+import { fetchCart } from "../../../../features/carts/carts.thunk";
 
 const {Search} = Input;
 const Carts = () => {
 
-
+    const {cart} = useSelector((state: RootState) => state.carts);
+    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        dispatch(fetchCart())
+    },[dispatch])   
     const columns: TableColumnProps<Product>[] = [
         {
             key: '#',
@@ -24,7 +32,7 @@ const Carts = () => {
         {
             key: 'thumbnail',
             title: 'Hình ảnh',
-            dataIndex: 'thumbnail',
+            dataIndex: ['product','thumbnail'],
             render: (val) => <Image 
                                 src={val}
                                 width={50}
@@ -35,8 +43,8 @@ const Carts = () => {
         {
             key: 'price',
             title: 'Giá tiền',
-            dataIndex: 'price',
-            render: (val, record) => camulatorDiscountPrice(val, record.discountPercentage),
+            dataIndex: ['product','price'],
+            render: (val, record) => formatPriceToVnd(camulatorDiscountPrice(val, record.product.discountPercentage)),
             filterDropdown: () => (
                 <Space style={{padding: '5px'}}>
                     <InputFormatPrice customInput={Input as any}/>
@@ -85,7 +93,7 @@ const Carts = () => {
                             type: 'checkbox'
                         }}
                         columns={columns}
-                        dataSource={[{}]}
+                        dataSource={cart?.cartsItems}
                     />
                 </div>
                 <Flex justify="space-between">

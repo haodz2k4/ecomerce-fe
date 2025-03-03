@@ -15,6 +15,8 @@ import { Product } from "../../../../../features/products/interfaces/product.int
 import { getProductsAPI } from "../../../../../features/products/products.api";
 import { fetchCategories } from "../../../../../features/categories/categories.thunk";
 import { fetchCart } from "../../../../../features/carts/carts.thunk";
+import { formatPriceToVnd } from "../../../../../utils/format";
+import { camulatorDiscountPrice } from "../../../../../utils/camulator";
 
 
 const {Search} = Input;
@@ -88,24 +90,27 @@ function AppHeader() {
         }
     }
 
-    const cartItems: MenuProps['items'] =[
+    const cartItems: MenuProps['items'] = cart?.cartsItems.map((item) => (
         {
-            key: '1',
+            key: '1',   
             label: (
-                <Link>
+                <Link to={`/products/${item.product.slug}`}>
                     <Space >
                         <Image 
                             width={40} 
                             height={40} 
                             style={{borderRadius: '10px', border: 'solid 1px'}}
+                            src={item.product.thumbnail}
                         />
-                        <p>Sản phẩm A</p>
-                        <p style={{marginLeft: '10px', color: 'pink'}}>300.000 VND</p>
+                        <p>{item.product.title}</p>
+                        <p style={{marginLeft: '10px', color: 'pink'}}>
+                            {formatPriceToVnd(camulatorDiscountPrice(item.product.price, item.product.discountPercentage))}
+                        </p>
                     </Space>
                 </Link>
             )
         }
-    ]
+    ))
 
     return (
         <header className={styles.header}>
