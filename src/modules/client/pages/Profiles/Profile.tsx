@@ -6,10 +6,12 @@ import InfoTab from "./InfoTab";
 import OrderedTab from "./OrderedTab";
 import AuthTab from "./AuthTab";
 import FavoriteTab from "./FavoriteTab";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../common/types/store.type";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../common/types/store.type";
 import { formatDate } from "../../../../utils/format";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
+import { fetchCurrentUser } from "../../../../features/users/users.thunk";
 
 const {Title} = Typography;
 
@@ -17,7 +19,11 @@ const {Title} = Typography;
 
 const Profile = () => {
 
-    const {currentUser} = useSelector((state: RootState) => state.users )
+    const {currentUser} = useSelector((state: RootState) => state.users)
+    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        dispatch(fetchCurrentUser())
+    },[dispatch])
     const items: TabsProps['items'] = [
         {
             key: 'info',
