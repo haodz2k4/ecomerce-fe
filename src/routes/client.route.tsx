@@ -6,6 +6,7 @@ import ProductDetail from "../modules/client/components/ui/ProductDetail/Product
 import Products from "../modules/client/pages/Products/Products";
 import CategoryProducts from "../modules/client/pages/Categories/CategoryProducts";
 import Carts from "../modules/client/pages/Carts/Carts";
+import VerifyEmail from "../modules/admin/pages/Auth/VerifyEmail";
 
 
 export const clientRoutes: RouteObject[] = [
@@ -34,6 +35,10 @@ export const clientRoutes: RouteObject[] = [
     {
         path: '/cart',
         element: <Carts />
+    },
+    {
+        path: '/verify-email',
+        element: <VerifyEmail />
     }
     
 ]   

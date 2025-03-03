@@ -3,5 +3,5 @@ import { StatusActiveEnum } from "../../../constants/app.constant";
 
 
 export interface QueryRole extends BaseQuery {
-    status?: StatusActiveEnum
+    status?: StatusActiveEnum;
 }

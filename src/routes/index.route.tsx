@@ -5,6 +5,7 @@ import Register from "../modules/client/pages/Register/Register";
 import Login from "../modules/client/pages/Login/Login";
 import AdminLayout from "../modules/admin/components/layouts/Main/Admin.layout";
 import { adminRoutes } from "./admin.route";
+import PrivateRouter from "./Private.route";
 
 
 
@@ -18,7 +19,9 @@ const routes = createBrowserRouter(
         },
         {
             path: "admin",
-            element: <AdminLayout />,
+            element: <PrivateRouter>
+                <AdminLayout />
+            </PrivateRouter>,
             children: adminRoutes
         },
         {

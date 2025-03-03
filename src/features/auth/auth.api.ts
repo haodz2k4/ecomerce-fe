@@ -22,3 +22,13 @@ export const loginAPI = async (email: string, password: string) => {
 export const logoutAPI = async () => {
     await axiosInstance.post('auth/logout')
 }
+
+//VERIFY EMAIL 
+export const verifyAPI = async (token: string) => {
+    console.log(token)
+    await axiosInstance.get('auth/verify',{
+        params: {
+            token
+        }
+    })
+}

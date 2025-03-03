@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { registerAPI, loginAPI, logoutAPI } from "./auth.api";
+import { registerAPI, loginAPI, logoutAPI, verifyAPI } from "./auth.api";
 import { Register } from "./types/register.type";
 import { Login } from "./interfaces/login.interface";
 
@@ -40,3 +40,17 @@ export const logoutUser = createAsyncThunk(
         }
     }
 );
+
+
+//VERIFY EMAIL 
+
+export const verify = createAsyncThunk(
+    "auth/verify",
+    async (token: string, {rejectWithValue}) => {
+        try {
+            await verifyAPI(token)
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
