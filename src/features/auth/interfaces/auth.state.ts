@@ -8,4 +8,5 @@ export interface AuthState {
     loading: LoadingConstant;
     error: null | string;
     expiresIn: number; //SECOND
+    roleId: string | null;
 }

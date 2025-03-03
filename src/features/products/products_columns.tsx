@@ -57,8 +57,9 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
             dataIndex: 'thumbnail',
             render: (thumbnailUrl: string) => 
             <Image 
-                width={50} 
-                height={50} 
+                width={70} 
+                height={70} 
+                style={{borderRadius: '7px'}}
                 src={thumbnailUrl}
             />
         },

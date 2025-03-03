@@ -10,7 +10,8 @@ const initialState: AuthState = {
     isAuth: false,
     loading: LoadingConstant.IDLE,
     error: null,
-    expiresIn: 0
+    expiresIn: 0,
+    roleId: null
 }
 
 const authSlice = createSlice({
@@ -59,6 +60,7 @@ const authSlice = createSlice({
                 state.refreshToken = action.payload.refreshToken;
                 state.error = null;
                 state.expiresIn = action.payload.expiresIn
+                state.roleId = action.payload.roleId 
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = LoadingConstant.FAILED;

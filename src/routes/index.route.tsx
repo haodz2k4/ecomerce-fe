@@ -6,6 +6,7 @@ import Login from "../modules/client/pages/Login/Login";
 import AdminLayout from "../modules/admin/components/layouts/Main/Admin.layout";
 import { adminRoutes } from "./admin.route";
 import PrivateRouter from "./Private.route";
+import Roles from "./Roles.route";
 
 
 
@@ -20,7 +21,9 @@ const routes = createBrowserRouter(
         {
             path: "admin",
             element: <PrivateRouter>
-                <AdminLayout />
+                <Roles >
+                    <AdminLayout />
+                </Roles>
             </PrivateRouter>,
             children: adminRoutes
         },

@@ -5,7 +5,8 @@ import { showNotification } from "../features/notifications/notification.slice";
 
 const PrivateRouter = ({ children }: { children: React.ReactNode }) => {
     const dispatch = useDispatch<AppDispatch>();
-    const {isAuth} = useSelector((state: RootState) => state.auth);
+    const {isAuth, roleId} = useSelector((state: RootState) => state.auth);
+
     if(!isAuth) {
         dispatch( showNotification({
             type: 'error', 

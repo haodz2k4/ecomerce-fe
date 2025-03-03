@@ -23,6 +23,7 @@ export const usersColums = (): TableColumnProps[] => {
             title: 'Avatar',
             dataIndex: 'avatar',
             render: (val) => <Image
+                                style={{borderRadius: '50%', border: 'solid 1px'}}
                                 width={70}
                                 height={70}  
                                 src={val}

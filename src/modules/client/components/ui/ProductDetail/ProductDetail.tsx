@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"
 import { AppDispatch, RootState } from "../../../../../common/types/store.type";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchProductBySlug } from "../../../../../features/products/products.thunk";
 import styles from "./ProductDetail.module.scss";
 import { Alert, Button, Image, InputNumber, Space, Tabs, TabsProps, Tag, Typography } from "antd";
@@ -16,7 +16,9 @@ const ProductDetail = () => {
 
     const param = useParams();
     const slug = param.slug;
+    
     const {item} = useSelector((state: RootState) => state.products);
+    const [mainImg, setImg] = useState(item?.images[0]);
     const dispatch = useDispatch<AppDispatch>();
     const itemsTab: TabsProps['items'] = [
         {
@@ -32,6 +34,13 @@ const ProductDetail = () => {
             label: 'Hướng dẫn'
         }
     ]
+
+    useEffect(() => {
+        if(item?.images?.length as number > 0) {
+            setImg(item?.images[0])
+        }
+    },[item])
+
     useEffect(() => {
         dispatch(fetchProductBySlug(slug as string)).unwrap()
     },[dispatch, slug])
@@ -49,13 +58,18 @@ const ProductDetail = () => {
                     <Image 
                         width={500} 
                         height={500} 
-                        src={item?.thumbnail}
+                        src={mainImg}
                         className={styles.product__thumbnail}
                     />
                     <Space>
                         {
                             item?.images.map((item) => (
-                                <image width={100} height={100} src={item} />
+                                <img 
+                                    width={100} 
+                                    height={100} 
+                                    src={item}
+                                    onClick={() => setImg(item)}
+                                />
                             ))
                         }
                     </Space>
