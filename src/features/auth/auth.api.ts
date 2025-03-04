@@ -25,10 +25,30 @@ export const logoutAPI = async () => {
 
 //VERIFY EMAIL 
 export const verifyAPI = async (token: string) => {
-    console.log(token)
     await axiosInstance.get('auth/verify',{
         params: {
             token
         }
+    })
+}
+
+//FORGOT PASSWORD 
+export const forgotPasswordAPI = async (email: string) => {
+    await axiosInstance.post('auth/forgot',{email});
+}
+
+//VERIFY OTP 
+export const verifyOtpAPI = async (email: string, otp: string) => {
+    await axiosInstance.post('auth/verify-otp',{
+        email,
+        otp
+    })
+}
+
+//RESET PASSWORD
+export const resetPasswordAPI = async (token: string, password: string) => {
+    await axiosInstance.post('auth/reset-password',{
+        token,
+        password
     })
 }

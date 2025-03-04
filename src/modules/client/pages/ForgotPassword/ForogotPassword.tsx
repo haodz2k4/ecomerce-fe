@@ -2,20 +2,40 @@ import styles from "./ForgotPassword.module.scss"
 import { Layout, Form, Input, Checkbox, Flex, Button, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../common/types/store.type";
+import { forgotPassword } from "../../../../features/auth/auth.thunk";
+import { showNotification } from "../../../../features/notifications/notification.slice";
 
 const {Title} = Typography
 const ForgotPassword = () => {
 
-    const onFinish = () => {
-        
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+    const onFinish = async (values: {email: string}) => {
+        try {
+            await dispatch(forgotPassword(values.email)).unwrap();
+            dispatch(showNotification({
+                type: 'success',
+                message: 'Chúng tôi đã gữi mã OTP',
+                description: 'Vui lòng truy cập vào gmail để lấy Otp và xác thực'
+            }))
+            navigate("/verify-otp")
+        } catch{
+            dispatch(showNotification({
+                type: 'error',
+                message: 'Có lỗi xảy ra'
+            }))
+        }
     }
     return (
         <Layout className={styles.forgot}>
             <Content className={styles.forgot__content}>
                 <div className={styles.forgot__inner}>
                     <Form 
-                        layout="vertical" 
+                        layout="vertical"
+                        onFinish={onFinish} 
                     >
                         <Title className={styles.forgot__title} level={2}>Quên mật khẩu <LockOutlined /> </Title>
                         <Form.Item 

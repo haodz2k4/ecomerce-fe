@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AuthState } from "./interfaces/auth.state";
 import { LoadingConstant } from "../../constants/loading.constant";
-import { registerUser, loginUser, logoutUser, verify } from "./auth.thunk";
+import { registerUser, loginUser, logoutUser, verify, forgotPassword, verifyOtp, resetPassword } from "./auth.thunk";
 import { isTokenExpires } from "../../utils/jwt";
 
 const initialState: AuthState = {
@@ -76,6 +76,18 @@ const authSlice = createSlice({
             })
             //VERIFY 
             .addCase(verify.fulfilled, (state) => {
+                state.loading = LoadingConstant.SUCCEEDED;
+            })
+            //FORGOT PASSWORD
+            .addCase(forgotPassword.fulfilled, (state) => {
+                state.loading = LoadingConstant.SUCCEEDED;
+            })
+            //VERIFY OTP 
+            .addCase(verifyOtp.fulfilled, (state) => {
+                state.loading = LoadingConstant.SUCCEEDED;
+
+            } )
+            .addCase(resetPassword.fulfilled, (state) => {
                 state.loading = LoadingConstant.SUCCEEDED;
             })
     }

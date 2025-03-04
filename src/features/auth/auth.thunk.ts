@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { registerAPI, loginAPI, logoutAPI, verifyAPI } from "./auth.api";
+import { registerAPI, loginAPI, logoutAPI, verifyAPI, forgotPasswordAPI, verifyOtpAPI, resetPasswordAPI } from "./auth.api";
 import { Register } from "./types/register.type";
 import { Login } from "./interfaces/login.interface";
 
@@ -49,6 +49,42 @@ export const verify = createAsyncThunk(
     async (token: string, {rejectWithValue}) => {
         try {
             await verifyAPI(token)
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
+
+//FORGOT PASSWORD
+export const forgotPassword = createAsyncThunk(
+    "auth/forgotPassword",
+    async (email: string, {rejectWithValue}) => {
+        try {
+            await forgotPasswordAPI(email)
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
+
+//VERIFY OTP 
+export const verifyOtp = createAsyncThunk(
+    "auth/verifyotp",
+    async ({email, otp}: {email: string, otp: string},{rejectWithValue}) => {
+        try {
+            await verifyOtpAPI(email, otp);
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
+
+//RESET PASSWORD 
+export const resetPassword = createAsyncThunk(
+    "auth/resetPassword",
+    async ({token, password}: {token: string, password: string}, {rejectWithValue}) => {
+        try {
+            await resetPasswordAPI(token, password);
         } catch (error) {
             return rejectWithValue(error)
         }
