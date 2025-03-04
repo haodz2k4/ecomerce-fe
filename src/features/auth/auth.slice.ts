@@ -7,6 +7,7 @@ import { isTokenExpires } from "../../utils/jwt";
 const initialState: AuthState = {
     accessToken: null,
     refreshToken: null,
+    resetToken: null,
     isAuth: false,
     loading: LoadingConstant.IDLE,
     error: null,
@@ -83,10 +84,11 @@ const authSlice = createSlice({
                 state.loading = LoadingConstant.SUCCEEDED;
             })
             //VERIFY OTP 
-            .addCase(verifyOtp.fulfilled, (state) => {
+            .addCase(verifyOtp.fulfilled, (state, action) => {
                 state.loading = LoadingConstant.SUCCEEDED;
-
+                state.refreshToken = action.payload.token
             } )
+            //RESET PASSWORD
             .addCase(resetPassword.fulfilled, (state) => {
                 state.loading = LoadingConstant.SUCCEEDED;
             })

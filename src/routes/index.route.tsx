@@ -8,6 +8,7 @@ import { adminRoutes } from "./admin.route";
 import PrivateRouter from "./Private.route";
 import Roles from "./Roles.route";
 import ForgotPassword from "../modules/client/pages/ForgotPassword/ForogotPassword";
+import VerifyOtp from "../modules/client/pages/VerifyOtp/VerifyOtp";
 
 
 
@@ -39,6 +40,10 @@ const routes = createBrowserRouter(
         {
             path: '/forgot-password',
             element: <ForgotPassword />
+        },
+        {
+            path: '/verify-otp',
+            element: <VerifyOtp />
         }
 
     ]

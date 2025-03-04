@@ -14,14 +14,15 @@ const ForgotPassword = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const onFinish = async (values: {email: string}) => {
+        const {email} = values
         try {
-            await dispatch(forgotPassword(values.email)).unwrap();
+            await dispatch(forgotPassword(email)).unwrap();
             dispatch(showNotification({
                 type: 'success',
                 message: 'Chúng tôi đã gữi mã OTP',
                 description: 'Vui lòng truy cập vào gmail để lấy Otp và xác thực'
             }))
-            navigate("/verify-otp")
+            navigate(`/verify-otp?email=${email}`)
         } catch{
             dispatch(showNotification({
                 type: 'error',

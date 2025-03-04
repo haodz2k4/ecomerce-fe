@@ -72,7 +72,7 @@ export const verifyOtp = createAsyncThunk(
     "auth/verifyotp",
     async ({email, otp}: {email: string, otp: string},{rejectWithValue}) => {
         try {
-            await verifyOtpAPI(email, otp);
+            return  await verifyOtpAPI(email, otp);
         } catch (error) {
             return rejectWithValue(error)
         }

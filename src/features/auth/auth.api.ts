@@ -39,10 +39,11 @@ export const forgotPasswordAPI = async (email: string) => {
 
 //VERIFY OTP 
 export const verifyOtpAPI = async (email: string, otp: string) => {
-    await axiosInstance.post('auth/verify-otp',{
+    const res =  await axiosInstance.post('auth/verify-otp',{
         email,
         otp
     })
+    return res.data.data;
 }
 
 //RESET PASSWORD
