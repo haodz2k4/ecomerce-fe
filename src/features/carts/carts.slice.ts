@@ -1,23 +1,13 @@
 import { LoadingConstant } from '../../constants/loading.constant';
 import { clearCart, createCart, fetchCart, removeCart, updateCart } from './carts.thunk';
 import { CartState } from './interfaces/cart-state.interface';
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CreateCart } from './interfaces/create-cart.type';
+import { createSlice } from "@reduxjs/toolkit";
 import { Product } from '../products/interfaces/product.interface';
 
 
 
 const initialState: CartState  = {
-    cart: {
-        id: '',
-        userId: '',
-        cart_items: {
-            items: [],
-            pagination: null
-        },
-        createdAt: new Date(),
-        updatedAt: new Date()
-    },
+    cart: null,
     loading: LoadingConstant.IDLE,
     error: null
 }
@@ -27,13 +17,25 @@ const cartSlice = createSlice({
     reducers: {
         addCartNoAuth: (state,action) => {
             const {product, quantity} = action.payload;
-            state.cart.cart_items.items.push({
-                id: '',
-                product: product as Product,
-                quantity: quantity as number,
+            if(state.cart && state.cart.cart_items) {
+                state.cart.cart_items.items.push({
+                    id: '',
+                    product: product as Product,
+                    quantity: quantity as number,
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                })
+            }
+        },
+        getCartNoAuth: (state) => {
+            state.cart = {
+                cart_items: {
+                    items: state.cart?.cart_items?.items ?? [],
+                    pagination: null
+                },
                 createdAt: new Date(),
                 updatedAt: new Date()
-            })
+            }
         }
     },
     extraReducers: (builder) => {
@@ -94,5 +96,5 @@ const cartSlice = createSlice({
     }
 })
 
-
+export const {addCartNoAuth, getCartNoAuth} = cartSlice.actions
 export default cartSlice.reducer

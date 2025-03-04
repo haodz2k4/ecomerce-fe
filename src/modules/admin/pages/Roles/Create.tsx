@@ -12,16 +12,20 @@ import { CreateRole } from "../../../../features/roles/interfaces/create-role.in
 import { createRole } from "../../../../features/roles/roles.thunk";
 import { StatusActiveEnum } from "../../../../constants/app.constant";
 import { showAlert } from "../../../../features/alert/alert.slice";
+import { useForm } from "antd/es/form/Form";
 
 
 const Create = (cruProps: CruProps) => {
+    const [form] = useForm();
     const {open, setOpen} = cruProps;
     const {items} = useSelector((state: RootState) => state.permissions);
     const [ids, setIds] = useState<string[]>([]);
     const [count, setCount] = useState<number>(0);
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        dispatch(fetchPermissions({}))
+        dispatch(fetchPermissions({
+            limit: 100
+        }))
     },[dispatch])
 
     const onFinish = async (data: CreateRole) => {
@@ -30,10 +34,11 @@ const Create = (cruProps: CruProps) => {
             await dispatch(createRole({
                 title,
                 description,
-                ids,
+                permissionIds: ids,
                 status
             })).unwrap();
             dispatch(showAlert({type: 'success', message: 'Thêm thành công'}));
+            form.resetFields()
             setOpen(false)
 
         } catch {
@@ -50,6 +55,7 @@ const Create = (cruProps: CruProps) => {
             <Form
                 layout="vertical"
                 onFinish={onFinish}
+                form={form}
             >   
                 <Title  className={styles.create__title} level={2}>Thêm</Title>
                 <Form.Item label="Tiêu đề" required name="title">

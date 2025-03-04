@@ -3,7 +3,7 @@ import { Cart } from "./cart.interface";
 
 
 export interface CartState {
-    cart: Cart;
+    cart: Partial<Cart> | null;
     loading: LoadingConstant;
     error: null | unknown;
 }

@@ -25,8 +25,8 @@ const Login = () => {
 
             if(roleId === RoleUser) {
                 navigate("/"); 
-            } else if (roleId === RoleAdmin) {
-                navigate("/admin/dashboard")
+            } else {
+                navigate("/admin/dashboard");
             }
 
         } catch {

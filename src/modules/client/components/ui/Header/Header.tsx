@@ -17,6 +17,7 @@ import { fetchCategories } from "../../../../../features/categories/categories.t
 import { fetchCart } from "../../../../../features/carts/carts.thunk";
 import { formatPriceToVnd } from "../../../../../utils/format";
 import { camulatorDiscountPrice } from "../../../../../utils/camulator";
+import { getCartNoAuth } from "../../../../../features/carts/carts.slice";
 
 
 const {Search} = Input;
@@ -29,12 +30,15 @@ function AppHeader() {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const {items} = useSelector((state: RootState) => state.categories);
-
     const {cart} = useSelector((state: RootState) => state.carts);
     
     useEffect(() => {
-        dispatch(fetchCart())
-    },[dispatch])
+        if(!isAuth) {
+            dispatch(getCartNoAuth())
+        }else {
+            dispatch(fetchCart({}))
+        }
+    },[dispatch, isAuth])
     useEffect(() => {
         dispatch(fetchCategories({
             limit: 12
