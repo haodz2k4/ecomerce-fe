@@ -7,6 +7,7 @@ import AdminLayout from "../modules/admin/components/layouts/Main/Admin.layout";
 import { adminRoutes } from "./admin.route";
 import PrivateRouter from "./Private.route";
 import Roles from "./Roles.route";
+import ForgotPassword from "../modules/client/pages/ForgotPassword/ForogotPassword";
 
 
 
@@ -34,6 +35,10 @@ const routes = createBrowserRouter(
         {
             path: "login",
             element: <Login />
+        },
+        {
+            path: '/forgot-password',
+            element: <ForgotPassword />
         }
 
     ]
