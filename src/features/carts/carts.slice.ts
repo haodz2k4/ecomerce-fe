@@ -1,19 +1,41 @@
 import { LoadingConstant } from '../../constants/loading.constant';
 import { clearCart, createCart, fetchCart, removeCart, updateCart } from './carts.thunk';
 import { CartState } from './interfaces/cart-state.interface';
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CreateCart } from './interfaces/create-cart.type';
+import { Product } from '../products/interfaces/product.interface';
 
 
 
 const initialState: CartState  = {
-    cart: null,
+    cart: {
+        id: '',
+        userId: '',
+        cart_items: {
+            items: [],
+            pagination: null
+        },
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
     loading: LoadingConstant.IDLE,
     error: null
 }
 const cartSlice = createSlice({
     name: 'carts',
     initialState,
-    reducers: {},
+    reducers: {
+        addCartNoAuth: (state,action) => {
+            const {product, quantity} = action.payload;
+            state.cart.cart_items.items.push({
+                id: '',
+                product: product as Product,
+                quantity: quantity as number,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            })
+        }
+    },
     extraReducers: (builder) => {
         //GET CART 
         builder
@@ -31,28 +53,43 @@ const cartSlice = createSlice({
         //CREATE CART 
         .addCase(createCart.fulfilled, (state, action) => {
             state.loading = LoadingConstant.SUCCEEDED;
-            const index = state.cart?.cart_items.items.findIndex((item) => item.id === action.payload.id);
-            if(index !== -1) {
-                state.cart?.cart_items.items[index] = action.payload;
-            } else {
-                state.cart?.cart_items.items.unshift(action.payload);
+            const index = state.cart?.cart_items.items.findIndex((item) => item.id === action.payload.id) as number;
+            if (state.cart?.cart_items.items) {
+                if(index !== -1) {
+                    state.cart.cart_items.items[index] = action.payload;
+                } else {
+                    state.cart?.cart_items.items.unshift(action.payload);
+                }
             }
+            
         })
         //UPDATE CART 
         .addCase(updateCart.fulfilled, (state, action) => {
             state.loading = LoadingConstant.SUCCEEDED;
             const index = state.cart?.cart_items.items.findIndex((item) => item.id === action.payload.id);
-            state.cart?.cart_items.items[index] = action.payload;
+            if (state.cart?.cart_items.items) {
+                const index = state.cart.cart_items.items.findIndex((item) => item.id === action.payload.id);
+                if (index !== -1) {
+                    state.cart.cart_items.items[index] = action.payload;
+                }
+            }
         })
         //DELETE CART 
         .addCase(removeCart.fulfilled, (state, action) => {
             state.loading = LoadingConstant.SUCCEEDED;
-            state.cart?.cart_items.items = state.cart?.cart_items.items.filter((item) => item.id !== action.payload);
+            console.log(action.payload)
+            if (state.cart?.cart_items.items) {
+                state.cart.cart_items.items = state.cart.cart_items.items.filter((item) => item.product.id !== action.payload);
+            }
+            
         })
         //CLEAR CART 
-        .addCase(clearCart.fulfilled, (state, action) => {
+        .addCase(clearCart.fulfilled, (state) => {
             state.loading = LoadingConstant.SUCCEEDED;
-            state.cart?.cart_items.items = []
+            if (state.cart?.cart_items.items) {
+                state.cart.cart_items.items = []
+            }
+            
         })
     }
 })

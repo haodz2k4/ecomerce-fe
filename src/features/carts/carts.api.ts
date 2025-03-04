@@ -1,11 +1,14 @@
 import axiosInstance from "../../api/axios"
 import { CreateCart } from "./interfaces/create-cart.type";
+import { QueryCart } from "./interfaces/query-cart.interface";
 import { UpdateCart } from "./types/update-cart.type";
 
 
 
-export const getCartAPI = async () => {
-    const res = await axiosInstance.get('carts');
+export const getCartAPI = async (queryCart: QueryCart) => {
+    const res = await axiosInstance.get('carts',{
+        params: queryCart
+    });
     return res.data.data;
 }
 

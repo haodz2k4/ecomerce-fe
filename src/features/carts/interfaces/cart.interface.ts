@@ -3,7 +3,7 @@ import { CartItems } from "./cart-items.interface";
 
 interface Paginated {
     items: CartItems[];
-    pagination: Pagination
+    pagination: Pagination | null
 }
 export interface Cart {
     id: string;

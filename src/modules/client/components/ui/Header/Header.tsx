@@ -30,7 +30,7 @@ function AppHeader() {
     const navigate = useNavigate();
     const {items} = useSelector((state: RootState) => state.categories);
 
-
+    const {cart} = useSelector((state: RootState) => state.carts);
     
     useEffect(() => {
         dispatch(fetchCart())
@@ -89,7 +89,7 @@ function AppHeader() {
         }
     }
 
-    const cartItems: MenuProps['items'] = cart?.cartsItems.map((item) => (
+    const cartItems: MenuProps['items'] = cart?.cart_items.items.map((item) => (
         {
             key: '1',   
             label: (
@@ -207,7 +207,7 @@ function AppHeader() {
                             </ul>
                         </div>
                         <Space className={styles.header__other}>
-                            <Badge count={cart?.cartsItems.length}>
+                            <Badge count={cart?.cart_items.items.length}>
                                 <Dropdown 
                                     menu={{items: cartItems}}
                                     placement="bottomLeft"

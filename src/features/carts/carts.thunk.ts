@@ -2,11 +2,14 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getCartAPI, createCartAPI, updateCartAPI, removeCartAPI, clearCartAPI } from "./carts.api";
 import { CreateCart } from "./interfaces/create-cart.type";
 import { UpdateCart } from "./types/update-cart.type";
+import { QueryCart } from "./interfaces/query-cart.interface";
 
 //FETCH CART
-export const fetchCart = createAsyncThunk("cart/fetchCart", async (_, { rejectWithValue }) => {
+export const fetchCart = createAsyncThunk(
+    "cart/fetchCart", 
+    async (queryCart: QueryCart, { rejectWithValue }) => {
     try {
-        const data = await getCartAPI();
+        const data = await getCartAPI(queryCart);
         return data;
     } catch (error) {
         return rejectWithValue(error);
