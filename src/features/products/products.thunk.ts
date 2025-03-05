@@ -1,3 +1,4 @@
+import { message } from 'antd';
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as productAPI from "./products.api";
@@ -6,6 +7,7 @@ import { UpdateProduct } from "./types/update-product.type";
 import { CreateProduct } from "./interfaces/create-product.interface";
 import { QueryProduct } from "./interfaces/query-product.interface";
 import { UUID } from "../../common/types/uuid.type";
+import { AxiosError } from "axios";
 
 // GET MANY
 export const fetchProducts = createAsyncThunk(
@@ -13,8 +15,8 @@ export const fetchProducts = createAsyncThunk(
     async (query: QueryProduct, { rejectWithValue }) => {
         try {
             return await productAPI.getProductsAPI(query);
-        } catch (error) {
-            return rejectWithValue(error);
+        } catch (error: AxiosError<unknown, unknown>) {
+            return rejectWithValue(error.response.data);
         }
     }
 );

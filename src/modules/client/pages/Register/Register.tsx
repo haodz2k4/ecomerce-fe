@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../common/types/store.type";
 import { registerUser } from "../../../../features/auth/auth.thunk";
 import { showNotification } from "../../../../features/notifications/notification.slice";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const {Title} = Typography
 const Register = () => {
@@ -27,11 +27,11 @@ const Register = () => {
                 description: 'Vui lòng check email để xác thực tài khoản'
             }))
             
-        } catch {
+        } catch (error: ErrorData) {
             dispatch( showNotification({
                 type: 'error',
-                message: 'Có lỗi xảy ra',
-                description: 'Có lỗi xảy ra'
+                message: error.message,
+                description: error.errors.join(", ")
             }))
         }
     }

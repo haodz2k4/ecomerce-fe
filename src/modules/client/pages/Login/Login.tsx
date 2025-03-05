@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../common/types/store.type";
 import { loginUser } from "../../../../features/auth/auth.thunk";
 import { showAlert } from "../../../../features/alert/alert.slice";
-import { RoleAdmin, RoleUser } from "../../../../constants/role.constant";
+import { RoleUser } from "../../../../constants/role.constant";
+import { ErrorData } from "../../../../common/interfaces/error-data.interface";
 
 const {Title} = Typography
 
@@ -29,8 +30,9 @@ const Login = () => {
                 navigate("/admin/dashboard");
             }
 
-        } catch {
-            dispatch(showAlert({type: 'error', message: 'Đăng nhập thất bại'}))
+        } catch (error: ErrorData) {
+            console.log(error)
+            dispatch(showAlert({type: 'error', message: error.message}))
         }
 
     }

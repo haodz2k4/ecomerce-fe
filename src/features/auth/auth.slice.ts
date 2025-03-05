@@ -42,7 +42,7 @@ const authSlice = createSlice({
             .addCase(registerUser.pending, (state) => {
                 state.loading = LoadingConstant.PENDING;
             })
-            .addCase(registerUser.fulfilled, (state, action) => {
+            .addCase(registerUser.fulfilled, (state) => {
                 state.loading = LoadingConstant.SUCCEEDED;
             })
             .addCase(registerUser.rejected, (state, action) => {

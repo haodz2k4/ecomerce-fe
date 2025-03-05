@@ -14,6 +14,7 @@ import { SorterResult } from "antd/es/table/interface";
 import styles from "./Products.module.scss"
 import { transformReverseStatus } from "../../../../utils/transform";
 import { showAlert } from "../../../../features/alert/alert.slice";
+import { showNotification } from "../../../../features/notifications/notification.slice";
 
 const {Search} = Input
 
@@ -41,18 +42,26 @@ const Products = () => {
         dispatch(statsProducts())
     },[dispatch])
     useEffect(() => {
-        dispatch(fetchProducts({
-            limit,
-            page,
-            keyword,
-            status: filterStatus,
-            sortBy,
-            sortOrder,
-            minPrice,
-            maxPrice,
-            minPercentage,
-            maxPercentage
-        }))
+        try {
+            dispatch(fetchProducts({
+                limit,
+                page,
+                keyword,
+                status: filterStatus,
+                sortBy,
+                sortOrder,
+                minPrice,
+                maxPrice,
+                minPercentage,
+                maxPercentage
+            })).unwrap()
+        } catch (error) {
+            console.log(error)
+            dispatch(showNotification({
+                type: 'error',
+                message: error.message
+            }))
+        }
     },[
         dispatch, 
         page, 
