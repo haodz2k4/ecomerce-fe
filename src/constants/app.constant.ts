@@ -20,3 +20,13 @@ export enum SortOrder {
     ASC = 'asc',
     DESC = 'desc'
 }
+
+export enum OrderStatus {
+    PENDING = 'pending',
+    CONFIRMED  = 'confirmed',
+    PROCESSING  = 'processing',
+    SHIPPED = 'shipped',
+    DELIVERED = 'delivered',
+    CANCELED = 'canceled',
+    FAILED = 'failed'
+}
