@@ -8,7 +8,7 @@ export interface Order {
     status: OrderStatus;
     user: Pick<User,'id' | 'fullName' | 'email'>;
     address: string;
-    items: OrderItem[]
+    ordersItems: OrderItem[]
     createdAt: Date;
     updatedAt: Date;
 }

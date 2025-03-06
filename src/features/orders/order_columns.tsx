@@ -7,8 +7,14 @@ import { CloseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant";
 
 
-const orderColumns = ():TableColumnProps<Order[]>[] => {
+interface OrderColumnsProps {
+    setOpenDetail(open: boolean): void;
+    setId(id: string): void;
+}
 
+const orderColumns = (props: OrderColumnsProps):TableColumnProps<Order>[] => {
+
+    const {setOpenDetail, setId} = props
     return [
         {
             key: '#',
@@ -57,13 +63,17 @@ const orderColumns = ():TableColumnProps<Order[]>[] => {
         {
             key: 'actions',
             title: 'Thao tác',
-            render: () => (
+            render: (_, record) => (
                 <Space>
                     <Button
                         icon={<EyeOutlined/>}
                         variant="filled"
                         color="blue"
                         size="large"
+                        onClick={() => {
+                            setOpenDetail(true)
+                            setId(record.id)
+                        }}
                     />
                     <Button
                         icon={<EditOutlined/>} 
