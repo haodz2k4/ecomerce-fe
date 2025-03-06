@@ -1,4 +1,4 @@
-import { Descriptions, DescriptionsProps, Image, List, Modal, Space } from "antd";
+import { Descriptions, DescriptionsProps, Image, List, Modal, Space, Tag } from "antd";
 import { CruProps } from "../../../../common/interfaces/cru-props.interface";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../common/types/store.type";
@@ -6,7 +6,8 @@ import { useEffect } from "react";
 import { fetchOrderById } from "../../../../features/orders/orders.thunk";
 import { formatDate, formatPriceToVnd } from "../../../../utils/format";
 import Title from "antd/es/typography/Title";
-import styles from "./Orders.module.scss"
+import styles from "./Orders.module.scss";
+import { getColorByOrderStatus } from "../../../../utils/color";
 
 
 
@@ -15,7 +16,6 @@ const Detail = (props: Required<CruProps>) => {
     const {open, setOpen, id} = props;
     const {item} = useSelector((state: RootState) => state.orders);
     const dispatch = useDispatch<AppDispatch>();
-    console.log(item)
     useEffect(() => {
         dispatch(fetchOrderById(id))
     },[dispatch, id])
@@ -28,7 +28,12 @@ const Detail = (props: Required<CruProps>) => {
         {
             key: 'status',
             label: 'Trạng thái',
-            children: item.status
+            children: <Tag  
+                        color={getColorByOrderStatus(item.status)}
+                        className={styles.orders__status}
+                        >
+                            {item.status}
+                        </Tag>
         },
         {
             key: 'user',

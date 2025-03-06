@@ -1,3 +1,4 @@
+import { OrderStatus } from "../constants/app.constant";
 import { ColorCrudConstant } from "../constants/color-crud.constant"
 import { PermissionName } from "../constants/permission.enum"
 
@@ -16,4 +17,26 @@ export const getColorCrud = (permissionName: PermissionName) => {
             return "default"
     }
 
+}
+
+export const getColorByOrderStatus = (orderStatus: OrderStatus) => {
+    switch(orderStatus) {
+        
+        case OrderStatus.CANCELED: 
+            return "red";
+        case OrderStatus.CONFIRMED:
+            return "green";
+        case OrderStatus.DELIVERED:
+            return "orange";
+        case OrderStatus.FAILED:
+            return "purple";
+        case OrderStatus.PENDING:
+            return "orange";
+        case OrderStatus.PROCESSING:
+            return "blue";
+        case OrderStatus.SHIPPED:
+            return "yellow";
+        default:
+            return "default"
+    }
 }

@@ -5,6 +5,7 @@ import { Order } from "./interfaces/order.interface";
 import { OrderItem } from "./interfaces/order-items.interface";
 import { CloseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant";
+import { getColorByOrderStatus } from "../../utils/color";
 
 
 interface OrderColumnsProps {
@@ -36,7 +37,7 @@ const orderColumns = (props: OrderColumnsProps):TableColumnProps<Order>[] => {
             key: 'status',
             title: 'Trạng thái',
             dataIndex: 'status',
-            render: (val: OrderStatus) => <Tag >{val}</Tag>
+            render: (val: OrderStatus) => <Tag color={getColorByOrderStatus(val)} >{val}</Tag>
         },
         {
             key: 'countOrderItem',
