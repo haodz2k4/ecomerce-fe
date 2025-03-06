@@ -1,21 +1,21 @@
-import { Button, Popconfirm, Space, TableColumnProps, Tag } from "antd";
+import { Button, Select, Space, TableColumnProps, Tag } from "antd";
 import { formatDate, formatPriceToVnd } from "../../utils/format";
 import { OrderStatus } from "../../constants/app.constant";
 import { Order } from "./interfaces/order.interface";
 import { OrderItem } from "./interfaces/order-items.interface";
-import { CloseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
-import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant";
+import { EyeOutlined } from "@ant-design/icons";
 import { getColorByOrderStatus } from "../../utils/color";
 
 
 interface OrderColumnsProps {
-    setOpenDetail(open: boolean): void;
+    setOpenDetail: (open: boolean) => void;
     setId(id: string): void;
+    setStatus: (status: OrderStatus) => void;
 }
 
 const orderColumns = (props: OrderColumnsProps):TableColumnProps<Order>[] => {
 
-    const {setOpenDetail, setId} = props
+    const {setOpenDetail, setId, setStatus} = props
     return [
         {
             key: '#',
@@ -37,7 +37,31 @@ const orderColumns = (props: OrderColumnsProps):TableColumnProps<Order>[] => {
             key: 'status',
             title: 'Trạng thái',
             dataIndex: 'status',
-            render: (val: OrderStatus) => <Tag color={getColorByOrderStatus(val)} >{val}</Tag>
+            render: (val: OrderStatus) => <Tag color={getColorByOrderStatus(val)} >{val}</Tag>,
+            filterDropdown: () => (
+                <Select 
+                    style={{width: '150px'}}
+                    allowClear
+                    onChange={(val) => setStatus(val) }
+                >
+                    {
+                        Object.entries(OrderStatus).map((item) => {
+                            const [_, value] = item;
+                            return (
+                                <Select.Option  
+                                    value={value}
+                                    style={{
+                                        color: getColorByOrderStatus(value),
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    {value}
+                                </Select.Option>
+                            )
+                        })
+                    }
+                </Select>
+            )
         },
         {
             key: 'countOrderItem',
@@ -76,25 +100,6 @@ const orderColumns = (props: OrderColumnsProps):TableColumnProps<Order>[] => {
                             setId(record.id)
                         }}
                     />
-                    <Button
-                        icon={<EditOutlined/>} 
-                        variant="filled"
-                        color="yellow"
-                        size="large"
-                    />
-                    <Popconfirm 
-                        title={TITLE_CONFIRM_REMOVE}
-                        description={DESC_CONFIRM_REMOVE}
-                        okText='Có'
-                        cancelText='Không'
-                    >
-                        <Button
-                            icon={<CloseOutlined color="red" />} 
-                            variant="filled"
-                            color="red"
-                            size="large"
-                        />
-                    </Popconfirm>
                 </Space>
             )
         }

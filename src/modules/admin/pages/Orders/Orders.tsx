@@ -1,4 +1,4 @@
-import { Col, Row, Table, Input } from "antd"
+import { Col, Row, Table, Input, Space, Button } from "antd"
 import orderColumns from "../../../../features/orders/order_columns"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../../../common/types/store.type"
@@ -6,20 +6,23 @@ import { useEffect, useState } from "react"
 import { fetchOrders } from "../../../../features/orders/orders.thunk"
 import Detail from "./Detail"
 import styles from "./Orders.module.scss";
+import { OrderStatus } from "../../../../constants/app.constant"
 
 const {Search} = Input
 
 const Orders = () => {
     const [id, setId] = useState<string>('');
     const [keyword, setKeyword] = useState<string>();
+    const [status, setStatus] = useState<OrderStatus>();
     const [openDetail, setOpenDetail] = useState<boolean>(false);
     const {items} = useSelector((state: RootState) => state.orders);
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         dispatch(fetchOrders({
-            keyword
+            keyword,
+            status
         }))
-    },[dispatch, keyword])
+    },[dispatch, keyword, status])
 
     return (
         
@@ -36,7 +39,8 @@ const Orders = () => {
                 columns={
                     orderColumns({
                         setOpenDetail,
-                        setId
+                        setId,
+                        setStatus
                     })
                 } 
                 dataSource={items}
