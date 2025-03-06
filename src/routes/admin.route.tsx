@@ -6,6 +6,7 @@ import Categories from "../modules/admin/pages/Categories/Categories";
 import Users from "../modules/admin/pages/Users/Users";
 import Roles from "../modules/admin/pages/Roles/Roles";
 import Permissions from "../modules/admin/pages/Permissions/Permissions";
+import Orders from "../modules/admin/pages/Orders/Orders";
 
 
 export const adminRoutes: RouteObject[] = [
@@ -36,5 +37,9 @@ export const adminRoutes: RouteObject[] = [
     {
         path: 'permissions',
         element: <Permissions />
+    },
+    {
+        path: 'orders',
+        element: <Orders />
     }
 ]

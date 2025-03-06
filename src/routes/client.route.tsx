@@ -39,6 +39,7 @@ export const clientRoutes: RouteObject[] = [
     {
         path: '/verify-email',
         element: <VerifyEmail />
-    }
+    },
+    
     
 ]   

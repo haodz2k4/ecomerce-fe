@@ -12,7 +12,7 @@ export const fetchOrders = createAsyncThunk(
         try {
             return await getOrdersAPI(queryOrder);
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(error.response.message);
         }
     }
 )

@@ -8,6 +8,7 @@ import categoriesReducer from "../features/categories/categories.slice";
 import userReducer from "../features/users/users.slice";
 import roleReducer from "../features/roles/roles.slice";
 import cartReducer from "../features/carts/carts.slice";
+import orderReducer from "../features/orders/order.slice";
 import permissionReducer from "../features/permissions/permissions.slice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
     inventories: inventoryReducer,
     roles: roleReducer,
     permissions: permissionReducer,
-    carts: cartReducer
+    carts: cartReducer,
+    orders: orderReducer
 });
 
 const persistConfig = {
