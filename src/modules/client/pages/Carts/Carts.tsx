@@ -1,7 +1,7 @@
-import { Button, Flex, Image, InputNumber, Popconfirm, Space, Table, TableColumnProps,Input, TableProps, Typography, Form, Radio } from "antd";
+import { Button, Flex, Image, InputNumber, Popconfirm, Space, Table, TableColumnProps,Input, TableProps, Typography, Form, Radio, Modal } from "antd";
 import styles from "./Carts.module.scss";
 import { camulatorDiscountPrice } from "../../../../utils/camulator";
-import { AlertOutlined, CheckOutlined, CloseCircleOutlined, CloseOutlined, CreditCardOutlined, LoadingOutlined, SnippetsOutlined } from "@ant-design/icons";
+import { AlertOutlined, CheckOutlined, CloseCircleOutlined, CloseOutlined, CreditCardOutlined, ExclamationCircleFilled, LoadingOutlined, SnippetsOutlined } from "@ant-design/icons";
 import { formatPriceToVnd } from "../../../../utils/format";
 import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,11 +12,14 @@ import { showAlert } from "../../../../features/alert/alert.slice";
 import { showNotification } from "../../../../features/notifications/notification.slice";
 import { CartItems } from "../../../../features/carts/interfaces/cart-items.interface";
 import { CreateOrderItem } from "../../../../features/orders/interfaces/create-order-item.interface";
+import ModalConfirm from "../../../../components/ModalConfirm/ModalConfirm";
 
 const {Title} = Typography;
 const {Search} = Input;
+const {confirm} = Modal;
 const Carts = () => {
 
+    const [openModalConfirm, setOpenModalConfirm] = useState<boolean>(false);
     const [checkOutItems,setCheckOutItems] = useState<CreateOrderItem[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [keyword, setKeyword] = useState<string>();
@@ -61,6 +64,7 @@ const Carts = () => {
             }))
         }
     }
+
 
     const handleConfirmClear = async () => {
         try {
@@ -219,6 +223,9 @@ const Carts = () => {
                                 className={styles.checkout__btn}
                                 icon={<LoadingOutlined />}
                                 iconPosition="end"
+                                onClick={() => {
+                                    setOpenModalConfirm(true)
+                                }}
                             >
                                 Thanh toán
                             </Button>
@@ -226,7 +233,13 @@ const Carts = () => {
                     </div>
                 </Flex>
             </div>
-            
+            <ModalConfirm 
+                open={openModalConfirm} 
+                setOpen={setOpenModalConfirm} 
+                title="Tiến hành thanh toán"
+                description="Bạn có chăc muốn thanh toán không"
+
+            />
         </div>
     )
 }
