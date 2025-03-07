@@ -3,8 +3,9 @@ import { CreateOrderItem } from "./create-order-item.interface";
 
 
 export interface CreateOrder {
-    userId: string;
     status: OrderStatus;
     address: string;
+    paymentMethod: string;
+    phone: string;
     items: CreateOrderItem[];
 }

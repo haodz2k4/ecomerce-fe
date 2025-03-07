@@ -13,5 +13,5 @@ export const formatForInput = (date: Date): string => {
 }
 
 export const formatDate = (date: Date): string => {
-    return moment(date).format('MMMM Do YYYY');
+    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 }

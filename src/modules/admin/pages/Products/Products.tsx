@@ -36,6 +36,10 @@ const Products = () => {
     const [maxPercentage, setMaxPercentage] = useState<number>();
     const {items, loading, pagination, stats} = useSelector((state: RootState) => state.products);
     const [id, setId] = useState<string>();
+    const [startCreatedAt, setStartCreatedAt] = useState<Date>();
+    const [endCreatedAt, setEndCreatedAt] = useState<Date>();
+    const [startUpdatedAt, setStartUpdatedAt] = useState<Date>();
+    const [endUpdatedAt, setEndUpdatedAt] = useState<Date>();
 
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
@@ -53,10 +57,13 @@ const Products = () => {
                 minPrice,
                 maxPrice,
                 minPercentage,
-                maxPercentage
+                maxPercentage,
+                startCreatedAt,
+                endCreatedAt,
+                startUpdatedAt,
+                endUpdatedAt
             })).unwrap()
         } catch (error) {
-            console.log(error)
             dispatch(showNotification({
                 type: 'error',
                 message: error.message
@@ -73,7 +80,11 @@ const Products = () => {
         minPrice,
         maxPrice,
         minPercentage,
-        maxPercentage
+        maxPercentage,
+        startCreatedAt,
+        endCreatedAt,
+        startUpdatedAt,
+        endUpdatedAt
     ])
 
     const onChangePagination = (page: number) => {
@@ -102,6 +113,7 @@ const Products = () => {
             dispatch(showAlert({message: 'Xóa sản phẩm thất bại', type: 'error'}))
         }
     }
+    
     return (        
         <>
             <Row justify='space-between' className={styles.tool} gutter={[30,16]}>
@@ -141,7 +153,11 @@ const Products = () => {
                     setMinPrice,
                     setMaxPrice,
                     setMinPercentage,
-                    setMaxPercentage
+                    setMaxPercentage,
+                    setStartCreatedAt,
+                    setEndCreatedAt,
+                    setStartUpdatedAt,
+                    setEndUpdatedAt
                 })} 
                 dataSource={items}
                 pagination={

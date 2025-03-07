@@ -1,4 +1,4 @@
-import { Button, Image, Input, Popconfirm, Select, Slider, Space, TableColumnType, Tag } from "antd";
+import { Button, Image, Input, Popconfirm, Select, Slider, Space, TableColumnType, Tag, DatePicker } from "antd";
 import { StatusActiveEnum } from "../../constants/app.constant";
 import { getColorByStatus, transfromStatus } from "../../utils/transform";
 import { formatDate, formatPriceToVnd, formatVndToNumber } from "../../utils/format";
@@ -6,6 +6,8 @@ import { CloseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant";
 import { InputFormatPrice } from "../../components/Input/InputFormatPrice";
 
+
+const {RangePicker} = DatePicker;
 
 
 interface ProductsColumns {
@@ -20,6 +22,10 @@ interface ProductsColumns {
     setMaxPrice: (price: number) => void;
     setMinPercentage: (range: number) => void;
     setMaxPercentage: (range: number) => void;
+    setStartCreatedAt: (date: Date) => void;
+    setEndCreatedAt: (date: Date) => void;
+    setStartUpdatedAt: (date: Date) => void;
+    setEndUpdatedAt: (date: Date) => void;
 }
 
 export const productsColumns = (productColumns: ProductsColumns): TableColumnType[] => {
@@ -35,9 +41,12 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
         setMinPrice,
         setMaxPrice,
         setMinPercentage,
-        setMaxPercentage
+        setMaxPercentage,
+        setStartCreatedAt,
+        setEndCreatedAt,
+        setStartUpdatedAt,
+        setEndUpdatedAt
     } = productColumns
-
 
     return [
         {
@@ -62,11 +71,6 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
                 style={{borderRadius: '7px'}}
                 src={thumbnailUrl}
             />
-        },
-        {
-            key: 'category',
-            title: 'Danh mục',
-            dataIndex: ['category','title']
         },
         {
             key: 'price',
@@ -143,17 +147,39 @@ export const productsColumns = (productColumns: ProductsColumns): TableColumnTyp
         },
         {
             key: 'createdAt',
-            title: 'Ngày tạo',
+            title: 'Ngày thêm',
             dataIndex: 'createdAt',
             render: (date: Date) => formatDate(date),
-            sorter: true
+            sorter: true,
+            filterDropdown: () =>   <RangePicker
+                                        onChange={(dates) => {
+                                            if (dates) {
+                                                setStartCreatedAt(dates[0].toDate());
+                                                setEndCreatedAt(dates[1].toDate());
+                                            } else {
+                                                setStartCreatedAt(null);
+                                                setEndCreatedAt(null);
+                                            }
+                                        }}
+                                    />
         },
         {
             key: 'updatedAt',
             title: 'Ngày cập nhật',
             dataIndex: 'updatedAt',
             render: (date: Date) => formatDate(date),
-            sorter: true
+            sorter: true,
+            filterDropdown: () => <RangePicker
+                                    onChange={(dates) => {
+                                        if(dates) {
+                                            setStartUpdatedAt(dates[0].toDate())
+                                            setEndUpdatedAt(dates[1].toDate())
+                                        } else {
+                                            setStartCreatedAt(null)
+                                            setEndUpdatedAt(null)
+                                        }
+                                    }} 
+                                  />
         },
         {
             key: 'actions',

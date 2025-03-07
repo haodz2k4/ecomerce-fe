@@ -3,8 +3,21 @@
 .carts {
     padding: 50px 0px;
 
-    &__items {
+    &__inner {
         width: 100%;
+    }
+
+    &__checkout {
+        padding: 20px 30px;
+        background-color: $secondary_light_color;
+        border-radius: 10px;
+        width: 25%;
+        box-shadow: $box_shadow;
+
+    }
+
+    &__list {
+        width: 65%;
     }
 
     &__img {
@@ -27,9 +40,16 @@
     &__actions {
         margin-bottom: 10px;
     }
-}
 
+    .checkout__btn {
+        width: 100%;
+        color: $primary_color;
+        border: solid 1px;
+    }
 
-.title__total {
-    color: $secondary_color !important;
+    .checkout__title {
+        text-align: center;
+        color: $primary_color;
+        text-transform: uppercase;
+    }
 }

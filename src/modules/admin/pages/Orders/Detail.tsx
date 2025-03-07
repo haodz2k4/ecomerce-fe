@@ -62,15 +62,15 @@ const Detail = (props: Required<CruProps>) => {
             open={open}
             onOk={() => setOpen(false)}
             onCancel={() => setOpen(false)}
+            centered
             width={800}
         >
-            <Title className={styles.orders__title} level={3}>Đơn hàng</Title>
+            <Title className={styles.orders__title} level={3}>Chi tiết đơn hàng</Title>
             <Descriptions 
                 column={1} 
                 items={items}
                 bordered
             />
-            <Title className={styles.orders__title} level={3}>Các sản phẩm</Title>
             <List
                 itemLayout="horizontal"
                 dataSource={item ? item.ordersItems : []}

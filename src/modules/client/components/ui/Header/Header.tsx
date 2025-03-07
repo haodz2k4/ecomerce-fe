@@ -31,12 +31,11 @@ function AppHeader() {
     const navigate = useNavigate();
     const {items} = useSelector((state: RootState) => state.categories);
     const {cart} = useSelector((state: RootState) => state.carts);
-    
     useEffect(() => {
         if(!isAuth) {
             dispatch(getCartNoAuth())
         }else {
-            dispatch(fetchCart({}))
+            dispatch(fetchCart({})).unwrap()
         }
     },[dispatch, isAuth])
     useEffect(() => {

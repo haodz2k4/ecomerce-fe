@@ -1,8 +1,7 @@
-import { Button, Flex, Image, InputNumber, Popconfirm, Space, Table, TableColumnProps,Input, Col, TableProps } from "antd";
+import { Button, Flex, Image, InputNumber, Popconfirm, Space, Table, TableColumnProps,Input, TableProps, Typography, Form, Radio } from "antd";
 import styles from "./Carts.module.scss";
 import { camulatorDiscountPrice } from "../../../../utils/camulator";
-import { Product } from "../../../../features/products/interfaces/product.interface";
-import { CheckOutlined, CloseCircleFilled, CloseCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import { AlertOutlined, CheckOutlined, CloseCircleOutlined, CloseOutlined, CreditCardOutlined, LoadingOutlined, SnippetsOutlined } from "@ant-design/icons";
 import { formatPriceToVnd } from "../../../../utils/format";
 import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,10 +11,14 @@ import { clearCart, fetchCart, removeCart, updateCart } from "../../../../featur
 import { showAlert } from "../../../../features/alert/alert.slice";
 import { showNotification } from "../../../../features/notifications/notification.slice";
 import { CartItems } from "../../../../features/carts/interfaces/cart-items.interface";
+import { CreateOrderItem } from "../../../../features/orders/interfaces/create-order-item.interface";
 
+const {Title} = Typography;
 const {Search} = Input;
 const Carts = () => {
 
+    const [checkOutItems,setCheckOutItems] = useState<CreateOrderItem[]>([]);
+    const [totalPrice, setTotalPrice] = useState<number>(0);
     const [keyword, setKeyword] = useState<string>();
     const {cart} = useSelector((state: RootState) => state.carts);
     const dispatch = useDispatch<AppDispatch>();
@@ -142,11 +145,19 @@ const Carts = () => {
     ]
  
     const rowSelection: TableProps<CartItems>['rowSelection'] = {
-
-        onChange: (selectedRowKeys: React.Key[], selectedRows: CartItems[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        onChange: (_, selectedRows: CartItems[]) => {
+            const total = selectedRows.reduce((sum, item) => {
+                return sum + item.quantity * camulatorDiscountPrice(item.product.price, item.product.discountPercentage);
+            }, 0);
+            const orderItems = selectedRows.map((item) => ({
+                productId: item.product.id,
+                quantity: item.quantity
+            }))
+            setCheckOutItems(orderItems);
+            setTotalPrice(total);
         }
-    }
+    };
+    
     return (
         <div className="container">
             <div className={styles.carts}>
@@ -171,30 +182,48 @@ const Carts = () => {
                         </Button>
                     </Popconfirm>
                 </Space>
-                <div className={styles.carts__items}>
-                    <Table 
-                        rowSelection={{
-                            type: 'checkbox',
-                            ...rowSelection
-                        }}
-                        columns={columns}
-                        dataSource={cart?.cart_items.items}
-                    />
-                </div>
-                <Flex justify="space-between">
-                    <p 
-                        className={styles.title__total}
-                    >
-                        Tổng tiền: {formatPriceToVnd(100000)}
-                    </p>
-                    <Button 
-                        icon={<CheckOutlined />} 
-                        iconPosition="end"
-                        color="pink"
-                        className={styles.btn__checkout}
-                    >
-                        Thanh toán
-                    </Button>
+                <Flex justify="space-between" className={styles.carts__inner}>
+                    <div className={styles.carts__list}>
+                        <Table 
+                            rowKey={(record) => record.product.id}
+                            rowSelection={{
+                                type: 'checkbox',
+                                ...rowSelection
+                            }}
+                            columns={columns}
+                            dataSource={cart?.cart_items.items}
+                        />
+                    </div>
+                    <div className={styles.carts__checkout}>
+                        <Form layout="vertical">
+                            <Title level={3} className={styles.checkout__title}>Thông tin thanh toán</Title>
+                            <Form.Item label="Phương thức thanh toán" required>
+                                <Radio.Group>
+                                    <Radio value="cash"><SnippetsOutlined /> Tiền mặt</Radio>
+                                    <Radio value="credit-card"><CreditCardOutlined /> Qua VNPAY  </Radio>
+                                </Radio.Group>
+                            </Form.Item>
+                            <Form.Item label="Nhập số điện thoại" required>
+                                <Input placeholder="Số điện thoại..."/>
+                            </Form.Item>
+                            <Form.Item label="Nhập địa chỉ" required>
+                                <Input placeholder="Địa chỉ..."/>
+                            </Form.Item>
+                            <Form.Item label="">
+                                <Flex justify="space-between">
+                                    <span>Tổng tiền: {formatPriceToVnd(totalPrice)}</span>
+                                    <span>SL sản phẩm: {checkOutItems.length}</span>
+                                </Flex>
+                            </Form.Item>
+                            <Button 
+                                className={styles.checkout__btn}
+                                icon={<LoadingOutlined />}
+                                iconPosition="end"
+                            >
+                                Thanh toán
+                            </Button>
+                        </Form>
+                    </div>
                 </Flex>
             </div>
             

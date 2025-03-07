@@ -86,7 +86,7 @@ const ProductDetail = () => {
                             {transfromStatus(item?.status as StatusActiveEnum)}
                         </Tag>
                     </p>
-                    <p><strong>Danh mục: </strong>{item?.category.title}</p>
+                    <p><strong>Danh mục: </strong>{item?.category?.title}</p>
                     <p><strong>Số lượng: </strong>{item?.inventories.quantity}</p>
                     <p><strong>Đã bán: </strong>{10}</p>
                     <p>{item?.description}</p>
