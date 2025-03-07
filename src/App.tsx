@@ -26,6 +26,10 @@ function App() {
           components: {
             Table: {
               headerBg: '#FFE4E1'
+            },
+            FloatButton: {
+              colorBgElevated: '#ee3880',
+              colorText: 'white'
             }
           }
         }}

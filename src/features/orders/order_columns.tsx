@@ -11,11 +11,17 @@ interface OrderColumnsProps {
     setOpenDetail: (open: boolean) => void;
     setId(id: string): void;
     setStatus: (status: OrderStatus) => void;
+    handleUpdateStatus: (id: string, status: OrderStatus) => void;
 }
 
 const orderColumns = (props: OrderColumnsProps):TableColumnProps<Order>[] => {
 
-    const {setOpenDetail, setId, setStatus} = props
+    const {
+        setOpenDetail, 
+        setId, 
+        setStatus, 
+        handleUpdateStatus
+    } = props
     return [
         {
             key: '#',
@@ -37,7 +43,30 @@ const orderColumns = (props: OrderColumnsProps):TableColumnProps<Order>[] => {
             key: 'status',
             title: 'Trạng thái',
             dataIndex: 'status',
-            render: (val: OrderStatus) => <Tag color={getColorByOrderStatus(val)} >{val}</Tag>,
+            render: (val: OrderStatus, record) => (
+                <Select 
+                    style={{width: '150px'}}
+                    defaultValue={val}
+                    onChange={(val) => handleUpdateStatus(record.id, val)}
+                >
+                    {
+                        Object.entries(OrderStatus).map((item) => {
+                            const [_, value] = item;
+                            return (
+                                <Select.Option  
+                                    value={value}
+                                    style={{
+                                        color: getColorByOrderStatus(value),
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    {value}
+                                </Select.Option>
+                            )
+                        })
+                    }
+                </Select>
+            ),
             filterDropdown: () => (
                 <Select 
                     style={{width: '150px'}}

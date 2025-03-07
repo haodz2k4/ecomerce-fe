@@ -12,9 +12,7 @@ export const createOrderAPI = async (createOrder: CreateOrder)  => {
 
 //UPDATE 
 export const updateOrderAPI = async (id: string, updateOrder: UpdateOrder) => {
-    const res = await axiosInstance.patch(`orders/${id}`,{
-        data: updateOrder
-    })
+    const res = await axiosInstance.patch(`orders/${id}`,updateOrder)
     return res.data.data
 }
 

@@ -3,10 +3,11 @@ import orderColumns from "../../../../features/orders/order_columns"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../../../common/types/store.type"
 import { useEffect, useState } from "react"
-import { fetchOrders } from "../../../../features/orders/orders.thunk"
+import { fetchOrders, updateOrder } from "../../../../features/orders/orders.thunk"
 import Detail from "./Detail"
 import styles from "./Orders.module.scss";
 import { OrderStatus } from "../../../../constants/app.constant"
+import { showAlert } from "../../../../features/alert/alert.slice"
 
 const {Search} = Input
 
@@ -24,6 +25,21 @@ const Orders = () => {
         }))
     },[dispatch, keyword, status])
 
+    const handleUpdateStatus = async (id: string,status: OrderStatus) => {
+        console.log(status)
+        try {
+            await dispatch(updateOrder({id, data: {status} })).unwrap()
+            dispatch(showAlert({
+                type: 'success',
+                message: 'Cập nhật trạng thái đơn hàng thành công'
+            }))
+        } catch (error) {
+            dispatch(showAlert({
+                type: 'error',
+                message: 'Lỗi khi cập nhật trạng thái đơn'
+            }))
+        }
+    }
     return (
         
         <>
@@ -40,7 +56,8 @@ const Orders = () => {
                     orderColumns({
                         setOpenDetail,
                         setId,
-                        setStatus
+                        setStatus,
+                        handleUpdateStatus
                     })
                 } 
                 dataSource={items}
