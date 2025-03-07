@@ -32,7 +32,7 @@ const Profile = () => {
         },
         {
             key: 'ordered',
-            label: 'Đơn hàng đã mua',
+            label: 'Đơn hàng của bạn',
             children: <OrderedTab />
         },
         {
