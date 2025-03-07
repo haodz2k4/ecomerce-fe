@@ -15,7 +15,7 @@ import styles from "./Products.module.scss"
 import { transformReverseStatus } from "../../../../utils/transform";
 import { showAlert } from "../../../../features/alert/alert.slice";
 import { showNotification } from "../../../../features/notifications/notification.slice";
-
+import CountUp from 'react-countup';
 const {Search} = Input
 
 
@@ -133,9 +133,19 @@ const Products = () => {
                 </Col >
                 <Col sm={12} lg={8}>
                     <Space size="large">
-                        <Badge status="default" text={<>Tổng <strong>{stats?.total}</strong></>}/>
-                        <Badge status="success" text={<>Hoạt động <strong>{stats?.active}</strong></>}/>
-                        <Badge status="error" text={<>Không hoạt động <strong>{stats?.inactive}</strong></>}/>
+                        <Badge status="default" text={<>Tổng <strong>
+                            <CountUp end={stats?.total as number} duration={3}/>
+                            </strong>
+                            </>}/>
+                        <Badge status="success" text={<>Hoạt động <strong>
+                                <CountUp end={stats?.active as number} duration={stats?.active}/>
+                            </strong>
+                            </>}/>
+                        <Badge status="error" text={<>Không hoạt động <strong>
+                                     <CountUp end={stats?.inactive as number} duration={3}/>
+                                </strong>
+                            </>}
+                        />
                         
                     </Space>
                 </Col>

@@ -14,6 +14,7 @@ import { CreateProduct } from "../../../../features/products/interfaces/create-p
 import { formatVndToNumber } from "../../../../utils/format"
 import { showAlert } from "../../../../features/alert/alert.slice"
 import { uploadMulti, uploadSingle } from "../../../../features/upload/upload.thunk"
+import NProgress from "../../../../config/nprogress"
 const {TextArea} = Input
 const {Title} = Typography
 
@@ -33,7 +34,7 @@ const Create = (props: CruProps) => {
         
         values.price = formatVndToNumber(values.price as string);
         values.categoryId = categoryId as string;
-        
+        NProgress.start();
         try {
             if(images.length > 0) {
                 const formThumbnail = new FormData();
@@ -59,6 +60,7 @@ const Create = (props: CruProps) => {
         } catch{
             dispatch(showAlert({type: 'error',message: 'Thêm sản phẩm thất bại' }))
         }
+        NProgress.done()
     }
     return (
         <Modal

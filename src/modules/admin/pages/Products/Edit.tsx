@@ -13,6 +13,7 @@ import { fetchProductById, updateProduct } from "../../../../features/products/p
 import { showAlert } from "../../../../features/alert/alert.slice"
 import { uploadMulti, uploadSingle } from "../../../../features/upload/upload.thunk"
 import { UpdateProduct } from "../../../../features/products/types/update-product.type"
+import NProgress from "../../../../config/nprogress"
 const {TextArea} = Input
 const {Title} = Typography
 
@@ -29,6 +30,7 @@ const Edit = (props: CruProps) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const onFinish = async (values: UpdateProduct) => {
+        NProgress.start()
         try {
             //THUMBNAIL
             if(thumbnails.length > 0) {
@@ -55,6 +57,7 @@ const Edit = (props: CruProps) => {
         } catch  {
             dispatch(showAlert({type: 'error',message: 'Lỗi không thể cập nhật sản phẩm'}))
         }
+        NProgress.done()
     }
     useEffect(() => {
         dispatch(fetchProductById(id))
