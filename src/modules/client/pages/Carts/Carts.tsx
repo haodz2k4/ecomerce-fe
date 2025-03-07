@@ -224,7 +224,15 @@ const Carts = () => {
                                 icon={<LoadingOutlined />}
                                 iconPosition="end"
                                 onClick={() => {
-                                    setOpenModalConfirm(true)
+                                    if(checkOutItems.length === 0) {
+                                        dispatch(showAlert({
+                                            type: 'error',
+                                            message: 'Vui lòng chọn 1 sản phẩm'
+                                        }))
+                                    } else {
+                                        setOpenModalConfirm(true)
+                                    }
+                                    
                                 }}
                             >
                                 Thanh toán
