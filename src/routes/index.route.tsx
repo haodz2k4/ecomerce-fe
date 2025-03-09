@@ -10,6 +10,7 @@ import Roles from "./Roles.route";
 import ForgotPassword from "../modules/client/pages/ForgotPassword/ForogotPassword";
 import VerifyOtp from "../modules/client/pages/VerifyOtp/VerifyOtp";
 import ResetPassword from "../modules/client/pages/ResetPassword/ResetPassword";
+import LoginGoogle from "../modules/client/pages/Login/LoginGoogle";
 
 
 
@@ -37,6 +38,10 @@ const routes = createBrowserRouter(
         {
             path: "login",
             element: <Login />
+        },
+        {
+            path: "login-google",
+            element: <LoginGoogle />
         },
         {
             path: '/forgot-password',

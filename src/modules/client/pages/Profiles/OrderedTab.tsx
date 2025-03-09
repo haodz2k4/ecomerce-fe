@@ -1,4 +1,4 @@
-import { Button, Collapse, CollapseProps, Flex, Image, List, Pagination, Popconfirm, Segmented, Space, Tabs, TabsProps, Tag } from "antd"
+import { Button, Collapse, CollapseProps, Empty, Flex, Image, List, Pagination, Popconfirm, Segmented, Space, Tabs, TabsProps, Tag } from "antd"
 import { OrderStatus } from "../../../../constants/app.constant"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
@@ -74,7 +74,7 @@ const OrderedTab = () => {
             })}
             onChange={(val) => setStatus(val)}
         />
-        <Collapse items={collapseItems} />
+        {items.length > 0 ? <Collapse items={collapseItems} /> : <Empty />}
        </>
     )
 }

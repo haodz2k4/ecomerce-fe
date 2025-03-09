@@ -89,6 +89,9 @@ const Login = () => {
                                         variant="text"
                                         color="red"
                                         className={styles.login__google}
+                                        onClick={() => {
+                                            window.location.href = import.meta.env.VITE_GOOGLE_LOGIN
+                                        }}
                                     />
                                 </Space>
                         </Flex>

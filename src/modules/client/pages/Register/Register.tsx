@@ -151,6 +151,9 @@ const Register = () => {
                                             variant="text"
                                             color="red"
                                             className={styles.register__google}
+                                            onClick={() => {
+                                                window.location.href = import.meta.env.VITE_GOOGLE_LOGIN
+                                            }}
                                         />
                                     </Space>
                             </Flex>

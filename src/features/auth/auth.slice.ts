@@ -34,6 +34,10 @@ const authSlice = createSlice({
                 state.loading = LoadingConstant.IDLE;
                 state.error = null;
             }
+        },
+        loginGoogle: (state, action) => {
+            state.accessToken = action.payload;
+            state.isAuth = true
         }
     },
     extraReducers: (builder) => {
@@ -95,5 +99,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { resetAuthState, checkAuth } = authSlice.actions;
+export const { resetAuthState, checkAuth, loginGoogle } = authSlice.actions;
 export default authSlice.reducer;

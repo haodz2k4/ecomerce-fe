@@ -31,6 +31,7 @@ function AppHeader() {
     const navigate = useNavigate();
     const {items} = useSelector((state: RootState) => state.categories);
     const {cart} = useSelector((state: RootState) => state.carts);
+    const {currentUser} = useSelector((state: RootState) => state.users); 
     useEffect(() => {
         if(!isAuth) {
             dispatch(getCartNoAuth())
@@ -226,7 +227,7 @@ function AppHeader() {
                                 </Dropdown>
                             </Badge>
                             <Dropdown menu={{items: isAuth ? userItems : authItems}} placement="bottom">
-                               <Avatar icon={<UserOutlined />}/>
+                               <Avatar icon={<UserOutlined />} src={currentUser?.avatar}/>
                             </Dropdown>
                         </Space>
                     </Flex>

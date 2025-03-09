@@ -51,7 +51,7 @@ const Profile = () => {
             <Layout className={styles.profiles}>
                 <Sider width="35%" className={styles.sider}>
                     <div  className={styles.sider__inner}>
-                        <Avatar className={styles.sider__avatar} />
+                        <Avatar className={styles.sider__avatar} src={currentUser?.avatar}/>
                         <Upload className={styles.upload__avatar}>
                             <PlusCircleOutlined />
                         </Upload>
