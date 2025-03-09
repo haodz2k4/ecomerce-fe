@@ -3,6 +3,12 @@ import { Register } from "./types/register.type";
 
 
 
+
+//LOGIN GOOGLE 
+export const loginGoogle = async () => {
+    await axiosInstance.get('auth/google');
+}
+
 //REGISTER 
 export const registerAPI = async (data: Register) => {
     const res = await axiosInstance.post('auth/register',data);

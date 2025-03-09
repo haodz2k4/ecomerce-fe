@@ -7,6 +7,7 @@ import Products from "../modules/client/pages/Products/Products";
 import CategoryProducts from "../modules/client/pages/Categories/CategoryProducts";
 import Carts from "../modules/client/pages/Carts/Carts";
 import VerifyEmail from "../modules/admin/pages/Auth/VerifyEmail";
+import CheckOutSuccess from "../modules/client/pages/CheckOutSuccess/CheckOutSuccess";
 
 
 export const clientRoutes: RouteObject[] = [
@@ -39,6 +40,10 @@ export const clientRoutes: RouteObject[] = [
     {
         path: '/verify-email',
         element: <VerifyEmail />
+    },
+    {
+        path: '/checkout-success/:orderId',
+        element: <CheckOutSuccess />
     }
     
 ]   

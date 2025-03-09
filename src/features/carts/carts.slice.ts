@@ -15,6 +15,7 @@ const cartSlice = createSlice({
     name: 'carts',
     initialState,
     reducers: {
+
         addCartNoAuth: (state,action) => {
             const {product, quantity} = action.payload;
             if(state.cart && state.cart.cart_items) {
@@ -25,6 +26,15 @@ const cartSlice = createSlice({
                     createdAt: new Date(),
                     updatedAt: new Date()
                 })
+            }
+        },
+        clearCartItem: (state, action) => {
+            const {ids} = action.payload;
+            for(const id of ids) {
+                if (state.cart && state.cart.cart_items && state.cart.cart_items.items) {
+                    state.cart.cart_items.items = state.cart.cart_items.items.filter((item) => item.product.id !== id);
+                }
+                
             }
         },
         getCartNoAuth: (state) => {
@@ -96,5 +106,5 @@ const cartSlice = createSlice({
     }
 })
 
-export const {addCartNoAuth, getCartNoAuth} = cartSlice.actions
+export const {addCartNoAuth, getCartNoAuth, clearCartItem} = cartSlice.actions
 export default cartSlice.reducer

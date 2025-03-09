@@ -1,7 +1,7 @@
 import { Button, Flex, Image, InputNumber, Popconfirm, Space, Table, TableColumnProps,Input, TableProps, Typography, Form, Radio, Modal } from "antd";
 import styles from "./Carts.module.scss";
 import { camulatorDiscountPrice } from "../../../../utils/camulator";
-import { AlertOutlined, CheckOutlined, CloseCircleOutlined, CloseOutlined, CreditCardOutlined, ExclamationCircleFilled, LoadingOutlined, SnippetsOutlined } from "@ant-design/icons";
+import {  CloseCircleOutlined, CloseOutlined, CreditCardOutlined, ExclamationCircleFilled, LoadingOutlined, SnippetsOutlined } from "@ant-design/icons";
 import { formatPriceToVnd } from "../../../../utils/format";
 import { InputFormatPrice } from "../../../../components/Input/InputFormatPrice";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,10 +13,13 @@ import { showNotification } from "../../../../features/notifications/notificatio
 import { CartItems } from "../../../../features/carts/interfaces/cart-items.interface";
 import { CreateOrderItem } from "../../../../features/orders/interfaces/create-order-item.interface";
 import ModalConfirm from "../../../../components/ModalConfirm/ModalConfirm";
+import { OrderStatus, PaymentMethod } from "../../../../constants/app.constant";
+import { createOrder } from "../../../../features/orders/orders.thunk";
+import { useNavigate } from "react-router-dom";
+import { clearCartItem } from "../../../../features/carts/carts.slice";
 
 const {Title} = Typography;
 const {Search} = Input;
-const {confirm} = Modal;
 const Carts = () => {
 
     const [openModalConfirm, setOpenModalConfirm] = useState<boolean>(false);
@@ -25,6 +28,10 @@ const Carts = () => {
     const [keyword, setKeyword] = useState<string>();
     const {cart} = useSelector((state: RootState) => state.carts);
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.CASH);
+    const [address, setAddress] = useState<string>('');
+    const [phone,setPhone] = useState<string>('');
     useEffect(() => {
         dispatch(fetchCart({
             keyword
@@ -77,6 +84,35 @@ const Carts = () => {
             dispatch(showNotification({
                 type: 'error',
                 message: 'Loại bỏ toàn bộ thất bại'
+            }))
+        }
+    }
+
+    const handleConfirCheckOut = async () => {
+       
+        try {
+            const payload = await dispatch(createOrder({
+                status: OrderStatus.PENDING,
+                paymentMethod,
+                address,
+                phone,
+                items: checkOutItems
+            })).unwrap()
+            dispatch(showAlert({
+                type: 'success',
+                message: 'Thanh toán thành công'
+            }))
+            const ids = payload.ordersItems.map((item) => item.product.id)
+            dispatch(clearCartItem({
+                ids
+            }))
+            navigate("/checkout-success/souuu")
+
+        } catch (error) {
+            console.log(error)
+            dispatch(showAlert({
+                type: 'error',
+                message: 'Lỗi khi thanh toán'
             }))
         }
     }
@@ -202,16 +238,24 @@ const Carts = () => {
                         <Form layout="vertical">
                             <Title level={3} className={styles.checkout__title}>Thông tin thanh toán</Title>
                             <Form.Item label="Phương thức thanh toán" required>
-                                <Radio.Group>
-                                    <Radio value="cash"><SnippetsOutlined /> Tiền mặt</Radio>
-                                    <Radio value="credit-card"><CreditCardOutlined /> Qua VNPAY  </Radio>
+                                <Radio.Group value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+                                    <Radio value={PaymentMethod.CASH}><SnippetsOutlined /> Tiền mặt</Radio>
+                                    <Radio value={PaymentMethod.CREDIT_CARD}><CreditCardOutlined /> Qua VNPAY  </Radio>
                                 </Radio.Group>
                             </Form.Item>
                             <Form.Item label="Nhập số điện thoại" required>
-                                <Input placeholder="Số điện thoại..."/>
+                                <Input 
+                                    value={phone} 
+                                    onChange={(e) => setPhone(e.target.value)} 
+                                    placeholder="Số điện thoại..."
+                                />
                             </Form.Item>
                             <Form.Item label="Nhập địa chỉ" required>
-                                <Input placeholder="Địa chỉ..."/>
+                                <Input 
+                                    placeholder="Địa chỉ..." 
+                                    value={address} 
+                                    onChange={(e) => setAddress(e.target.value)}
+                                />
                             </Form.Item>
                             <Form.Item label="">
                                 <Flex justify="space-between">
@@ -246,7 +290,7 @@ const Carts = () => {
                 setOpen={setOpenModalConfirm} 
                 title="Tiến hành thanh toán"
                 description="Bạn có chăc muốn thanh toán không"
-
+                onOk={handleConfirCheckOut}
             />
         </div>
     )

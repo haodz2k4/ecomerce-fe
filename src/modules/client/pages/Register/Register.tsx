@@ -1,7 +1,7 @@
 import { Button, Checkbox, Flex, Form, Input, Layout, Radio, Space, Typography  } from "antd"
 import styles from "./Register.module.scss";
 import { Content } from "antd/es/layout/layout";
-import { LockOutlined, MailOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
+import { FacebookFilled, FacebookOutlined, GoogleOutlined, GoogleSquareFilled, LockOutlined, MailOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import { Gender } from "../../../../constants/app.constant";
 import { Register as IRegister } from "../../../../features/auth/types/register.type";
@@ -75,28 +75,30 @@ const Register = () => {
                                     placeholder="Điền Email của bạn..."
                                 />
                             </Form.Item>
-                            <Form.Item 
-                                name='gender'
-                                label="Giới tính: "  
-                                rules={[{
-                                    required: true, 
-                                    message: "Bạn phải chọn 1 giới tính"
-                                }]}  
-                            >
-                                <Radio.Group>
-                                    <Radio value={Gender.MALE}>Nam</Radio>
-                                    <Radio value={Gender.FEMALE}>Nữ</Radio>
-                                </Radio.Group>
-                            </Form.Item>
-                            <Form.Item 
-                                label="Ngày sinh: " 
-                                rules={[{
-                                    required: true, message: 'Ngày sinh không được bỏ trống'
-                                }]}
-                                name='birthDate'
-                            >
-                                <Input type="date"/>
-                            </Form.Item>
+                            <Flex justify="space-between">
+                                <Form.Item 
+                                    name='gender'
+                                    label="Giới tính: "  
+                                    rules={[{
+                                        required: true, 
+                                        message: "Bạn phải chọn 1 giới tính"
+                                    }]}  
+                                >
+                                    <Radio.Group>
+                                        <Radio value={Gender.MALE}>Nam</Radio>
+                                        <Radio value={Gender.FEMALE}>Nữ</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                                <Form.Item 
+                                    label="Ngày sinh: " 
+                                    rules={[{
+                                        required: true, message: 'Ngày sinh không được bỏ trống'
+                                    }]}
+                                    name='birthDate'
+                                >
+                                    <Input type="date"/>
+                                </Form.Item>
+                                </Flex>
                             <Space size="large">
                                 <Form.Item 
                                     label="Mật khẩu: " 
@@ -123,9 +125,6 @@ const Register = () => {
                                     <Input type="password" prefix={<LockOutlined />} placeholder="Nhập lại mật khẩu..."/>
                                 </Form.Item>
                             </Space>
-                            <Form.Item rules={[{required: true, message: "Vui lòng chấp nhận điều khoản và dịch vụ"}]}>
-                                <Checkbox>Chập nhận tất cả điều khoản và dịch vụ trên</Checkbox>
-                            </Form.Item>
                             <Flex justify="center">
                                 <Button 
                                     iconPosition="end" 
@@ -136,6 +135,24 @@ const Register = () => {
                                 >
                                     Đăng ký 
                                 </Button>
+                            </Flex>
+                            
+                            <div className={styles.register__provider}>Hoặc đăng ký với</div>
+                            <Flex justify="center">
+                                    <Space>
+                                        <Button 
+                                            icon={<FacebookFilled />} 
+                                            variant="text" 
+                                            color="blue"
+                                            className={styles.register__facebook}
+                                        />
+                                        <Button 
+                                            icon={<GoogleSquareFilled />}
+                                            variant="text"
+                                            color="red"
+                                            className={styles.register__google}
+                                        />
+                                    </Space>
                             </Flex>
                             <div className={styles.register__other}>
                                 Bạn đã có tài khoản ? <Link to={'/login'} className={styles.register__login}>Đăng nhập</Link>

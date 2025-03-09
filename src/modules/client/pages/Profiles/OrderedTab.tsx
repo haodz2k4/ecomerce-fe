@@ -1,4 +1,4 @@
-import { Button, Collapse, CollapseProps, Flex, Image, List, Pagination, Popconfirm, Space, Tabs, TabsProps, Tag } from "antd"
+import { Button, Collapse, CollapseProps, Flex, Image, List, Pagination, Popconfirm, Segmented, Space, Tabs, TabsProps, Tag } from "antd"
 import { OrderStatus } from "../../../../constants/app.constant"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from "../../../../common/types/store.type";
 import { fetchOrders } from "../../../../features/orders/orders.thunk";
 import { formatDate, formatPriceToVnd } from "../../../../utils/format";
 import { CloseOutlined } from "@ant-design/icons";
-
+import styles from "./Profile.module.scss";
 
 
 const OrderedTab = () => {
@@ -16,13 +16,7 @@ const OrderedTab = () => {
     const {currentUser} = useSelector((state: RootState) => state.users);
     const dispatch = useDispatch<AppDispatch>();
     
-    const tabsItems: TabsProps['items'] = Object.entries(OrderStatus).map((item) => {
-        const [key, value] = item;
-        return {
-            key,
-            label: <span onClick={(() => setStatus(value))}>{value}</span>
-        }
-    })
+    
 
     useEffect(() => {
         dispatch(fetchOrders({
@@ -72,7 +66,14 @@ const OrderedTab = () => {
     }) )
     return (
        <>
-        <Tabs items={tabsItems}/>
+        <Segmented
+            className={styles.segmented}
+            options={Object.entries(OrderStatus).map((item) => {
+                const [key, value] = item;
+                return value
+            })}
+            onChange={(val) => setStatus(val)}
+        />
         <Collapse items={collapseItems} />
        </>
     )

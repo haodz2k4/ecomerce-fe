@@ -1,7 +1,7 @@
 import { Layout, Typography, Form, Input, Checkbox, Space, Flex, Button } from "antd";
 import styles from "./Login.module.scss";
 import { Content } from "antd/es/layout/layout";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { FacebookFilled, GoogleSquareFilled, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
 import { Login } from "../../../../features/auth/interfaces/login.interface";
@@ -75,6 +75,23 @@ const Login = () => {
                             </Form.Item>
                         </Flex>
                         <Button className={styles.login__btn} htmlType="submit"  >Đăng nhập</Button>
+                        <div className={styles.login__provider}>Hoặc đăng ký với</div>
+                        <Flex justify="center">
+                                <Space>
+                                    <Button 
+                                        icon={<FacebookFilled />} 
+                                        variant="text" 
+                                        color="blue"
+                                        className={styles.login__facebook}
+                                    />
+                                    <Button 
+                                        icon={<GoogleSquareFilled />}
+                                        variant="text"
+                                        color="red"
+                                        className={styles.login__google}
+                                    />
+                                </Space>
+                        </Flex>
                         <div className={styles.login__other}>
                             Bạn chưa có tài khoản ? <NavLink to={"/register"}>Đăng ký</NavLink>
                         </div>

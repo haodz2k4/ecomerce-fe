@@ -33,4 +33,18 @@
         color: $primary_color;
         font-weight: bold;
     }
+
+    &__facebook {
+        font-size: 30px;
+    }
+
+    &__google {
+        font-size: 30px;
+    }
+
+    &__provider {
+        text-align: center;
+        font-weight: bold;
+        margin: 5px 0;
+    }
 }
