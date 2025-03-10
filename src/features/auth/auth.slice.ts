@@ -90,7 +90,7 @@ const authSlice = createSlice({
             //VERIFY OTP 
             .addCase(verifyOtp.fulfilled, (state, action) => {
                 state.loading = LoadingConstant.SUCCEEDED;
-                state.refreshToken = action.payload.token
+                state.resetToken = action.payload.token
             } )
             //RESET PASSWORD
             .addCase(resetPassword.fulfilled, (state) => {

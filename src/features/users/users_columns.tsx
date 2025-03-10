@@ -1,5 +1,5 @@
 import { CloseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons"
-import { Button, Image, Popconfirm, Space, TableColumnProps, Tag } from "antd"
+import { Button, Image, Popconfirm, Space, TableColumnProps, Tag, Typography } from "antd"
 import { DESC_CONFIRM_REMOVE, TITLE_CONFIRM_REMOVE } from "../../constants/title.constant"
 import { getColorByStatus, transfromGender, transfromStatus } from "../../utils/transform"
 import { formatDate } from "../../utils/format"
@@ -33,7 +33,8 @@ export const usersColums = (): TableColumnProps[] => {
         {
             key: 'email',
             title: 'Email',
-            dataIndex: 'email'
+            dataIndex: 'email',
+            render: (val) => <Typography.Text copyable >{val}</Typography.Text>
         },
         {
             key: 'gender',

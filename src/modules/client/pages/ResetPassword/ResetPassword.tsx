@@ -2,7 +2,7 @@ import styles from "./ResetPassword.module.scss"
 import { Layout, Form, Input, Button, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { LockOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../common/types/store.type";
 import { resetPassword } from "../../../../features/auth/auth.thunk";
@@ -13,6 +13,7 @@ const {Title} = Typography;
 const ResetPassword = () => {
 
     const {resetToken} = useSelector((state: RootState) => state.auth);
+    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const onFinish = async (values: {password: string, confirmPassword: string}) => {
         if(values.password !== values.confirmPassword) {
@@ -31,6 +32,7 @@ const ResetPassword = () => {
                 type: 'success',
                 message: 'Đổi mật khẩu thành công'
             }))
+            navigate("/login");
         } catch {   
             dispatch(showNotification({
                 type: 'error',

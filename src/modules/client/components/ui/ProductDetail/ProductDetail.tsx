@@ -49,12 +49,18 @@ const ProductDetail = () => {
             <div className={styles.product__detail}>
                 .
                 <div className={styles.product__image}>
-                    <Alert  
-                        type="error" 
-                        message='Sản phẩm đã hết hàng !' 
-                        className={styles.alert__error}
-                        showIcon
-                    />
+                    {
+                        item?.inventories.quantity === 0
+                        ? 
+                        <Alert  
+                            type="error" 
+                            message='Sản phẩm đã hết hàng !' 
+                            className={styles.alert__error}
+                            showIcon
+                        />
+                        : 
+                        <></>
+                    }
                     <Image 
                         width={500} 
                         height={500} 
