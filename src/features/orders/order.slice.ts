@@ -2,15 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 import { GeneralInitialState } from "../../common/interfaces/general-initial-state";
 import { Order } from "./interfaces/order.interface";
 import { LoadingConstant } from "../../constants/loading.constant";
-import { fetchOrderById, fetchOrders } from "./orders.thunk";
+import { fetchOrderById, fetchOrders, statsOrder } from "./orders.thunk";
+import { StatsOrder } from "./interfaces/stats-order.interface";
 
 
-const initialState: GeneralInitialState<Order> = {
+const initialState: GeneralInitialState<Order, StatsOrder> = {
     pagination: null,
     items: [],
     item: null,
     loading: LoadingConstant.IDLE,
-    error: null
+    error: null,
+    stats: null
 }
 
 const orderSlice = createSlice({
@@ -44,7 +46,11 @@ const orderSlice = createSlice({
             state.loading = LoadingConstant.FAILED;
             state.error = action.payload;
         })
-        
+        //STATS ORDER 
+        .addCase(statsOrder.fulfilled, (state, action) => {
+            state.loading = LoadingConstant.SUCCEEDED;
+            state.stats = action.payload;
+        })
 
     },
 

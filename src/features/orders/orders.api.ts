@@ -1,6 +1,7 @@
 import axiosInstance from "../../api/axios";
 import { CreateOrder } from "./interfaces/create-order.interface";
 import { QueryOrder } from "./interfaces/query-order.interface";
+import { QueryStatsOrder } from "./interfaces/query-stats-order.interface";
 import { UpdateOrder } from "./types/update-order.type";
 
 
@@ -33,4 +34,12 @@ export const getOrderByIdAPI = async (id: string) => {
 //REMOVE 
 export const removeOrderAPI = async (id: string) :Promise<void> => {
     await axiosInstance.delete(`orders/${id}`);
+}
+
+//STATS 
+export const statsOrderAPI = async (query: QueryStatsOrder) => {
+    const res = await axiosInstance.get('orders/stats',{
+        params: query
+    });
+    return res.data.data;
 }

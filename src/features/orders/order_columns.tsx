@@ -107,11 +107,13 @@ const orderColumns = (props: OrderColumnsProps):TableColumnProps<Order>[] => {
         {
             key: 'createdAt',
             title: 'Ngày tạo',
+            dataIndex: 'createdAt',
             render: (val) => formatDate(val)
         },
         {
             key: 'updatedAt',
             title: 'Ngày cập nhật',
+            dataIndex: 'updatedAt',
             render: (val) => formatDate(val)
         },
         {

@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { QueryOrder } from "./interfaces/query-order.interface";
-import { createOrderAPI, getOrderByIdAPI, getOrdersAPI, removeOrderAPI, updateOrderAPI } from "./orders.api";
+import { createOrderAPI, getOrderByIdAPI, getOrdersAPI, removeOrderAPI, statsOrderAPI, updateOrderAPI } from "./orders.api";
 import { CreateOrder } from "./interfaces/create-order.interface";
 import { UpdateOrder } from "./types/update-order.type";
+import { QueryStatsOrder } from "./interfaces/query-stats-order.interface";
 
 //FETCH ORDERS 
 export const fetchOrders = createAsyncThunk(
@@ -62,6 +63,18 @@ export const deleteOrder = createAsyncThunk(
             return id;
         } catch (error) {
             return rejectWithValue(error)
+        }
+    }
+)
+
+//STATS ORDER
+export const statsOrder = createAsyncThunk(
+    'orders/statsOrder',
+    async (query: QueryStatsOrder, {rejectWithValue}) => {
+        try {
+            return await statsOrderAPI(query)
+        } catch (error) {
+            return rejectWithValue(error);
         }
     }
 )
