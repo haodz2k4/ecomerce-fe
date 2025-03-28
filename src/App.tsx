@@ -9,9 +9,19 @@ import { fetchCurrentUser } from "./features/users/users.thunk";
 import { AppDispatch } from "./common/types/store.type";
 import { resetAuthState } from "./features/auth/auth.slice";
 import { ConfigProvider } from "antd";
+import { socket } from "./socket";
 function App() {
-  const dispatch = useDispatch<AppDispatch>();
 
+  //Implement socket 
+  socket.connect();
+  socket.on('connect',() => {
+    console.log('Connected to socket')
+  })
+  socket.on('disconnect', () => {
+    console.log('Disconnected to socket')
+  })
+
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(fetchCurrentUser()).unwrap().catch(() => {
       dispatch(resetAuthState())

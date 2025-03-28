@@ -10,6 +10,7 @@ import { OrderStatus } from "../../../../constants/app.constant"
 import { showAlert } from "../../../../features/alert/alert.slice"
 import Stats from "./Stats"
 import { DashboardOutlined } from "@ant-design/icons"
+import { socket } from "../../../../socket"
 
 const {Search} = Input
 
@@ -31,7 +32,9 @@ const Orders = () => {
     const handleUpdateStatus = async (id: string,status: OrderStatus) => {
         console.log(status)
         try {
-            await dispatch(updateOrder({id, data: {status} })).unwrap()
+            socket.emit('CLIENT_UPDATE_STATUS',{
+                id, status
+            })
             dispatch(showAlert({
                 type: 'success',
                 message: 'Cập nhật trạng thái đơn hàng thành công'
