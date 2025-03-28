@@ -5,12 +5,10 @@ import { FacebookFilled, GoogleSquareFilled, LockOutlined, MailOutlined } from "
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
 import { Login } from "../../../../features/auth/interfaces/login.interface";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../common/types/store.type";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../common/types/store.type";
 import { loginUser } from "../../../../features/auth/auth.thunk";
 import { showAlert } from "../../../../features/alert/alert.slice";
-import { RoleUser } from "../../../../constants/role.constant";
-import { ErrorData } from "../../../../common/interfaces/error-data.interface";
 
 const {Title} = Typography
 
@@ -24,11 +22,8 @@ const Login = () => {
             const {roleId} = await dispatch(loginUser(values)).unwrap();
             dispatch(showAlert({type: 'success',message: 'Đăng nhập thành công'}));
 
-            if(roleId === RoleUser) {
-                navigate("/"); 
-            } else {
-                navigate("/admin/dashboard");
-            }
+            navigate("/"); 
+            
 
         } catch (error: ErrorData) {
             console.log(error)

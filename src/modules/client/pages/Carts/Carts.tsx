@@ -15,8 +15,9 @@ import { CreateOrderItem } from "../../../../features/orders/interfaces/create-o
 import ModalConfirm from "../../../../components/ModalConfirm/ModalConfirm";
 import { OrderStatus, PaymentMethod } from "../../../../constants/app.constant";
 import { createOrder } from "../../../../features/orders/orders.thunk";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { clearCartItem } from "../../../../features/carts/carts.slice";
+import { payment } from "../../../../features/momo/momo.slice";
 
 const {Title} = Typography;
 const {Search} = Input;
@@ -91,22 +92,37 @@ const Carts = () => {
     const handleConfirCheckOut = async () => {
        
         try {
-            const payload = await dispatch(createOrder({
-                status: OrderStatus.PENDING,
-                paymentMethod,
-                address,
-                phone,
-                items: checkOutItems
-            })).unwrap()
-            dispatch(showAlert({
-                type: 'success',
-                message: 'Thanh toán thành công'
-            }))
-            const ids = payload.ordersItems.map((item) => item.product.id)
-            dispatch(clearCartItem({
-                ids
-            }))
-            navigate("/checkout-success/souuu")
+
+            if(paymentMethod === PaymentMethod.CREDIT_CARD) {
+                const data=  await payment({
+                    address,
+                    phone,
+                    items: checkOutItems
+                });
+                console.log(data)
+                window.location.href = data.payUrl;
+
+            } else {
+                const payload = await dispatch(createOrder({
+                    status: OrderStatus.PENDING,
+                    paymentMethod,
+                    address,
+                    phone,
+                    items: checkOutItems
+                })).unwrap()
+                const ids = payload.ordersItems.map((item) => item.product.id)
+                dispatch(clearCartItem({
+                    ids
+                }))
+                dispatch(showAlert({
+                    type: 'success',
+                    message: 'Thanh toán thành công'
+                }))
+                navigate(`/checkout-success/${payload.id}`)
+            }
+            
+            
+            
 
         } catch (error) {
             console.log(error)
