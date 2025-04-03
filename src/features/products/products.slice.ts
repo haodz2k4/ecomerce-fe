@@ -5,6 +5,7 @@ import { GeneralInitialState } from "../../common/interfaces/general-initial-sta
 import { fetchProducts, fetchProductById, createProduct, updateProduct, removeProduct, statsProducts, fetchProductBySlug } from "./products.thunk";
 import { PayloadList, PayloadRemove } from "../../common/types/payload.type";
 import { ProductStats } from "./interfaces/product-stats.interface";
+import { FailedState, PendingState, SucceededState } from "./states/loading-states";
 
 const initialState: GeneralInitialState<Product, ProductStats> = {
     pagination: null,
@@ -23,21 +24,9 @@ const productSlice = createSlice({
     extraReducers: (builder) => {
         builder
             //Fetch products
-            .addCase(fetchProducts.pending, (state) => {
-                state.loading = LoadingConstant.PENDING;
-                state.error = null;
-            })
-            .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<PayloadList<Product>>) => {
-                state.loading = LoadingConstant.SUCCEEDED;
-                state.items = action.payload.items;
-                state.pagination = action.payload.pagination;
-            })
-            .addCase(fetchProducts.rejected, (state, action: PayloadAction<any>) => {
-                state.loading = LoadingConstant.FAILED;
-                state.error = action.payload || "Failed to fetch products";
-
-
-            })
+            .addCase(fetchProducts.pending, (state) => new PendingState().handle(state))
+            .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<PayloadList<Product>>) => new SucceededState().handle(state, action))
+            .addCase(fetchProducts.rejected, (state, action: PayloadAction<any>) => new FailedState().handle(state, action))
             //Fetch product by id
             .addCase(fetchProductById.pending, (state) => {
                 state.loading = LoadingConstant.PENDING;
